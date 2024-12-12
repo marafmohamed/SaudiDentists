@@ -8,7 +8,6 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(passport.initialize());
 const PORT = process.env.PORT || 8080;
 
 const mongoose = require("mongoose");
