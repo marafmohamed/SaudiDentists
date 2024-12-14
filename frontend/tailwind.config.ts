@@ -20,7 +20,8 @@ export default {
           bluePrimary: "#00419B",
           greenDark: "#13A235",
           blueLightHover: "#E8F6F8",
-          bgGray: "#EFEEEE"
+          bgGray: "#EFEEEE",
+          grayWrite: "#58595B"
         },
       },
     },

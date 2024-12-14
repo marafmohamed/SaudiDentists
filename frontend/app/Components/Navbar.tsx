@@ -5,11 +5,13 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import { FaBars, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 import { BiSolidHome } from "react-icons/bi";
+import { useApp } from "../Context";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [language, setLanguage] = useState("en"); // Track current language
+  const { lang, dispatch } = useApp();
+  const [language, setLanguage] = useState(lang || "en"); // Track current language
   const dropdownRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const dropdownButtonRef = useRef<HTMLButtonElement>(null);
@@ -22,13 +24,13 @@ export default function Navbar() {
 
   const closeDropdown = (e: MouseEvent) => {
     if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(e.target as Node) &&
-        dropdownButtonRef.current &&
-        !dropdownButtonRef.current.contains(e.target as Node)
-      ) {
-        setIsOpen(false);
-      }
+      dropdownRef.current &&
+      !dropdownRef.current.contains(e.target as Node) &&
+      dropdownButtonRef.current &&
+      !dropdownButtonRef.current.contains(e.target as Node)
+    ) {
+      setIsOpen(false);
+    }
   };
 
   const closeMenuOnClickOutside = (e: MouseEvent) => {
@@ -46,10 +48,10 @@ export default function Navbar() {
     };
   }, []);
 
-  const toggleLanguage = (lang: string) => {
+  const toggleLanguage = (lang: "en" | "ar") => {
+    dispatch({ type: "SET_LANGUAGE", payload: lang });
     setLanguage(lang);
   };
-
   return (
     <nav className="bg-custom-greenDark relative">
       <div className="h-8 bg-custom-greenPrimary"></div>
@@ -62,7 +64,7 @@ export default function Navbar() {
               <img
                 src="/Logos/Link.svg"
                 alt="Logo"
-                className="w-52 z-20 mt-3"
+                className="w-52 mt-3"
               />
             </div>
 

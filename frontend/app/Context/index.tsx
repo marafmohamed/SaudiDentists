@@ -6,12 +6,11 @@ interface User {
   id: string;
   name: string;
   email: string;
-  // Add any additional fields based on your application's user object
 }
 
 interface State {
   user: User | null;
-  language: "ar" | "en"; // Arabic or English
+  lang: "ar" | "en"; // Arabic or English
 }
 
 type Action =
@@ -35,7 +34,7 @@ const AuthReducer = (state: State, action: Action): State => {
     case "LOGOUT":
       return { ...state, user: null };
     case "SET_LANGUAGE":
-      return { ...state, language: action.payload };
+      return { ...state, lang: action.payload };
     default:
       return state;
   }
@@ -48,7 +47,7 @@ interface AppProviderProps {
 
 // Context Provider
 export function AppProvider({ children }: AppProviderProps) {
-  const [state, dispatch] = useReducer(AuthReducer, { user: null, language: "en" }); // Default language is English
+  const [state, dispatch] = useReducer(AuthReducer, { user: null, lang: "en" }); // Default language is English
   const baseUrl = process.env.NEXT_PUBLIC_BACK_URL as string;
 
   return (
