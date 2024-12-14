@@ -10,4 +10,14 @@ const Login = async (req, res) => {
   }
 };
 
-module.exports = { Login };
+const getPaginatedDentists = async (req, res) => {
+  const { page, limit , speciality, region, cite } = req.query;
+  try {
+    const dentists = await Dentist.getPaginatedDentists(page, limit);
+    res.status(200).json(dentists);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+module.exports = { Login, getPaginatedDentists };

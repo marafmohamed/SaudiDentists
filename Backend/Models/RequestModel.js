@@ -1,7 +1,27 @@
 const mongoose = require("mongoose");
 const { sendMail } = require("../Services/EmailService");
 const Schema = mongoose.Schema;
+const specialtyEnum = [
+  'Prosthodontics',
+  'Dental Technology',
+  'Endodontics',
+  'Periodontics',
+  'Oral and Maxillofacial Surgery',
+  'Pedodontics',
+  'Orthodontics',
+  'Restorative Dentistry'
+];
 
+const specialtyArabicEnum = [
+  'طب الأسنان التعويضي',
+  'تقنية الأسنان',
+  'علاج جذور الأسنان',
+  'طب دواعم الأسنان',
+  'جراحة الفم والوجه والفكين',
+  'طب أسنان الأطفال',
+  'تقويم الأسنان',
+  'طب الأسنان الترميمي'
+];
 const RequestSchema = new Schema(
   {
     // English form fields
@@ -203,5 +223,5 @@ RequestSchema.statics.refuseRequest = async function (requestData) {
 };
 
 
-module.exports = mongoose.model("Dentist", RequestSchema);
+module.exports = mongoose.model("Request", RequestSchema);
 

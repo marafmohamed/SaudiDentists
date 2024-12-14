@@ -1,5 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const {
-    
-} = require('../Controllers/DentistControllers');
+  Login,
+  getPaginatedDentists,
+} = require("../Controllers/DentistControllers");
+
+router.post("/login", Login);
+router.get("/getPaginatedDentists", getPaginatedDentists);
+module.exports = router;

@@ -9,7 +9,12 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 const PORT = process.env.PORT || 8080;
-
+const AdminRoutes = require("./Routes/AdminRoutes");
+const DentistRoutes = require("./Routes/DentistRoutes");
+const RequestRoutes = require("./Routes/RequestRoutes");
+app.use("/admin", AdminRoutes);
+app.use("/dentist", DentistRoutes);
+app.use("/request", RequestRoutes);
 const mongoose = require("mongoose");
 
 mongoose

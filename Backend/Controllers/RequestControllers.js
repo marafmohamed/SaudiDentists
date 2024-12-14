@@ -39,7 +39,7 @@ const createDentistRequest = async (req, res) => {
   // Check if all fields are present
   for (const key in req.body) {
     if (!req.body[key]) {
-        if(key=="reservationsPhone"|| key=="twitterUrl"|| key=="instagramUrl"|| key=="linkedinUrl"|| key=="snapchatUrl"||  key=="curriculumVitaeUrlArabic"){
+        if(key=="twitterUrl"|| key=="instagramUrl"|| key=="linkedinUrl"|| key=="snapchatUrl"){
             continue;
         }
       return res.status(400).json({ message: `${key} is required` });
