@@ -1,12 +1,20 @@
 import React from "react";
 
+interface TitleComponentProps {
+  isEnglish: boolean;
+  firstWord: string;
+  firstWordAr: string;
+  secondWord: string;
+  secondWordAr: string;
+}
+
 export default function TitleComponent({
   isEnglish,
   firstWord,
   firstWordAr,
   secondWord,
   secondWordAr,
-}) {
+}: TitleComponentProps) {
   return (
     <p
       className={`${

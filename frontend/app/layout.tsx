@@ -18,7 +18,7 @@ export default function RootLayout({
     <html>
       <body>
         <AppProvider>
-          <div className="flex flex-col min-h-screen">
+          <div className="flex flex-col bg-custom-bgGray min-h-screen">
             <Navbar />
             <main className="flex-grow">{children}</main>
             <Footer />
