@@ -3,6 +3,9 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import CustomInput from "./SmallComponents/CustomInput";
+import { BiTrash } from "react-icons/bi";
+import useRequet from "../Hooks/useRequet";
+import PopUpModal from "./SmallComponents/PopUpModal";
 // import axios from "axios";
 
 // Define Types
@@ -16,7 +19,7 @@ interface LocationArabic {
   cityArabic: string;
 }
 
-interface FormData {
+export interface FormData {
   // English Fields
   username: string;
   firstName: string;
@@ -27,15 +30,15 @@ interface FormData {
   reservationsPhone: string;
   governmentalSector: string;
   privateSector: string;
-  curriculumVitaeUrl: string;
+  curriculumVitaeUrl: File | string | null;
   twitterUrl: string;
   instagramUrl: string;
   linkedinUrl: string;
   snapchatUrl: string;
   tiktokUrl: string;
   location: Location;
-  profilePicture: File | null;
-  locationUrl: string;
+  profilePicture: File | string | null;
+  locationUrl: string[];
   category: string;
   title: string;
   specialty: string;
@@ -53,10 +56,11 @@ interface FormData {
   specialtyArabic: string;
   description: string;
   descriptionArabic: string;
+  [key: string]: any;
 }
 
 const categories: string[] = ["Category1", "Category2", "Category3"];
-
+const categoriesArabic: string[] = ["الفئة1", "الفئة2", "الفئة3"];
 const specialties: string[] = [
   "Prosthodontics",
   "Dental Technology",
@@ -103,7 +107,6 @@ const arabicCities3: string[] = [
 const arabicCities4: string[] = ["أبها", "خميس مشيط", "جيزان", "نجران"];
 const arabicCities5: string[] = ["تبوك"];
 export default function RegistrationForm() {
-  const [phoneValue, setPhoneValue] = useState<string | undefined>();
   const [formData, setFormData] = useState<FormData>({
     // English Fields
     username: "",
@@ -115,7 +118,7 @@ export default function RegistrationForm() {
     reservationsPhone: "",
     governmentalSector: "",
     privateSector: "",
-    curriculumVitaeUrl: "",
+    curriculumVitaeUrl: null,
     twitterUrl: "",
     instagramUrl: "",
     linkedinUrl: "",
@@ -123,7 +126,7 @@ export default function RegistrationForm() {
     tiktokUrl: "",
     location: { area: "", city: "" },
     profilePicture: null,
-    locationUrl: "",
+    locationUrl: [],
     category: "",
     title: "",
     specialty: "",
@@ -145,11 +148,15 @@ export default function RegistrationForm() {
 
   const [step, setStep] = useState(1);
   const [errors, setErrors] = useState<{ name: string; message: string }[]>([]);
-
+  const [currentLocation, setCurrentLocation] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [showPopUPSucces, setShowPopUpSucces] = useState(false);
+  const { CreateRequest } = useRequet();
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target as HTMLInputElement;
+    const files = (e.target as HTMLInputElement).files;
     if (name.includes("location.")) {
       const [parent, child] = name.split(".");
       setFormData((prev) => ({
@@ -168,26 +175,35 @@ export default function RegistrationForm() {
           [child]: value,
         },
       }));
+    } else if (name === "profilePicture" || name === "curriculumVitaeUrl") {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: files ? files[0] : null,
+      }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
   };
+  const handleSubmit = async () => {
+    console.log(formData);
+    const errors = validateForm();
+    if (errors.length > 0) {
+      return;
+    }
 
-  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files ? e.target.files[0] : null;
-    setFormData((prev) => ({ ...prev, profilePicture: file }));
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
     try {
-      // Uncomment and implement actual API call
-      // const response = await axios.post("/api/register", formData);
-      console.log("Form Data:", formData);
-      alert("Registration submitted successfully!");
+      setLoading(true);
+      const CreatedRequest = await CreateRequest(formData);
+      if (CreatedRequest.error) {
+        alert(CreatedRequest.error);
+        setLoading(false);
+        return;
+      }
+      setLoading(false);
+      setShowPopUpSucces(true);
     } catch (error) {
-      console.error("Error submitting form: ", error);
-      alert("Error submitting registration form.");
+      console.log(error);
+      setLoading(false);
     }
   };
 
@@ -196,6 +212,7 @@ export default function RegistrationForm() {
   };
 
   const validateStep1 = () => {
+    let errors = [];
     if (
       formData.username.trim() === "" ||
       formData.firstName.trim() === "" ||
@@ -206,44 +223,47 @@ export default function RegistrationForm() {
       formData.reservationsPhone.trim() === "" ||
       formData.governmentalSector.trim() === "" ||
       formData.privateSector.trim() === "" ||
-      formData.curriculumVitaeUrl.trim() === "" ||
+      formData.curriculumVitaeUrl === null ||
       formData.location.area.trim() === "" ||
       formData.location.city.trim() === "" ||
       formData.profilePicture === null ||
-      formData.locationUrl.trim() === "" ||
+      formData.locationUrl.length === 0 ||
       formData.category.trim() === "" ||
       formData.title.trim() === "" ||
       formData.specialty.trim() === ""
     ) {
-      setErrors([
-        ...errors,
-        { name: "step1", message: "Please fill in all required fields" },
-      ]);
+      alert("Please fill in all required fields");
       return;
     }
     //check the phone numbers and the email and urls with regex if they are valid
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-  };
-
-  const isStep2Valid = (): boolean => {
-    return (
-      // English Fields Validation
-      formData.privatePhone.trim() !== "" &&
-      formData.reservationsPhone.trim() !== "" &&
-      formData.governmentalSector.trim() !== "" &&
-      formData.privateSector.trim() !== "" &&
-      formData.curriculumVitaeUrl.trim() !== "" &&
-      formData.location.area.trim() !== "" &&
-      formData.location.city.trim() !== "" &&
-      // Arabic Fields Validation
-      formData.locationArabic.areaArabic.trim() !== "" &&
-      formData.locationArabic.cityArabic.trim() !== "" &&
-      formData.governmentalSectorArabic.trim() !== "" &&
-      formData.privateSectorArabic.trim() !== "" &&
-      formData.curriculumVitaeUrlArabic.trim() !== "" &&
-      formData.description.trim() !== "" &&
-      formData.descriptionArabic.trim() !== ""
-    );
+    const urlRegex = /^(http|https):\/\/[^ "]+$/;
+    const phoneRegex = /^\+[1-9]\d{1,14}$/;
+    if (!emailRegex.test(formData.email)) {
+      errors.push({ name: "email", message: "Please enter a valid email" });
+    }
+    for (const url of formData.locationUrl) {
+      if (!urlRegex.test(url)) {
+        errors.push({
+          name: "locationUrl",
+          message: "Please enter a valid URL for the location",
+        });
+      }
+    }
+    if (!phoneRegex.test(formData.privatePhone)) {
+      errors.push({
+        name: "privatePhone",
+        message: "Please enter a valid phone number",
+      });
+    }
+    if (!phoneRegex.test(formData.reservationsPhone)) {
+      errors.push({
+        name: "reservationsPhone",
+        message: "Please enter a valid phone number",
+      });
+    }
+    if (errors.length === 0) setStep(2);
+    setErrors(errors);
   };
 
   const renderStep1 = () => (
@@ -255,12 +275,8 @@ export default function RegistrationForm() {
       </h3>
       <form
         onSubmit={(e) => {
-          //   e.preventDefault();
-          //   if () {
-          //     setStep(2);
-          //   } else {
-          //     alert("Please fill in all required fields in Step 1");
-          //   }
+          e.preventDefault();
+          validateStep1();
         }}
         className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4"
       >
@@ -320,17 +336,29 @@ export default function RegistrationForm() {
             className="border border-custom-grayLight bg-white p-2 w-full rounded-lg "
             required
           />
+          {errors.length > 0 && (
+            <p className="text-red-500">
+              {errors.find((e) => e.name === "email")?.message}
+            </p>
+          )}
         </div>
         <div className="flex flex-col justify-start items-start w-full gap-2">
           <label>Private Phone (Will not be displayed on the website)</label>
-          <input
-            name="privatePhone"
-            placeholder="Private Phone"
+          <PhoneInput
+            international
             value={formData.privatePhone}
-            onChange={handleChange}
-            className="border border-custom-grayLight bg-white p-2 w-full rounded-lg "
-            required
+            onChange={(value) =>
+              handleChange({ target: { name: "privatePhone", value } } as any)
+            }
+            className="w-full"
+            inputComponent={CustomInput}
+            placeholder="Private Phone"
           />
+          {errors.length > 0 && (
+            <p className="text-red-500">
+              {errors.find((e) => e.name === "privatePhone")?.message}
+            </p>
+          )}
         </div>
         <div className="flex items-center justify-between  max-w-full">
           <div className="flex flex-col justify-start items-start w-[30%] gap-2">
@@ -388,12 +416,21 @@ export default function RegistrationForm() {
           <label>Reservations Phone (Will be displayed)</label>
           <PhoneInput
             international
-            value={phoneValue}
-            onChange={setPhoneValue}
-            className="px-2 w-[90%]"
+            value={formData.reservationsPhone}
+            onChange={(value) =>
+              handleChange({
+                target: { name: "reservationsPhone", value },
+              } as any)
+            }
+            className="w-full"
             inputComponent={CustomInput}
             placeholder="Reservations Phone"
           />
+          {errors.length > 0 && (
+            <p className="text-red-500">
+              {errors.find((e) => e.name === "reservationsPhone")?.message}
+            </p>
+          )}
         </div>
         <div className="flex items-center justify-between  gap-4 max-w-full">
           <div className="flex flex-col justify-start items-start w-1/2 gap-2">
@@ -419,12 +456,6 @@ export default function RegistrationForm() {
               name="location.city"
               value={formData.location.city}
               onChange={handleChange}
-              //   onFocus={(e) => {
-              //     if (formData.location.area === "") {
-              //       alert("Please select an area first");
-              //       e.preventDefault();
-              //     }
-              //   }}
               className="border border-custom-grayLight bg-white p-2 w-full rounded-lg "
               required
             >
@@ -480,9 +511,16 @@ export default function RegistrationForm() {
             type="file"
             name="profilePicture"
             onChange={handleChange}
-            className="border border-custom-grayLight bg-white p-2 w-full rounded-lg "
-            required
+            className="border border-custom-grayLight bg-white p-2 w-full rounded-lg"
           />
+          {formData.profilePicture && (
+            <p className="text-sm text-gray-500 mt-1">
+              Selected file:{" "}
+              {formData.profilePicture instanceof File
+                ? formData.profilePicture.name
+                : formData.profilePicture}
+            </p>
+          )}
         </div>
         <div className="flex flex-col justify-start items-start w-full gap-2">
           <label>Private sector</label>
@@ -500,22 +538,53 @@ export default function RegistrationForm() {
           <input
             name="locationUrl"
             placeholder="Location URL"
-            value={formData.locationUrl}
-            onChange={handleChange}
+            value={currentLocation}
+            onChange={(e) => setCurrentLocation(e.target.value)}
             className="border border-custom-grayLight bg-white p-2 w-full rounded-lg "
-            required
           />
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              alert(
-                "Please copy the link from the google map and paste it here"
-              );
+          {formData.locationUrl.length > 0 &&
+            formData.locationUrl.map((url, index) => (
+              <div
+                key={index}
+                className="w-full flex justify-between items-center"
+              >
+                <p className="w-[80%]">{url}</p>
+                <button
+                  onClick={() => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      locationUrl: prev.locationUrl.filter(
+                        (_, i) => i !== index
+                      ),
+                    }));
+                  }}
+                >
+                  <BiTrash className=" text-custom-dark hover:text-red-600 transition-all hover:scale-[102%]" />
+                </button>
+              </div>
+            ))}
+
+          <div
+            onClick={() => {
+              if (currentLocation === "") {
+                alert("Please fill in the location URL");
+                return;
+              }
+              setFormData((prev) => ({
+                ...prev,
+                locationUrl: [...prev.locationUrl, currentLocation],
+              }));
+              setCurrentLocation("");
             }}
-            className="flex justify-center items-center bg-custom-grayWrite mt-2 text-white p-2 rounded-lg"
+            className="flex cursor-pointer justify-center items-center bg-custom-grayWrite mt-2 text-white p-2 rounded-lg"
           >
             Add another location
-          </button>
+          </div>
+          {errors.length > 0 && (
+            <p className="text-red-500">
+              {errors.find((e) => e.name === "locationUrl")?.message}
+            </p>
+          )}
         </div>
         <div className="flex flex-col justify-start items-start w-full gap-2">
           <label>Upload curriculum vitae (C.V.)</label>
@@ -523,8 +592,16 @@ export default function RegistrationForm() {
             type="file"
             name="curriculumVitaeUrl"
             onChange={handleChange}
-            className="border border-custom-grayLight bg-white p-2 w-full rounded-lg "
+            className="border border-custom-grayLight bg-white p-2 w-full rounded-lg"
           />
+          {formData.curriculumVitaeUrl && (
+            <p className="text-sm text-gray-500 mt-1">
+              Selected file:{" "}
+              {formData.curriculumVitaeUrl instanceof File
+                ? formData.curriculumVitaeUrl.name
+                : formData.curriculumVitaeUrl}
+            </p>
+          )}
         </div>
         <div className="flex flex-col justify-start items-start w-full gap-2">
           <label>Twitter URL</label>
@@ -601,171 +678,206 @@ export default function RegistrationForm() {
       </form>
     </div>
   );
-
+  const validateForm = (): { name: string; message: string }[] => {
+    let errors: { name: string; message: string }[] = [];
+    // Add validation logic here
+    return errors;
+  };
   const renderStep2 = () => (
-    <form
-      onSubmit={handleSubmit}
-      className="grid grid-cols-1 md:grid-cols-2 gap-4"
-    >
-      {/* English Fields */}
-      <input
-        name="privatePhone"
-        placeholder="Private Phone"
-        value={formData.privatePhone}
-        onChange={handleChange}
-        className="border p-2 rounded"
-        required
-      />
-      <input
-        name="reservationsPhone"
-        placeholder="Reservations Phone"
-        value={formData.reservationsPhone}
-        onChange={handleChange}
-        className="border p-2 rounded"
-        required
-      />
-      <input
-        name="governmentalSector"
-        placeholder="Governmental Sector"
-        value={formData.governmentalSector}
-        onChange={handleChange}
-        className="border p-2 rounded"
-        required
-      />
-      <input
-        name="privateSector"
-        placeholder="Private Sector"
-        value={formData.privateSector}
-        onChange={handleChange}
-        className="border p-2 rounded"
-        required
-      />
-      <input
-        name="curriculumVitaeUrl"
-        placeholder="Curriculum Vitae URL"
-        value={formData.curriculumVitaeUrl}
-        onChange={handleChange}
-        className="border p-2 rounded"
-        required
-      />
-      <input
-        name="location.area"
-        placeholder="Area"
-        value={formData.location.area}
-        onChange={handleChange}
-        className="border p-2 rounded"
-        required
-      />
-      <input
-        name="location.city"
-        placeholder="City"
-        value={formData.location.city}
-        onChange={handleChange}
-        className="border p-2 rounded"
-        required
-      />
-
-      {/* Arabic Fields */}
-      <input
-        name="locationArabic.areaArabic"
-        placeholder="المنطقة"
-        value={formData.locationArabic.areaArabic}
-        onChange={handleChange}
-        className="border p-2 rounded text-right"
-        required
-      />
-      <input
-        name="locationArabic.cityArabic"
-        placeholder="المدينة"
-        value={formData.locationArabic.cityArabic}
-        onChange={handleChange}
-        className="border p-2 rounded text-right"
-        required
-      />
-      <input
-        name="governmentalSectorArabic"
-        placeholder="القطاع الحكومي"
-        value={formData.governmentalSectorArabic}
-        onChange={handleChange}
-        className="border p-2 rounded text-right"
-        required
-      />
-      <input
-        name="privateSectorArabic"
-        placeholder="القطاع الخاص"
-        value={formData.privateSectorArabic}
-        onChange={handleChange}
-        className="border p-2 rounded text-right"
-        required
-      />
-      <input
-        name="curriculumVitaeUrlArabic"
-        placeholder="رابط السيرة الذاتية"
-        value={formData.curriculumVitaeUrlArabic}
-        onChange={handleChange}
-        className="border p-2 rounded text-right"
-        required
-      />
-      <textarea
-        name="description"
-        placeholder="A concise description of your affiliation, to be featured on the club's website"
-        value={formData.description}
-        onChange={handleChange}
-        className="border p-2 rounded"
-        required
-      />
-      <textarea
-        name="descriptionArabic"
-        placeholder="وصف موجز لانتمائك ، ليتم نشره على موقع النادي"
-        value={formData.descriptionArabic}
-        onChange={handleChange}
-        className="border p-2 rounded text-right"
-        required
-      />
-
-      {/* Optional Social Media Fields */}
-      <input
-        name="twitterUrl"
-        placeholder="Twitter URL"
-        value={formData.twitterUrl}
-        onChange={handleChange}
-        className="border p-2 rounded"
-      />
-      <input
-        name="instagramUrl"
-        placeholder="Instagram URL"
-        value={formData.instagramUrl}
-        onChange={handleChange}
-        className="border p-2 rounded"
-      />
-      <input
-        name="linkedinUrl"
-        placeholder="LinkedIn URL"
-        value={formData.linkedinUrl}
-        onChange={handleChange}
-        className="border p-2 rounded"
-      />
-      <input
-        name="snapchatUrl"
-        placeholder="Snapchat URL"
-        value={formData.snapchatUrl}
-        onChange={handleChange}
-        className="border p-2 rounded"
-      />
-
-      {/* File Upload for Profile Picture */}
-      <div className="col-span-1 md:col-span-2">
-        <label className="block text-sm font-medium text-gray-700">
-          Profile Picture
-        </label>
-        <input
-          type="file"
-          name="profilePicture"
-          onChange={handleFileUpload}
-          className="mt-1 block text-right w-1/2"
-        />
-      </div>
-    </form>
+    <div className="flex flex-col justify-center  w-full mt-3 text-[#212529]">
+      <h3 className="md:text-xl font-normal text-custom-greenPrimary text-center mb-4">
+        الرجاء إدخال المعلومات التالية باللغة العربية
+      </h3>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit();
+        }}
+        className="grid  grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-right"
+      >
+        <div className="flex flex-col justify-start items-end w-full gap-2">
+          <label>قطاع العمل الحكومي</label>
+          <input
+            name="governmentalSectorArabic"
+            placeholder="قطاع العمل الحكومي"
+            value={formData.governmentalSectorArabic}
+            onChange={handleChange}
+            className="border border-custom-grayLight text-right bg-white p-2 w-full rounded-lg "
+            required
+          />
+        </div>
+        <div className="flex flex-col justify-start items-end w-full gap-2">
+          <label>الاسم الاول</label>
+          <input
+            name="firstNameArabic"
+            placeholder="الاسم الاول"
+            value={formData.firstNameArabic}
+            onChange={handleChange}
+            className="border text-right border-custom-grayLight bg-white p-2 w-full rounded-lg "
+            required
+          />
+        </div>
+        <div className="flex flex-col justify-start items-end w-full gap-2">
+          <label>قطاع العمل الخاص</label>
+          <input
+            name="privateSectorArabic"
+            placeholder="قطاع العمل الخاص"
+            value={formData.privateSectorArabic}
+            onChange={handleChange}
+            className="border text-right border-custom-grayLight bg-white p-2 w-full rounded-lg "
+            required
+          />
+        </div>
+        <div className="flex flex-col justify-start items-end w-full gap-2">
+          <label>اسم العائلة</label>
+          <input
+            name="lastNameArabic"
+            placeholder="اسم العائلة"
+            value={formData.lastNameArabic}
+            onChange={handleChange}
+            className="border text-right border-custom-grayLight bg-white p-2 w-full rounded-lg "
+            required
+          />
+        </div>
+        <div className="flex items-center justify-between text-right  max-w-full">
+          <div className="flex flex-col justify-start items-end w-[30%] gap-2">
+            <label>التصنيف</label>
+            <select
+              name="categoryArabic"
+              value={formData.categoryArabic}
+              onChange={handleChange}
+              className="border text-right border-custom-grayLight bg-white p-2 w-full rounded-lg "
+              required
+            >
+              <option value="">اختر التصنيف</option>
+              {categoriesArabic.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col justify-start items-end w-[30%] gap-2">
+            <label>اللقب</label>
+            <select
+              name="titleArabic"
+              value={formData.titleArabic}
+              onChange={handleChange}
+              className="border text-right border-custom-grayLight bg-white p-2 w-full rounded-lg "
+              required
+            >
+              <option value="">اختر اللقب</option>
+              <option value="دكتور">دكتور</option>
+              <option value="أستاذ">أستاذ</option>
+              <option value="سيد">سيد</option>
+              <option value="سيدة">سيدة</option>
+            </select>
+          </div>
+          <div className="flex flex-col justify-start items-end w-[30%] gap-2">
+            <label>التخصص</label>
+            <select
+              name="specialtyArabic"
+              value={formData.specialtyArabic}
+              onChange={handleChange}
+              className="border text-right border-custom-grayLight bg-white p-2 w-full rounded-lg "
+              required
+            >
+              <option value="">اختر التخصص</option>
+              {specialtiesArabic.map((spec) => (
+                <option key={spec} value={spec}>
+                  {spec}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+        <div className="flex flex-row-reverse items-center justify-between  gap-4 max-w-full">
+          <div className="flex flex-col justify-start items-end w-1/2 gap-2">
+            <label>المنطقة</label>
+            <select
+              name="locationArabic.areaArabic"
+              value={formData.locationArabic.areaArabic}
+              onChange={handleChange}
+              className="border text-right border-custom-grayLight bg-white p-2 w-full rounded-lg "
+              required
+            >
+              <option value="">اختر المنطقة</option>
+              <option value="منطقة الوسطى">منطقة الوسطى</option>
+              <option value="منطقة الغربية">منطقة الغربية</option>
+              <option value="منطقة الشرقية">منطقة الشرقية</option>
+              <option value="منطقة الجنوبية">منطقة الجنوبية</option>
+              <option value="منطقة الشمالية">منطقة الشمالية</option>
+            </select>
+          </div>
+          <div className="flex flex-col justify-start items-end w-1/2 gap-2">
+            <label>المدينة</label>
+            <select
+              name="locationArabic.cityArabic"
+              value={formData.locationArabic.cityArabic}
+              onChange={handleChange}
+              className="border text-right border-custom-grayLight bg-white p-2 w-full rounded-lg "
+              required
+            >
+              <option value="">اختر المدينة</option>
+              {/* based on the option of the region choose the cities to show if none when clicked an error message */}
+              {formData.locationArabic.areaArabic === "منطقة الوسطى" &&
+                arabicCities1.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+              {formData.locationArabic.areaArabic === "منطقة الغربية" &&
+                arabicCities2.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+              {formData.locationArabic.areaArabic === "منطقة الشرقية" &&
+                arabicCities3.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+              {formData.locationArabic.areaArabic === "منطقة الجنوبية" &&
+                arabicCities4.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+              {formData.locationArabic.areaArabic === "منطقة الشمالية" &&
+                arabicCities5.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+            </select>
+          </div>
+        </div>
+        <div className="flex flex-col justify-start items-end gap-2">
+          <label>نبذة عن اختصاصك</label>
+          <textarea
+            name="descriptionArabic"
+            placeholder="نبذة عن اختصاصك"
+            value={formData.descriptionArabic}
+            onChange={handleChange}
+            className="border text-right  border-custom-grayLight bg-white p-2 w-full rounded-lg "
+            required
+          />
+        </div>
+        <div></div>
+        <div className="col-span-1 md:col-span-2 text-center mt-4">
+          <button
+            type="submit"
+            className={` text-white px-4 py-2 w-80 text-lg font-bold drop-shadow-md shadow-md rounded-lg ${
+              loading ? " bg-custom-blueLightHover" : "bg-custom-bluePrimary"
+            }`}
+            disabled={loading}
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
   );
 
   return (
@@ -775,11 +887,12 @@ export default function RegistrationForm() {
       {step > 1 && (
         <button
           onClick={handleBack}
-          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+          className="bg-custom-grayDark mt-4  text-white px-4 py-2 rounded hover:bg-gray-700"
         >
           Back
         </button>
       )}
+      {showPopUPSucces && <PopUpModal />}
     </div>
   );
 }

@@ -6,7 +6,6 @@ export default function Home() {
     <div>
       {/* <Navbar />
       <Footer /> */}
-      <RegistrationForm />
     </div>
   );
 }

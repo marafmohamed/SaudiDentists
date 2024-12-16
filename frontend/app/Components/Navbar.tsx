@@ -61,11 +61,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="relative cursor-pointer h-24">
-              <img
-                src="/Logos/Link.svg"
-                alt="Logo"
-                className="w-52 mt-3"
-              />
+              <img src="/Logos/Link.svg" alt="Logo" className="w-52 mt-3" />
             </div>
 
             {/* Links (Desktop) */}
@@ -112,19 +108,28 @@ export default function Navbar() {
                     className="absolute left-0 w-full bg-white text-gray-700 shadow-lg mt-1 rounded-lg border border-[#AAAAAA]"
                   >
                     <Link
-                      href="#"
+                      href="/AboutUs/Founder"
+                      onClick={()=>{
+                        setIsOpen(false)
+                      }}
                       className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover"
                     >
                       {language === "en" ? "Founder" : "المؤسس"}
                     </Link>
                     <Link
-                      href="#"
+                      href="/AboutUs/OurGoals"
+                      onClick={()=>{
+                        setIsOpen(false)
+                      }}
                       className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                     >
                       {language === "en" ? "Goals" : "أهدافنا"}
                     </Link>
                     <Link
-                      href="#"
+                      href="/AboutUs/ThanksAppreciation"
+                      onClick={()=>{
+                        setIsOpen(false)
+                      }}
                       className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                     >
                       {language === "en"
@@ -132,7 +137,10 @@ export default function Navbar() {
                         : "شكر وتقدير"}
                     </Link>
                     <Link
-                      href="#"
+                      href="/Register"
+                      onClick={()=>{
+                        setIsOpen(false)
+                      }}
                       className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                     >
                       {language === "en" ? "Join Us" : "انضم إلينا"}
@@ -260,19 +268,28 @@ export default function Navbar() {
                       className="absolute left-0 w-full bg-white text-gray-700 shadow-lg mt-1 rounded-lg border border-[#AAAAAA]"
                     >
                       <Link
-                        href="#"
+                        href="/AboutUs/Founder"
+                        onClick={()=>{
+                          setIsOpen(false)
+                        }}
                         className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover"
                       >
                         {language === "en" ? "Founder" : "المؤسس"}
                       </Link>
                       <Link
-                        href="#"
+                        href="/AboutUs/OurGoals"
+                        onClick={()=>{
+                          setIsOpen(false)
+                        }}
                         className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                       >
                         {language === "en" ? "Goals" : "أهدافنا"}
                       </Link>
                       <Link
-                        href="#"
+                        href="/AboutUs/ThanksAppreciation"
+                        onClick={()=>{
+                          setIsOpen(false)
+                        }}
                         className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                       >
                         {language === "en"
@@ -280,7 +297,10 @@ export default function Navbar() {
                           : "شكر وتقدير"}
                       </Link>
                       <Link
-                        href="#"
+                        href="/Register"
+                        onClick={()=>{
+                          setIsOpen(false)
+                        }}
                         className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                       >
                         {language === "en" ? "Join Us" : "انضم إلينا"}

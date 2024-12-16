@@ -1,27 +1,29 @@
 const mongoose = require("mongoose");
 const { sendMail } = require("../Services/EmailService");
 const Schema = mongoose.Schema;
+
 const specialtyEnum = [
-  'Prosthodontics',
-  'Dental Technology',
-  'Endodontics',
-  'Periodontics',
-  'Oral and Maxillofacial Surgery',
-  'Pedodontics',
-  'Orthodontics',
-  'Restorative Dentistry'
+  "Prosthodontics",
+  "Dental Technology",
+  "Endodontics",
+  "Periodontics",
+  "Oral and Maxillofacial Surgery",
+  "Pedodontics",
+  "Orthodontics",
+  "Restorative Dentistry",
 ];
 
 const specialtyArabicEnum = [
-  'طب الأسنان التعويضي',
-  'تقنية الأسنان',
-  'علاج جذور الأسنان',
-  'طب دواعم الأسنان',
-  'جراحة الفم والوجه والفكين',
-  'طب أسنان الأطفال',
-  'تقويم الأسنان',
-  'طب الأسنان الترميمي'
+  "طب الأسنان التعويضي",
+  "تقنية الأسنان",
+  "علاج جذور الأسنان",
+  "طب دواعم الأسنان",
+  "جراحة الفم والوجه والفكين",
+  "طب أسنان الأطفال",
+  "تقويم الأسنان",
+  "طب الأسنان الترميمي",
 ];
+
 const RequestSchema = new Schema(
   {
     // English form fields
@@ -31,38 +33,40 @@ const RequestSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     privatePhone: { type: String, required: true },
-    reservationsPhone: { type: String },
-    governmentalSector: { type: String },
-    privateSector: { type: String },
-    curriculumVitaeUrl: { type: String },
-    twitterUrl: { type: String },
-    instagramUrl: { type: String },
-    linkedinUrl: { type: String },
-    snapchatUrl: { type: String },
+    reservationsPhone: { type: String, required: true }, // Optional
+    governmentalSector: { type: String, required: true }, // Optional
+    privateSector: { type: String, required: true }, // Optional
+    curriculumVitaeUrl: { type: String, required: true }, // Optional
+    twitterUrl: { type: String }, // Optional
+    instagramUrl: { type: String }, // Optional
+    linkedinUrl: { type: String }, // Optional
+    snapchatUrl: { type: String }, // Optional
     location: {
-      area: { type: String },
-      city: { type: String },
+      area: { type: String, required: true }, // Optional
+      city: { type: String, required: true }, // Optional
     },
-    profilePicture: { type: String },
-    locationUrl: { type: [String] },
-    category: { type: String },
-    title: { type: String },
-    specialty: { type: String },
+    profilePicture: { type: String, required: true },
+    locationUrl: { type: [String], required: true },
+    category: { type: String, required: true },
+    title: { type: String, required: true },
+    specialty: { type: String, required: true, enum: specialtyEnum },
 
     // Arabic form fields
-    usernameArabic: { type: String, required: true },
     firstNameArabic: { type: String, required: true },
     lastNameArabic: { type: String, required: true },
-    governmentalSectorArabic: { type: String },
-    privateSectorArabic: { type: String },
-    curriculumVitaeUrlArabic: { type: String },
+    governmentalSectorArabic: { type: String, required: true }, // Optional
+    privateSectorArabic: { type: String, required: true }, // Optional
     locationArabic: {
-      areaArabic: { type: String },
-      cityArabic: { type: String },
+      areaArabic: { type: String, required: true }, // Optional
+      cityArabic: { type: String, required: true }, // Optional
     },
-    categoryArabic: { type: String },
-    titleArabic: { type: String },
-    specialtyArabic: { type: String },
+    categoryArabic: { type: String, required: true },
+    titleArabic: { type: String, required: true },
+    specialtyArabic: {
+      type: String,
+      required: true,
+      enum: specialtyArabicEnum,
+    },
     description: { type: String, required: true },
     descriptionArabic: { type: String, required: true },
 
@@ -71,6 +75,8 @@ const RequestSchema = new Schema(
   },
   { timestamps: true }
 );
+
+module.exports = mongoose.model("Request", RequestSchema);
 
 // Static method to accept a dentist request
 RequestSchema.statics.acceptRequest = async function (requestData) {
@@ -222,6 +228,4 @@ RequestSchema.statics.refuseRequest = async function (requestData) {
   }
 };
 
-
 module.exports = mongoose.model("Request", RequestSchema);
-

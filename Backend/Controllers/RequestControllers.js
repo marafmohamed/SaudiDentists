@@ -1,12 +1,13 @@
 const Request = require("../Models/RequestModel");
-const Dentist = require('../Models/DentistModel'); 
-
+const Dentist = require("../Models/DentistModel");
+const bcrypt = require("bcryptjs");
 const createDentistRequest = async (req, res) => {
   const {
     username,
     firstName,
     lastName,
     email,
+    password,
     privatePhone,
     reservationsPhone,
     governmentalSector,
@@ -35,42 +36,34 @@ const createDentistRequest = async (req, res) => {
     description,
     descriptionArabic,
   } = req.body;
-
-  // Check if all fields are present
-  for (const key in req.body) {
-    if (!req.body[key]) {
-        if(key=="twitterUrl"|| key=="instagramUrl"|| key=="linkedinUrl"|| key=="snapchatUrl"){
-            continue;
-        }
-      return res.status(400).json({ message: `${key} is required` });
-    }
-  }
-
+  // Check if all fields are presen
   try {
     // Check if a request already exists with this email
     const existingRequest = await Request.findOne({ email });
     if (existingRequest) {
-      return res.status(409).json({ 
+      return res.status(409).json({
         message: "A request with this email already exists",
-        errorCode: "REQUEST_EMAIL_EXISTS"
+        errorCode: "REQUEST_EMAIL_EXISTS",
       });
     }
 
     // Check if a dentist already exists with this email
     const existingDentist = await Dentist.findOne({ email });
     if (existingDentist) {
-      return res.status(409).json({ 
+      return res.status(409).json({
         message: "A dentist with this email already exists",
-        errorCode: "DENTIST_EMAIL_EXISTS"
+        errorCode: "DENTIST_EMAIL_EXISTS",
       });
     }
-
+    //hash the password first
+    const hashedPassword = await bcrypt.hash(password, 10);
     // Create new request
     const request = new Request({
       username,
       firstName,
       lastName,
       email,
+      password: hashedPassword,
       privatePhone,
       reservationsPhone,
       governmentalSector,
@@ -104,29 +97,28 @@ const createDentistRequest = async (req, res) => {
     const newRequest = await request.save();
 
     if (!newRequest) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         message: "Request not created",
-        errorCode: "REQUEST_CREATION_FAILED"
+        errorCode: "REQUEST_CREATION_FAILED",
       });
     }
 
-    return res.status(201).json({ 
+    return res.status(201).json({
       message: "Request created successfully",
-      requestId: newRequest._id
+      requestId: newRequest._id,
     });
-
   } catch (error) {
     // Handle potential unique constraint or other database errors
     if (error.code === 11000) {
-      return res.status(409).json({ 
+      return res.status(409).json({
         message: "A request with these credentials already exists",
-        errorCode: "DUPLICATE_REQUEST"
+        errorCode: "DUPLICATE_REQUEST",
       });
     }
 
-    return res.status(500).json({ 
+    return res.status(500).json({
       message: "Internal server error",
-      errorDetails: error.message 
+      errorDetails: error.message,
     });
   }
 };

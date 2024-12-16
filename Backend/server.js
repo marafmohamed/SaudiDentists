@@ -12,9 +12,9 @@ const PORT = process.env.PORT || 8080;
 const AdminRoutes = require("./Routes/AdminRoutes");
 const DentistRoutes = require("./Routes/DentistRoutes");
 const RequestRoutes = require("./Routes/RequestRoutes");
-app.use("/admin", AdminRoutes);
-app.use("/dentist", DentistRoutes);
-app.use("/request", RequestRoutes);
+app.use("/api/admin", AdminRoutes);
+app.use("/api/dentist", DentistRoutes);
+app.use("/api/requests", RequestRoutes);
 const mongoose = require("mongoose");
 
 mongoose

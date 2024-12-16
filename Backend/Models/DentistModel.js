@@ -32,12 +32,10 @@ const DentistSchema = new Schema(
     specialty: { type: String },
 
     // Arabic form fields
-    usernameArabic: { type: String, required: true },
     firstNameArabic: { type: String, required: true },
     lastNameArabic: { type: String, required: true },
     governmentalSectorArabic: { type: String },
     privateSectorArabic: { type: String },
-    curriculumVitaeUrlArabic: { type: String },
     locationArabic: {
       areaArabic: { type: String },
       cityArabic: { type: String },
