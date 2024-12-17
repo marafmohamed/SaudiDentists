@@ -53,7 +53,7 @@ export default function Navbar() {
     setLanguage(lang);
   };
   return (
-    <nav className="bg-custom-greenDark relative">
+    <nav className="bg-custom-greenDark relative z-20">
       <div className="h-8 bg-custom-greenPrimary"></div>
       <div className="h-1 bg-custom-greenLight"></div>
       <div className="bg-white shadow-lg">
