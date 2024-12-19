@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { sendMail } = require("../Services/EmailService");
+const DentistModel = require("./DentistModel");
 const Schema = mongoose.Schema;
 
 const specialtyEnum = [
@@ -76,21 +77,19 @@ const RequestSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Request", RequestSchema);
-
 // Static method to accept a dentist request
 RequestSchema.statics.acceptRequest = async function (requestData) {
   try {
     // Check if dentist exists by email and phone
-    const existingDentist = await this.findOne({
+    const existingDentist = await DentistModel.findOne({
       email: requestData.email,
       privatePhone: requestData.privatePhone,
     });
-
+    console.log(existingDentist);
     let dentist;
     if (existingDentist) {
       // Update existing dentist
-      dentist = await this.findOneAndUpdate(
+      dentist = await DentistModel.findOneAndUpdate(
         { email: requestData.email, privatePhone: requestData.privatePhone },
         {
           ...requestData,
@@ -99,11 +98,49 @@ RequestSchema.statics.acceptRequest = async function (requestData) {
         { new: true }
       );
     } else {
+      console.log(requestData);
       // Create new dentist
-      dentist = await this.create({
-        ...requestData,
+       dentist = {
+        username: requestData.username,
+        firstName: requestData.firstName,
+        lastName: requestData.lastName,
+        email: requestData.email,
+        password: requestData.password,
+        privatePhone: requestData.privatePhone,
+        reservationsPhone: requestData.reservationsPhone,
+        governmentalSector: requestData.governmentalSector,
+        privateSector: requestData.privateSector,
+        curriculumVitaeUrl: requestData.curriculumVitaeUrl,
+        twitterUrl: requestData.twitterUrl,
+        instagramUrl: requestData.instagramUrl,
+        linkedinUrl: requestData.linkedinUrl,
+        snapchatUrl: requestData.snapchatUrl,
+        location: {
+          area: requestData.location.area,
+          city: requestData.location.city,
+        },  
+        profilePicture: requestData.profilePicture,
+        locationUrl: requestData.locationUrl,
+        category: requestData.category,
+        title: requestData.title,
+        specialty: requestData.specialty,
+        firstNameArabic: requestData.firstNameArabic,
+        lastNameArabic: requestData.lastNameArabic,
+        governmentalSectorArabic: requestData.governmentalSectorArabic,
+        privateSectorArabic: requestData.privateSectorArabic,
+        locationArabic: {
+          areaArabic: requestData.locationArabic.areaArabic,
+          cityArabic: requestData.locationArabic.cityArabic,
+        },
+        categoryArabic: requestData.categoryArabic,
+        titleArabic: requestData.titleArabic,
+        specialtyArabic: requestData.specialtyArabic,
+        description: requestData.description,
+        descriptionArabic: requestData.descriptionArabic,
         isApproved: true,
-      });
+      }
+      dentist = await DentistModel.create(dentist);
+      console.log(dentist);
     }
     const emailContent = `<!-- Accepted Dentist Request Template -->
 <!DOCTYPE html>

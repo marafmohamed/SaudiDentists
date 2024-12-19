@@ -132,7 +132,7 @@ const AcceptRequest = async (req, res) => {
     }
     const newDentist = await Request.acceptRequest(existingRequest);
     //delete the request
-    existingRequest.deleteOne();
+    await existingRequest.deleteOne();
     return res.status(200).json({ message: "Request accepted successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -147,7 +147,7 @@ const RefuseRequest = async (req, res) => {
       return res.status(404).json({ message: "Request not found" });
     }
     Request.refuseRequest(existingRequest);
-    existingRequest.deleteOne();
+    await existingRequest.deleteOne();
     return res.status(200).json({ message: "Request refused successfully" });
   } catch (error) {
     return res.status(500).json({ message: error.message });
@@ -155,12 +155,13 @@ const RefuseRequest = async (req, res) => {
 };
 
 const getPaginatedRequests = async (req, res) => {
-  const { page, limit } = req.query;
+  const { page = 1, limit = 15 } = req.query; // Default to page 1, limit 10
   try {
-    const requests = await Request.find()
-      .skip(page * limit)
-      .limit(limit);
-    return res.status(200).json({ requests });
+    const skip = (page - 1) * limit;
+    const requests = await Request.find().skip(skip).limit(parseInt(limit));
+    const totalStudents = await Request.countDocuments();
+    const totalPages = Math.ceil(totalStudents / limit);
+    return res.status(200).json({ requests, totalPages });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

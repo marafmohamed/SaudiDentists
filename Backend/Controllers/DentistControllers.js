@@ -11,10 +11,13 @@ const Login = async (req, res) => {
 };
 
 const getPaginatedDentists = async (req, res) => {
-  const { page, limit , speciality, region, cite } = req.query;
+  const { page, limit } = req.query;
   try {
-    const dentists = await Dentist.getPaginatedDentists(page, limit);
-    res.status(200).json(dentists);
+    const skip = (page - 1) * limit;
+    const dentists = await Dentist.find().skip(skip).limit(parseInt(limit));
+    const totalStudents = await Dentist.countDocuments();
+    const totalPages = Math.ceil(totalStudents / limit);
+    res.status(200).json({ dentists, totalPages });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
