@@ -1,78 +1,130 @@
 import React from "react";
 import Image from "next/image";
 import { FaSnapchat, FaInstagram, FaTiktok } from "react-icons/fa";
+import { useApp } from "@/app/Context"; // Path to useApp hook
+import { FormData } from "./RegistrationForm";
+import Link from "next/link";
 
 interface ProfilePageProps {
-  name: string;
-  city: string;
-  bio: string;
-  profilePicture: string;
-  cvUrl: string;
-  socialLinks: {
-    snapchat?: string;
-    instagram?: string;
-    tiktok?: string;
-  };
+  data: FormData;
 }
 
 const ProfilePage: React.FC<ProfilePageProps> = ({
-  name,
-  city,
-  bio,
-  profilePicture,
-  cvUrl,
-  socialLinks,
-}) => {
+  data,
+}: ProfilePageProps) => {
+  const { lang } = useApp(); // Get the current language
+  const [showNotifyCopied, setShowNotifyCopied] = React.useState(false);
+
+  // Determine displayed text based on language
+  const title = lang === "ar" ? data.titleArabic : data.title;
+  const lastName = lang === "ar" ? data.lastNameArabic : data.lastName;
+  const area =
+    lang === "ar" ? data.locationArabic.areaArabic : data.location.area;
+  const city =
+    lang === "ar" ? data.locationArabic.cityArabic : data.location.city;
+  const description = lang === "ar" ? data.descriptionArabic : data.description;
+
   return (
     <div className="p-6 lg:p-10 bg-background">
       {/* Breadcrumb */}
-      <div className="text-sm text-custom-grayDark mb-6">
-        <a href="/" className="hover:underline">
-          Home
-        </a>{" "}
+      <div
+        className={`text-sm text-custom-grayDark mb-6 font-bold ${
+          lang == "en" ? "" : "ml-auto text-right"
+        }`}
+      >
+        <Link href="/" className="hover:underline">
+          {lang === "ar" ? "الصفحة الرئيسية" : "Home"}
+        </Link>{" "}
         /{" "}
-        <a href="/experts" className="hover:underline">
-          Meet Our Experts
-        </a>{" "}
-        / {name}
+        <Link href="/Experts" className="hover:underline">
+          {lang === "ar" ? "قابل خبراءنا" : "Meet Our Experts"}
+        </Link>{" "}
+        / {title} {lastName}
       </div>
 
-      <div className="flex flex-col lg:flex-row bg-white rounded-lg shadow-lg p-6 lg:p-10">
+      <div
+        className={`flex flex-col  bg-white rounded-lg shadow-lg p-6 lg:p-10 ${
+          lang == "en" ? "md:flex-row" : " md:flex-row-reverse text-right gap-4"
+        }`}
+      >
         {/* Profile Picture */}
         <div className="lg:w-1/3 flex justify-center mb-6 lg:mb-0">
-          <Image
-            src={profilePicture}
-            alt={`${name}'s profile picture`}
-            width={300}
-            height={300}
-            className="rounded-lg object-cover"
+          <img
+            src={
+              typeof data.profilePicture === "string"
+                ? data.profilePicture
+                : "/default-profile.png"
+            }
+            alt={`${data.firstName}'s profile picture`}
+            className="rounded-lg object-cover w-full h-full"
           />
         </div>
 
         {/* Details */}
         <div className="lg:w-2/3 lg:pl-8">
-          <h1 className="text-2xl font-bold text-custom-dark mb-2">{name}</h1>
+          <h1 className="text-2xl font-bold text-custom-dark mb-2">
+            {title} {lastName}
+          </h1>
           <p className="text-custom-grayDark mb-4">
-            <strong>City:</strong> {city}
+            <strong>{lang === "ar" ? "المدينة:" : "City:"}</strong> {area}{" "}
+            {city}
           </p>
           <h2 className="text-lg font-semibold text-custom-bluePrimary mb-2">
-            Brief Biography
+            {lang === "ar" ? "نبذة مختصرة" : "Brief Biography"}
           </h2>
-          <p className="text-custom-grayDark mb-6">{bio}</p>
+          <p className="text-custom-grayDark mb-6">{description}</p>
 
           {/* Buttons */}
-          <div className="flex flex-wrap gap-4 mb-6">
-            <button className="px-4 py-2 bg-custom-greenPrimary text-white rounded-md shadow-md hover:bg-green-600">
-              Book An Appointment
+          <div
+            className={`flex flex-wrap gap-4 mb-6 ${
+              lang == "en" ? "" : "justify-end"
+            }`}
+          >
+            <button
+              onClick={() => {
+                // When clicked, the reservation phone is copied
+                navigator.clipboard.writeText(data.reservationsPhone);
+                setShowNotifyCopied(true);
+                setTimeout(() => {
+                  setShowNotifyCopied(false);
+                }, 1000);
+              }}
+              className="px-4 py-2 relative bg-custom-greenPrimary text-white rounded-md shadow-md hover:bg-green-600"
+            >
+              {data.reservationsPhone}
+              {showNotifyCopied && (
+                <span className="absolute top-12 right-0 bg-custom-grayWrite/40 text-white px-2 py-1 rounded-md">
+                  {lang === "ar" ? "تم النسخ!" : "Copied!"}
+                </span>
+              )}
             </button>
-            <p className="text-custom-grayDark">No location URLs available.</p>
+            {data.locationUrl?.length === 0 && (
+              <p className="text-custom-grayDark">
+                {lang === "ar"
+                  ? "لا تتوفر عناوين مواقع."
+                  : "No location URLs available."}
+              </p>
+            )}
+            {data.locationUrl?.map((url, index) => (
+              <a
+                key={index}
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 bg-custom-bluePrimary text-white rounded-md shadow-md hover:bg-blue-600"
+              >
+                {lang === "ar"
+                  ? `الموقع ${index + 1}`
+                  : `Location ${index + 1}`}
+              </a>
+            ))}
           </div>
 
           {/* Social Media Links */}
           <div className="flex items-center gap-4">
-            {socialLinks.snapchat && (
+            {data.snapchatUrl && (
               <a
-                href={socialLinks.snapchat}
+                href={data.snapchatUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-custom-bluePrimary text-2xl hover:text-blue-600"
@@ -80,9 +132,9 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                 <FaSnapchat />
               </a>
             )}
-            {socialLinks.instagram && (
+            {data.instagramUrl && (
               <a
-                href={socialLinks.instagram}
+                href={data.instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-custom-bluePrimary text-2xl hover:text-blue-600"
@@ -90,9 +142,19 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                 <FaInstagram />
               </a>
             )}
-            {socialLinks.tiktok && (
+            {data.linkedinUrl && (
               <a
-                href={socialLinks.tiktok}
+                href={data.linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-custom-bluePrimary text-2xl hover:text-blue-600"
+              >
+                <FaInstagram />
+              </a>
+            )}
+            {data.tiktokUrl && (
+              <a
+                href={data.tiktokUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-custom-bluePrimary text-2xl hover:text-blue-600"
@@ -107,21 +169,24 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
       {/* CV Section */}
       <div className="mt-10 bg-custom-grayLight p-4 rounded-md flex items-center gap-4">
         <Image
-          src="/pdf-icon.png"
+          src="/Logos/pdf.svg"
           alt="PDF icon"
-          width={50}
-          height={50}
+          width={100}
+          height={100}
           className="object-contain"
         />
         <div>
-          <p className="text-custom-dark font-medium">{cvUrl.split("/").pop()}</p>
           <a
-            href={cvUrl}
+            href={
+              typeof data.curriculumVitaeUrl === "string"
+                ? data.curriculumVitaeUrl
+                : undefined
+            }
             target="_blank"
             rel="noopener noreferrer"
             className="text-custom-bluePrimary hover:underline"
           >
-            Download
+            {lang === "ar" ? "تحميل" : "Download"}
           </a>
         </div>
       </div>

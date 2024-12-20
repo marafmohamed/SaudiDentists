@@ -22,13 +22,13 @@ const Dentist: React.FC<RequestProp> = ({ data, setDemands }) => {
         console.log("no cookie");
         return;
       }
-      const response = await fetch(`${baseUrl}/api/requests/AcceptRequest`, {
+      const response = await fetch(`${baseUrl}/api/dentist/DeleteAccount`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookie}`,
         },
-        body: JSON.stringify({ requestId: data._id }),
+        body: JSON.stringify({ dentistId: data._id }),
       });
       const json = await response.json();
       console.log(json);
@@ -42,36 +42,6 @@ const Dentist: React.FC<RequestProp> = ({ data, setDemands }) => {
     } catch (error) {
       console.log(error);
       setLauding(false);
-    }
-  };
-
-  const handleRefuse = async () => {
-    try {
-      setLauding1(true);
-      const cookie = Cookies.get("token");
-      if (!cookie) {
-        console.log("no cookie");
-        return;
-      }
-      const response = await fetch(`${baseUrl}/api/requests/RefuseRequest`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookie}`,
-        },
-        body: JSON.stringify({ requestId: data._id }),
-      });
-      const json = await response.json();
-      console.log(json);
-      if (!response.ok) {
-        console.log(json);
-        setLauding1(false);
-        return json;
-      }
-      setLauding1(false);
-    } catch (error) {
-      console.log(error);
-      setLauding1(false);
     }
   };
 
@@ -102,7 +72,7 @@ const Dentist: React.FC<RequestProp> = ({ data, setDemands }) => {
           </p>
           <Popconfirm title="Are you sure?" onConfirm={handleAccept}>
             <div className="bg-custom-grayWrite py-2 px-4 text-white rounded-lg font-semibold flex justify-center z-0 items-center gap-2">
-              {lauding && <span className="loader" />} Delete Dentist
+              {lauding && <span className="loader w-10" />} Delete Dentist
             </div>
           </Popconfirm>
         </div>

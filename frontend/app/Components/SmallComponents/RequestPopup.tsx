@@ -65,12 +65,15 @@ const Popup: React.FC<PopupProps> = ({ data, onClose }) => {
         </button>
 
         {/* Profile Picture */}
-        <div className="flex justify-center my-4">
+        <div className="flex justify-between my-4 px-8">
           <img
             src={data.profilePicture}
             alt="Profile Picture"
             className="rounded-full w-32 h-32"
           />
+          <a className="w-32" href={data.curriculumVitaeUrl} target="_blank">
+            <img src="/Logos/pdf.svg" />
+          </a>
         </div>
 
         {/* Basic Information */}

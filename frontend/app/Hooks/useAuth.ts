@@ -4,10 +4,10 @@ import cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
 export default function useAuth() {
     const router = useRouter();
-    const { baseUrl } = useApp();
+    const { baseUrl, dispatch } = useApp();
     const login = async (email: string, password: string) => {
         // Add login logic here
-        const response = await fetch(`${baseUrl}/login`, {
+        const response = await fetch(`${baseUrl}/api/dentist/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -18,6 +18,8 @@ export default function useAuth() {
         if (response.ok) {
             //create the cookie
             cookie.set('token', data.token);
+            dispatch({ type: 'LOGIN', payload: data.token })
+            router.push("/UpdateProfile");
             return data;
         } else {
             // Add logic for failed login
@@ -28,6 +30,7 @@ export default function useAuth() {
     const logout = async () => {
         // Add logout logic here
         cookie.remove('token');
+        dispatch({ type: "LOGOUT" })
         router.push('/');
     }
     const loginAdmin = async (email: string, password: string) => {
@@ -42,8 +45,9 @@ export default function useAuth() {
         const data = await response.json();
         if (response.ok) {
             //create the cookie
-            cookie.set('token', data.token);
-            router.push('/AdminPanel');
+            cookie.set('admin', data.token);
+            dispatch({ type: "LOGIN_AD", payload: data.token });
+            router.push('/AdminPanel/Requests');
         } else {
             // Add logic for failed login
             console.log('Login Failed', data);

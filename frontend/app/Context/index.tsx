@@ -2,20 +2,18 @@
 import React, { createContext, useContext, useReducer, ReactNode } from "react";
 
 // Define the structure of the user object and state
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
 
 interface State {
-  user: User | null;
+  user: string | null;
+  admin: string | null;
   lang: "ar" | "en"; // Arabic or English
 }
 
 type Action =
-  | { type: "LOGIN"; payload: User }
+  | { type: "LOGIN"; payload: string }
   | { type: "LOGOUT" }
+  | { type: "LOGIN_AD"; payload: string }
+  | { type: "LOGOUT_AD" }
   | { type: "SET_LANGUAGE"; payload: "ar" | "en" };
 
 interface AppContextValue extends State {
@@ -33,6 +31,10 @@ const AuthReducer = (state: State, action: Action): State => {
       return { ...state, user: action.payload };
     case "LOGOUT":
       return { ...state, user: null };
+    case "LOGIN_AD":
+      return { ...state, admin: action.payload };
+    case "LOGOUT_AD":
+      return { ...state, admin: null };
     case "SET_LANGUAGE":
       return { ...state, lang: action.payload };
     default:
@@ -47,7 +49,7 @@ interface AppProviderProps {
 
 // Context Provider
 export function AppProvider({ children }: AppProviderProps) {
-  const [state, dispatch] = useReducer(AuthReducer, { user: null, lang: "en" }); // Default language is English
+  const [state, dispatch] = useReducer(AuthReducer, { user: null, admin: null, lang: "en" }); // Default language is English
   const baseUrl = process.env.NEXT_PUBLIC_BACK_URL as string;
 
   return (

@@ -14,7 +14,7 @@ export default function Page() {
   useEffect(() => {
     const getDentists = async () => {
       setLoading(true);
-      const token = Cookies.get("token");
+      const token = Cookies.get("admin");
       if (!token) {
         return setLoading(false);
       }
@@ -51,7 +51,7 @@ export default function Page() {
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
+          Authorization: `Bearer ${Cookies.get("admin")}`,
           "Content-Type": "application/json",
         },
       }
@@ -157,7 +157,7 @@ export default function Page() {
       )}
       {!loading && Dentists.length === 0 && (
         <div className="w-full h-[500px] text-bold text-xl flex items-center justify-center ">
-          {"no Requests for now "}
+          {"no Dentists for now "}
           {/* {"لا توجد طلبات في الان الحالي"} */}
         </div>
       )}

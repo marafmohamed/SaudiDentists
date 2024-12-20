@@ -14,7 +14,7 @@ export default function Page() {
   useEffect(() => {
     const getRequest = async () => {
       setLoading(true);
-      const token = Cookies.get("token");
+      const token = Cookies.get("admin");
       if (!token) {
         return setLoading(false);
       }
@@ -51,7 +51,7 @@ export default function Page() {
       {
         method: "GET",
         headers: {
-          Authorization: `Bearer ${Cookies.get("token")}`,
+          Authorization: `Bearer ${Cookies.get("admin")}`,
           "Content-Type": "application/json",
         },
       }

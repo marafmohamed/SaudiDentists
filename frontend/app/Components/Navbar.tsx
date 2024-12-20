@@ -6,11 +6,15 @@ import { FaBars, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 import { BiSolidHome } from "react-icons/bi";
 import { useApp } from "../Context";
-
+import Cookies from "js-cookie";
+import useAuth from "../Hooks/useAuth";
+import { useRouter } from "next/navigation";
 export default function Navbar() {
+  const { logout } = useAuth();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { lang, dispatch } = useApp();
+  const { lang, dispatch, user, admin } = useApp();
   const [language, setLanguage] = useState(lang || "en"); // Track current language
   const dropdownRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -19,7 +23,8 @@ export default function Navbar() {
     e.stopPropagation();
     setIsOpen(!isOpen);
   };
-
+  const [token, setToken] = useState<string | null>("");
+  const [adminToken, setAdminToken] = useState<string | null>("");
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const closeDropdown = (e: MouseEvent) => {
@@ -38,8 +43,16 @@ export default function Navbar() {
       setIsMenuOpen(false);
     }
   };
+  useEffect(() => {
+    setToken(user || "");
+  }, [user]);
+  useEffect(() => {
+    setAdminToken(admin || "");
+  }, [admin]);
 
   useEffect(() => {
+    setToken(Cookies.get("token") || "");
+    setAdminToken(Cookies.get("admin") || "");
     document.addEventListener("mousedown", closeDropdown);
     document.addEventListener("mousedown", closeMenuOnClickOutside);
     return () => {
@@ -76,14 +89,56 @@ export default function Navbar() {
                 <BiSolidHome className="w-4 text-custom-greenPrimary" />
                 {language === "en" ? "Home" : "الرئيسية"}
               </Link>
-              <Link
-                href="/Login"
-                className={`flex p-2 px-4 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
-                  language === "en" ? "" : "flex-row-reverse"
-                }`}
-              >
-                {language === "en" ? "Sign In" : "تسجيل الدخول"}
-              </Link>
+              {!token && !adminToken && (
+                <Link
+                  href="/Login"
+                  className={`flex p-2 px-4 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
+                    language === "en" ? "" : "flex-row-reverse"
+                  }`}
+                >
+                  {language === "en" ? "Sign In" : "تسجيل الدخول"}
+                </Link>
+              )}
+              {token && (
+                <>
+                  <Link
+                    className={` cursor-pointer flex p-2 px-4 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
+                      language === "en" ? "" : "flex-row-reverse"
+                    }`}
+                    href={"/UpdateProfile"}
+                  >
+                    {language === "en"
+                      ? "Update Profile"
+                      : "تعديل معلومات الحساب"}
+                  </Link>
+                  <div
+                    onClick={() => {
+                      logout();
+                      setToken("");
+                    }}
+                    className={` cursor-pointer flex p-2 px-4 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
+                      language === "en" ? "" : "flex-row-reverse"
+                    }`}
+                  >
+                    {language === "en" ? "Logout" : "تسجيل الخروج"}
+                  </div>
+                </>
+              )}
+              {adminToken && (
+                <div
+                  onClick={() => {
+                    Cookies.remove("admin");
+                    dispatch({ type: "LOGOUT_AD" });
+                    router.push("/Adminlogin");
+                    setToken("");
+                  }}
+                  className={` cursor-pointer flex p-2 px-4 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
+                    language === "en" ? "" : "flex-row-reverse"
+                  }`}
+                >
+                  {language === "en" ? "Logout" : "تسجيل الخروج"}
+                </div>
+              )}
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={toggleDropdown}
@@ -109,8 +164,8 @@ export default function Navbar() {
                   >
                     <Link
                       href="/AboutUs/Founder"
-                      onClick={()=>{
-                        setIsOpen(false)
+                      onClick={() => {
+                        setIsOpen(false);
                       }}
                       className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover"
                     >
@@ -118,8 +173,8 @@ export default function Navbar() {
                     </Link>
                     <Link
                       href="/AboutUs/OurGoals"
-                      onClick={()=>{
-                        setIsOpen(false)
+                      onClick={() => {
+                        setIsOpen(false);
                       }}
                       className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                     >
@@ -127,8 +182,8 @@ export default function Navbar() {
                     </Link>
                     <Link
                       href="/AboutUs/ThanksAppreciation"
-                      onClick={()=>{
-                        setIsOpen(false)
+                      onClick={() => {
+                        setIsOpen(false);
                       }}
                       className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                     >
@@ -138,8 +193,8 @@ export default function Navbar() {
                     </Link>
                     <Link
                       href="/Register"
-                      onClick={()=>{
-                        setIsOpen(false)
+                      onClick={() => {
+                        setIsOpen(false);
                       }}
                       className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                     >
@@ -233,14 +288,44 @@ export default function Navbar() {
                   <BiSolidHome className="w-4 text-custom-greenPrimary" />
                   {language === "en" ? "Home" : "الرئيسية"}
                 </Link>
-                <Link
-                  href="/Login"
-                  className={`flex p-2 px-4 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
-                    language === "en" ? "" : "flex-row-reverse"
-                  }`}
-                >
-                  {language === "en" ? "Sign In" : "تسجيل الدخول"}
-                </Link>
+                {!token && !adminToken && (
+                  <Link
+                    href="/Login"
+                    className={`flex p-2 px-4 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
+                      language === "en" ? "" : "flex-row-reverse"
+                    }`}
+                  >
+                    {language === "en" ? "Sign In" : "تسجيل الدخول"}
+                  </Link>
+                )}
+                {token && (
+                  <div
+                    onClick={() => {
+                      logout();
+                      setToken("");
+                    }}
+                    className={` cursor-pointer flex p-2 px-4 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
+                      language === "en" ? "" : "flex-row-reverse"
+                    }`}
+                  >
+                    {language === "en" ? "Logout" : "تسجيل الخروج"}
+                  </div>
+                )}
+                {adminToken && (
+                  <div
+                    onClick={() => {
+                      Cookies.remove("admin");
+                      dispatch({ type: "LOGOUT_AD" });
+                      router.push("/Adminlogin");
+                      setToken("");
+                    }}
+                    className={` cursor-pointer flex p-2 px-4 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
+                      language === "en" ? "" : "flex-row-reverse"
+                    }`}
+                  >
+                    {language === "en" ? "Logout" : "تسجيل الخروج"}
+                  </div>
+                )}
                 <div className="relative">
                   <button
                     onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
@@ -269,8 +354,8 @@ export default function Navbar() {
                     >
                       <Link
                         href="/AboutUs/Founder"
-                        onClick={()=>{
-                          setIsOpen(false)
+                        onClick={() => {
+                          setIsOpen(false);
                         }}
                         className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover"
                       >
@@ -278,8 +363,8 @@ export default function Navbar() {
                       </Link>
                       <Link
                         href="/AboutUs/OurGoals"
-                        onClick={()=>{
-                          setIsOpen(false)
+                        onClick={() => {
+                          setIsOpen(false);
                         }}
                         className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                       >
@@ -287,8 +372,8 @@ export default function Navbar() {
                       </Link>
                       <Link
                         href="/AboutUs/ThanksAppreciation"
-                        onClick={()=>{
-                          setIsOpen(false)
+                        onClick={() => {
+                          setIsOpen(false);
                         }}
                         className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                       >
@@ -298,8 +383,8 @@ export default function Navbar() {
                       </Link>
                       <Link
                         href="/Register"
-                        onClick={()=>{
-                          setIsOpen(false)
+                        onClick={() => {
+                          setIsOpen(false);
                         }}
                         className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                       >

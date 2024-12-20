@@ -17,6 +17,7 @@ export default {
           dark: "#212529",
           greenPrimary: "#009B4D",
           grayDark: "#3C434A",
+          filterGray:"#EFEEEE",
           bluePrimary: "#00419B",
           greenDark: "#13A235",
           blueLightHover: "#E8F6F8",

@@ -48,13 +48,13 @@ const createDentistRequest = async (req, res) => {
     }
 
     // Check if a dentist already exists with this email
-    const existingDentist = await Dentist.findOne({ email });
-    if (existingDentist) {
-      return res.status(409).json({
-        message: "A dentist with this email already exists",
-        errorCode: "DENTIST_EMAIL_EXISTS",
-      });
-    }
+    // const existingDentist = await Dentist.findOne({ email });
+    // if (existingDentist) {
+    //   return res.status(409).json({
+    //     message: "A dentist with this email already exists",
+    //     errorCode: "DENTIST_EMAIL_EXISTS",
+    //   });
+    // }
     //hash the password first
     const hashedPassword = await bcrypt.hash(password, 10);
     // Create new request

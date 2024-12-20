@@ -20,6 +20,7 @@ interface LocationArabic {
 }
 
 export interface FormData {
+  _id: string;
   // English Fields
   username: string;
   firstName: string;
@@ -106,44 +107,53 @@ const arabicCities3: string[] = [
 ];
 const arabicCities4: string[] = ["أبها", "خميس مشيط", "جيزان", "نجران"];
 const arabicCities5: string[] = ["تبوك"];
-export default function RegistrationForm() {
+interface RegistrationFormProps {
+  initialData?: FormData;
+}
+export default function RegistrationForm({
+  initialData,
+}: RegistrationFormProps) {
   const [formData, setFormData] = useState<FormData>({
+    _id: initialData?._id || "",
     // English Fields
-    username: "",
-    firstName: "",
-    lastName: "",
-    email: "",
+    username: initialData?.username || "",
+    firstName: initialData?.firstName || "",
+    lastName: initialData?.lastName || "",
+    email: initialData?.email || "",
     password: "",
-    privatePhone: "",
-    reservationsPhone: "",
-    governmentalSector: "",
-    privateSector: "",
-    curriculumVitaeUrl: null,
-    twitterUrl: "",
-    instagramUrl: "",
-    linkedinUrl: "",
-    snapchatUrl: "",
-    tiktokUrl: "",
-    location: { area: "", city: "" },
-    profilePicture: null,
-    locationUrl: [],
-    category: "",
-    title: "",
-    specialty: "",
+    privatePhone: initialData?.privatePhone || "",
+    reservationsPhone: initialData?.reservationsPhone || "",
+    governmentalSector: initialData?.governmentalSector || "",
+    privateSector: initialData?.privateSector || "",
+    curriculumVitaeUrl: initialData?.curriculumVitaeUrl || null,
+    twitterUrl: initialData?.twitterUrl || "",
+    instagramUrl: initialData?.instagramUrl || "",
+    linkedinUrl: initialData?.linkedinUrl || "",
+    snapchatUrl: initialData?.snapchatUrl || "",
+    tiktokUrl: initialData?.tiktokUrl || "",
+    location: initialData?.location || { area: "", city: "" },
+    profilePicture: initialData?.profilePicture || null,
+    locationUrl: initialData?.locationUrl || [],
+    category: initialData?.category || "",
+    title: initialData?.title || "",
+    specialty: initialData?.specialty || "",
 
     // Arabic Fields
-    usernameArabic: "",
-    firstNameArabic: "",
-    lastNameArabic: "",
-    governmentalSectorArabic: "",
-    privateSectorArabic: "",
-    curriculumVitaeUrlArabic: "",
-    locationArabic: { areaArabic: "", cityArabic: "" },
-    categoryArabic: "",
-    titleArabic: "",
-    specialtyArabic: "",
-    description: "",
-    descriptionArabic: "",
+    usernameArabic: initialData?.usernameArabic || "",
+    firstNameArabic: initialData?.firstNameArabic || "",
+    lastNameArabic: initialData?.lastNameArabic || "",
+    governmentalSectorArabic: initialData?.governmentalSectorArabic || "",
+    privateSectorArabic: initialData?.privateSectorArabic || "",
+    curriculumVitaeUrlArabic: initialData?.curriculumVitaeUrlArabic || "",
+    locationArabic: initialData?.locationArabic || {
+      areaArabic: "",
+      cityArabic: "",
+    },
+    categoryArabic: initialData?.categoryArabic || "",
+    titleArabic: initialData?.titleArabic || "",
+    specialtyArabic: initialData?.specialtyArabic || "",
+    description: initialData?.description || "",
+    descriptionArabic: initialData?.descriptionArabic || "",
   });
 
   const [step, setStep] = useState(1);

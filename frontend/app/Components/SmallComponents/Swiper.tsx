@@ -5,6 +5,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import Link from "next/link";
 
 export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
   return (
@@ -44,8 +45,8 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
           {/* Slide 1 */}
           <SwiperSlide>
             <div
-              className={`flex items-center justify-between w-full h-full bg-white ${
-                !isEnglish ? "flex-row-reverse" : ""
+              className={`flex flex-col  items-center justify-between w-full h-full bg-white ${
+                !isEnglish ? "md:flex-row-reverse" : "md:flex-row"
               }`}
             >
               <div className="w-full md:w-1/2 p-8">
@@ -71,14 +72,14 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
                     ? "Serving Patients All Over Saudi Arabia"
                     : "نخدم المرضى في جميع أنحاء المملكة العربية السعودية"}
                 </p>
-                <a
-                  href="#experts"
+                <Link
+                  href="/Experts"
                   className="text-blue-600 font-semibold hover:underline mt-4 inline-block"
                 >
                   {isEnglish ? "Meet Our Experts" : "قابل خبراءنا"}
-                </a>
+                </Link>
               </div>
-              <div className="w-full md:w-1/2 p-4 relative border-collapse">
+              <div className="w-full hidden sm:block md:w-1/2 p-4 relative border-collapse">
                 <img
                   src="/images/about_the_club.png"
                   alt={
@@ -109,8 +110,8 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
           {/* Slide 2 */}
           <SwiperSlide>
             <div
-              className={`flex items-center justify-between w-full h-full bg-white ${
-                !isEnglish ? "flex-row-reverse" : ""
+              className={`flex flex-col  items-center justify-between w-full h-full bg-white ${
+                !isEnglish ? "md:flex-row-reverse" : "md:flex-row"
               }`}
             >
               <div className="w-full md:w-1/2 p-8">
@@ -143,13 +144,13 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
                   {isEnglish ? "Explore Services" : "استكشاف الخدمات"}
                 </a>
               </div>
-              <div className="w-full md:w-1/2 p-4 relative">
+              <div className="w-full hidden md:block md:w-1/2 p-4 relative">
                 <img
                   src="/images/about_the_club.png"
                   alt={isEnglish ? "Dental Experts" : "خبراء طب الأسنان"}
                   className="w-full h-auto object-cover"
                 />
-                 <div
+                <div
                   className={`absolute bottom-0 ${
                     isEnglish
                       ? "left-0 bg-gradient-to-r"

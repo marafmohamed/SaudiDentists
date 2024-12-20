@@ -83,12 +83,12 @@ DentistSchema.statics.login = async function (email, password) {
   const dentist = await this.findOne({ email });
 
   if (!dentist) {
-    throw new Error("email not found");
+    throw new Error("Email not found");
   }
 
   const isPasswordValid = await bcrypt.compare(password, dentist.password);
   if (!isPasswordValid) {
-    throw new Error("wrong password");
+    throw new Error("Wrong password");
   }
 
   const token = CreateToken(dentist._id);

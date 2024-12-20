@@ -3,7 +3,7 @@ const app = express();
 require("dotenv").config();
 const cors = require("cors");
 const corsOptions = {
-//   origin: process.env.FRONT_URL,
+  //   origin: process.env.FRONT_URL,
   credentials: true,
 };
 app.use(cors(corsOptions));
@@ -12,9 +12,11 @@ const PORT = process.env.PORT || 8080;
 const AdminRoutes = require("./Routes/AdminRoutes");
 const DentistRoutes = require("./Routes/DentistRoutes");
 const RequestRoutes = require("./Routes/RequestRoutes");
+const AuthRoutes = require("./Routes/AuthRoutes");
 app.use("/api/admin", AdminRoutes);
 app.use("/api/dentist", DentistRoutes);
 app.use("/api/requests", RequestRoutes);
+app.use("/api/auth", AuthRoutes);
 const mongoose = require("mongoose");
 
 mongoose
