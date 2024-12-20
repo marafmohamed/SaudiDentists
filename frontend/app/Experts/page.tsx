@@ -6,6 +6,7 @@ import { useApp } from "../Context";
 import Card from "../Components/SmallComponents/DentistCard";
 import { useRouter } from "next/navigation";
 import { FormData } from "../Components/RegistrationForm";
+import { motion } from "framer-motion";
 import "./styles.css";
 export default function Page() {
   const { lang } = useApp();
@@ -210,40 +211,49 @@ export default function Page() {
           {lang === "en" ? "No doctors found" : "لا يوجد أطباء"}
         </h1>
       )}
-      {!loading && dentists.length > 0 && (
-        <div className="w-full flex flex-wrap justify-center gap-6 p-16">
-          {dentists.map((dentist: FormData, index: number) => {
-            console.log(dentist);
-            return (
-              <div key={index}>
-                <Card
-                  name={dentist.firstName + " " + dentist.lastName}
-                  nameArabic={
-                    dentist.firstNameArabic + " " + dentist.lastNameArabic
-                  }
-                  city={dentist.location.area + ", " + dentist.location.city}
-                  cityArabic={
-                    dentist.locationArabic.areaArabic +
-                    ", " +
-                    dentist.locationArabic.cityArabic
-                  }
-                  profilePicture={
-                    typeof dentist.profilePicture === "string"
-                      ? dentist.profilePicture
-                      : dentist.profilePicture
-                      ? URL.createObjectURL(dentist.profilePicture)
-                      : ""
-                  }
-                  onViewProfile={function (): void {
-                    router.push("/Experts/" + dentist._id);
-                  }}
-                />
-              </div>
-            );
-          })}
-        </div>
-      )}
-      <div className="flex items-center justify-center mt-auto">
+     
+{!loading && dentists.length > 0 && (
+  <div className="w-full flex flex-wrap justify-center gap-6 p-16">
+    {dentists.map((dentist: FormData, index: number) => {
+      console.log(dentist);
+      return (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 20 }} // Start hidden and slightly below
+          animate={{ opacity: 1, y: 0 }} // Fade in and move to position
+          transition={{
+            duration: 0.3, // Animation duration
+            delay: index * 0.1, // Stagger animation for each card
+          }}
+        >
+          <Card
+            name={dentist.firstName + " " + dentist.lastName}
+            nameArabic={
+              dentist.firstNameArabic + " " + dentist.lastNameArabic
+            }
+            city={dentist.location.area + ", " + dentist.location.city}
+            cityArabic={
+              dentist.locationArabic.areaArabic +
+              ", " +
+              dentist.locationArabic.cityArabic
+            }
+            profilePicture={
+              typeof dentist.profilePicture === "string"
+                ? dentist.profilePicture
+                : dentist.profilePicture
+                ? URL.createObjectURL(dentist.profilePicture)
+                : ""
+            }
+            onViewProfile={function (): void {
+              router.push("/Experts/" + dentist._id);
+            }}
+          />
+        </motion.div>
+      );
+    })}
+    </div>
+  )}      
+  <div className="flex items-center justify-center mt-auto">
         {/* Previous button */}
         <button
           className="bg-[#0D6887] text-white px-3 py-1 rounded-md mx-2 transition-opacity duration-200 disabled:opacity-50"

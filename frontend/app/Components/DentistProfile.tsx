@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion"; // Import Framer Motion
 import Image from "next/image";
 import { FaSnapchat, FaInstagram, FaTiktok } from "react-icons/fa";
 import { useApp } from "@/app/Context"; // Path to useApp hook
@@ -9,9 +10,7 @@ interface ProfilePageProps {
   data: FormData;
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({
-  data,
-}: ProfilePageProps) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({ data }: ProfilePageProps) => {
   const { lang } = useApp(); // Get the current language
   const [showNotifyCopied, setShowNotifyCopied] = React.useState(false);
 
@@ -25,7 +24,12 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   const description = lang === "ar" ? data.descriptionArabic : data.description;
 
   return (
-    <div className="p-6 lg:p-10 bg-background">
+    <motion.div
+      className="p-6 lg:p-10 bg-background"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.4 }}
+    >
       {/* Breadcrumb */}
       <div
         className={`text-sm text-custom-grayDark mb-6 font-bold ${
@@ -42,10 +46,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         / {title} {lastName}
       </div>
 
-      <div
-        className={`flex flex-col  bg-white rounded-lg shadow-lg p-6 lg:p-10 ${
+      <motion.div
+        className={`flex flex-col bg-white rounded-lg shadow-lg p-6 lg:p-10 ${
           lang == "en" ? "md:flex-row" : " md:flex-row-reverse text-right gap-4"
         }`}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
       >
         {/* Profile Picture */}
         <div className="lg:w-1/3 flex justify-center mb-6 lg:mb-0">
@@ -80,7 +87,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
               lang == "en" ? "" : "justify-end"
             }`}
           >
-            <button
+            <motion.button
               onClick={() => {
                 // When clicked, the reservation phone is copied
                 navigator.clipboard.writeText(data.reservationsPhone);
@@ -90,6 +97,8 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                 }, 1000);
               }}
               className="px-4 py-2 relative bg-custom-greenPrimary text-white rounded-md shadow-md hover:bg-green-600"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.2 }}
             >
               {data.reservationsPhone}
               {showNotifyCopied && (
@@ -97,26 +106,21 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                   {lang === "ar" ? "تم النسخ!" : "Copied!"}
                 </span>
               )}
-            </button>
-            {data.locationUrl?.length === 0 && (
-              <p className="text-custom-grayDark">
-                {lang === "ar"
-                  ? "لا تتوفر عناوين مواقع."
-                  : "No location URLs available."}
-              </p>
-            )}
+            </motion.button>
             {data.locationUrl?.map((url, index) => (
-              <a
+              <motion.a
                 key={index}
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 py-2 bg-custom-bluePrimary text-white rounded-md shadow-md hover:bg-blue-600"
+                whileHover={{ scale: 1.05 }}
+                transition={{ duration: 0.2 }}
               >
                 {lang === "ar"
                   ? `الموقع ${index + 1}`
                   : `Location ${index + 1}`}
-              </a>
+              </motion.a>
             ))}
           </div>
 
@@ -142,16 +146,6 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                 <FaInstagram />
               </a>
             )}
-            {data.linkedinUrl && (
-              <a
-                href={data.linkedinUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-custom-bluePrimary text-2xl hover:text-blue-600"
-              >
-                <FaInstagram />
-              </a>
-            )}
             {data.tiktokUrl && (
               <a
                 href={data.tiktokUrl}
@@ -164,7 +158,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
             )}
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* CV Section */}
       <div className="mt-10 bg-custom-grayLight p-4 rounded-md flex items-center gap-4">
@@ -190,7 +184,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
           </a>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
