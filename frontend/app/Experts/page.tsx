@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import Filter from "../Components/SmallComponents/Filter";
 import { useSearchParams } from "next/navigation";
 import { useApp } from "../Context";
@@ -8,9 +8,9 @@ import { useRouter } from "next/navigation";
 import { FormData } from "../Components/RegistrationForm";
 import { motion } from "framer-motion";
 import "./styles.css";
-export default function Page() {
+
+const PageContent = () => {
   const { lang } = useApp();
-  // get the query data
   const searchParams = useSearchParams();
   const specialization = searchParams.get("specialization") || "";
   const region = searchParams.get("region") || "";
@@ -22,8 +22,8 @@ export default function Page() {
   const [loading, setLoading] = React.useState(true);
   const router = useRouter();
   const { baseUrl } = useApp();
+
   useEffect(() => {
-    // get the doctors for this search
     const getDentists = async () => {
       try {
         setLoading(true);
@@ -48,19 +48,14 @@ export default function Page() {
         setDentists(json.dentists);
         setTotalPages(json.totalPages);
         setLoading(false);
-
-        console.log(json);
       } catch (error) {
-        if (error instanceof Error) {
-          console.log(error.message);
-        } else {
-          console.log(String(error));
-        }
+        console.log(error);
         setLoading(false);
       }
     };
     getDentists();
   }, []);
+
   const handlePageClick = async (page: number) => {
     const response = await fetch(
       `${baseUrl}/api/dentist/getDoctor?specialization=${specialization}&region=${region}&city=${city}&doctorName=${doctorName}&page=${page}&limit=${15}`,
@@ -76,20 +71,13 @@ export default function Page() {
       console.log(cc.error);
       return;
     }
-    const courses = cc.data;
+    setDentists(cc.data);
     setTotalPages(cc.totalPages);
     setCurrentPage(cc.currentPage);
-    if (cc.error) {
-      console.log(courses.error);
-      return;
-    }
-    setDentists(courses);
   };
 
   const renderPageNumbers = () => {
     const pages = [];
-
-    // First page
     pages.push(
       <button
         key={1}
@@ -103,8 +91,6 @@ export default function Page() {
         1
       </button>
     );
-
-    // Ellipsis before the current block
     if (currentPage > 3) {
       pages.push(
         <span key="start-ellipsis" className="px-2">
@@ -112,8 +98,6 @@ export default function Page() {
         </span>
       );
     }
-
-    // Pages around the current page
     for (
       let i = Math.max(2, currentPage - 1);
       i <= Math.min(totalPages - 1, currentPage + 1);
@@ -133,8 +117,6 @@ export default function Page() {
         </button>
       );
     }
-
-    // Ellipsis after the current block
     if (currentPage < totalPages - 2) {
       pages.push(
         <span key="end-ellipsis" className="px-2">
@@ -142,8 +124,6 @@ export default function Page() {
         </span>
       );
     }
-
-    // Last page
     if (totalPages > 1) {
       pages.push(
         <button
@@ -159,9 +139,9 @@ export default function Page() {
         </button>
       );
     }
-
     return pages;
   };
+
   return (
     <div className="w-full flex flex-col items-center py-4">
       <h1 className="mx-auto my-8 text-2xl md:text-6xl text-custom-bluePrimary/50 font-bold">
@@ -184,11 +164,8 @@ export default function Page() {
                 },
               }
             );
-            console.log(response);
             const json = await response.json();
-            console.log(json);
             if (!response.ok) {
-              console.log(json);
               setLoading(false);
               return json;
             }
@@ -196,8 +173,8 @@ export default function Page() {
             setTotalPages(json.totalPages);
             setLoading(false);
           } catch (error) {
-            console.log(error);
             setLoading(false);
+            console.log(error);
           }
         }}
       />
@@ -211,50 +188,40 @@ export default function Page() {
           {lang === "en" ? "No doctors found" : "لا يوجد أطباء"}
         </h1>
       )}
-     
-{!loading && dentists.length > 0 && (
-  <div className="w-full flex flex-wrap justify-center gap-6 p-16">
-    {dentists.map((dentist: FormData, index: number) => {
-      console.log(dentist);
-      return (
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, y: 20 }} // Start hidden and slightly below
-          animate={{ opacity: 1, y: 0 }} // Fade in and move to position
-          transition={{
-            duration: 0.3, // Animation duration
-            delay: index * 0.1, // Stagger animation for each card
-          }}
-        >
-          <Card
-            name={dentist.firstName + " " + dentist.lastName}
-            nameArabic={
-              dentist.firstNameArabic + " " + dentist.lastNameArabic
-            }
-            city={dentist.location.area + ", " + dentist.location.city}
-            cityArabic={
-              dentist.locationArabic.areaArabic +
-              ", " +
-              dentist.locationArabic.cityArabic
-            }
-            profilePicture={
-              typeof dentist.profilePicture === "string"
-                ? dentist.profilePicture
-                : dentist.profilePicture
-                ? URL.createObjectURL(dentist.profilePicture)
-                : ""
-            }
-            onViewProfile={function (): void {
-              router.push("/Experts/" + dentist._id);
-            }}
-          />
-        </motion.div>
-      );
-    })}
-    </div>
-  )}      
-  <div className="flex items-center justify-center mt-auto">
-        {/* Previous button */}
+      {!loading && dentists.length > 0 && (
+        <div className="w-full flex flex-wrap justify-center gap-6 p-16">
+          {dentists.map((dentist: FormData, index: number) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+            >
+              <Card
+                name={dentist.firstName + " " + dentist.lastName}
+                nameArabic={
+                  dentist.firstNameArabic + " " + dentist.lastNameArabic
+                }
+                city={dentist.location.area + ", " + dentist.location.city}
+                cityArabic={
+                  dentist.locationArabic.areaArabic +
+                  ", " +
+                  dentist.locationArabic.cityArabic
+                }
+                profilePicture={
+                  typeof dentist.profilePicture === "string"
+                    ? dentist.profilePicture
+                    : dentist.profilePicture
+                    ? URL.createObjectURL(dentist.profilePicture)
+                    : ""
+                }
+                onViewProfile={() => router.push("/Experts/" + dentist._id)}
+              />
+            </motion.div>
+          ))}
+        </div>
+      )}
+      <div className="flex items-center justify-center mt-auto">
         <button
           className="bg-[#0D6887] text-white px-3 py-1 rounded-md mx-2 transition-opacity duration-200 disabled:opacity-50"
           onClick={() => handlePageClick(currentPage - 1)}
@@ -262,11 +229,7 @@ export default function Page() {
         >
           {"<"}
         </button>
-
-        {/* Page numbers */}
         {renderPageNumbers()}
-
-        {/* Next button */}
         <button
           className="bg-[#0D6887] text-white px-3 py-1 rounded-md mx-2 transition-opacity duration-200 disabled:opacity-50"
           onClick={() => handlePageClick(currentPage + 1)}
@@ -276,5 +239,19 @@ export default function Page() {
         </button>
       </div>
     </div>
+  );
+};
+
+export default function Page() {
+  return (
+    <Suspense
+      fallback={
+        <div className="loading-container">
+          <div className="loader"></div>
+        </div>
+      }
+    >
+      <PageContent />
+    </Suspense>
   );
 }

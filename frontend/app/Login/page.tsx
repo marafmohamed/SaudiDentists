@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useApp } from "@/app/Context";
 import useAuth from "../Hooks/useAuth";
+import Link from "next/link";
 
 export default function Login() {
   const { lang } = useApp();
@@ -29,11 +30,17 @@ export default function Login() {
         console.log(data);
         if (data.message) {
           if (data.message == "Email not found") {
-            isEnglish ? setError(data.message) : setError("الحساب غير موجود");
+            if (isEnglish) {
+              setError(data.message);
+            } else {
+              setError("الحساب غير موجود");
+            }
           } else {
-            isEnglish
-              ? setError(data.message)
-              : setError("كلمة المرور غير صحيحة");
+            if (isEnglish) {
+              setError(data.message);
+            } else {
+              setError("كلمة المرور غير صحيحة");
+            }
           }
           return;
         }
@@ -121,6 +128,12 @@ export default function Login() {
             </button>
           </div>
         </form>
+        <Link
+          href={"/ResetPassword"}
+          className="mt-4 w-80 md:w-96 text-right hover:no-underline transition-all hover:text-[#1890ff] cursor-pointer underline text-orange-400 font-thin tracking-tight underline-offset-1"
+        >
+          {isEnglish ? "Forgot your password?" : "هل نسيت كلمة المرور ؟"}
+        </Link>
       </div>
     </section>
   );

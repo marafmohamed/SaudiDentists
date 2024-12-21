@@ -42,6 +42,7 @@ const RequestSchema = new Schema(
     instagramUrl: { type: String }, // Optional
     linkedinUrl: { type: String }, // Optional
     snapchatUrl: { type: String }, // Optional
+    tiktokUrl: { type: String }, // Optional
     location: {
       area: { type: String, required: true }, // Optional
       city: { type: String, required: true }, // Optional
@@ -89,18 +90,7 @@ RequestSchema.statics.acceptRequest = async function (requestData) {
     let dentist;
     if (existingDentist) {
       // Update existing dentist
-      dentist = await DentistModel.findOneAndUpdate(
-        { email: requestData.email, privatePhone: requestData.privatePhone },
-        {
-          ...requestData,
-          isApproved: true,
-        },
-        { new: true }
-      );
-    } else {
-      console.log(requestData);
-      // Create new dentist
-       dentist = {
+      dentist = {
         username: requestData.username,
         firstName: requestData.firstName,
         lastName: requestData.lastName,
@@ -115,10 +105,11 @@ RequestSchema.statics.acceptRequest = async function (requestData) {
         instagramUrl: requestData.instagramUrl,
         linkedinUrl: requestData.linkedinUrl,
         snapchatUrl: requestData.snapchatUrl,
+        tiktokUrl: requestData.tiktokUrl,
         location: {
           area: requestData.location.area,
           city: requestData.location.city,
-        },  
+        },
         profilePicture: requestData.profilePicture,
         locationUrl: requestData.locationUrl,
         category: requestData.category,
@@ -138,7 +129,58 @@ RequestSchema.statics.acceptRequest = async function (requestData) {
         description: requestData.description,
         descriptionArabic: requestData.descriptionArabic,
         isApproved: true,
-      }
+      };
+      dentist = await DentistModel.findOneAndUpdate(
+        { email: requestData.email, privatePhone: requestData.privatePhone },
+        {
+          ...dentist,
+          isApproved: true,
+        },
+        { new: true }
+      );
+    } else {
+      console.log(requestData);
+      // Create new dentist
+      dentist = {
+        username: requestData.username,
+        firstName: requestData.firstName,
+        lastName: requestData.lastName,
+        email: requestData.email,
+        password: requestData.password,
+        privatePhone: requestData.privatePhone,
+        reservationsPhone: requestData.reservationsPhone,
+        governmentalSector: requestData.governmentalSector,
+        privateSector: requestData.privateSector,
+        curriculumVitaeUrl: requestData.curriculumVitaeUrl,
+        twitterUrl: requestData.twitterUrl,
+        instagramUrl: requestData.instagramUrl,
+        linkedinUrl: requestData.linkedinUrl,
+        snapchatUrl: requestData.snapchatUrl,
+        tiktokUrl: requestData.tiktokUrl,
+        location: {
+          area: requestData.location.area,
+          city: requestData.location.city,
+        },
+        profilePicture: requestData.profilePicture,
+        locationUrl: requestData.locationUrl,
+        category: requestData.category,
+        title: requestData.title,
+        specialty: requestData.specialty,
+        firstNameArabic: requestData.firstNameArabic,
+        lastNameArabic: requestData.lastNameArabic,
+        governmentalSectorArabic: requestData.governmentalSectorArabic,
+        privateSectorArabic: requestData.privateSectorArabic,
+        locationArabic: {
+          areaArabic: requestData.locationArabic.areaArabic,
+          cityArabic: requestData.locationArabic.cityArabic,
+        },
+        categoryArabic: requestData.categoryArabic,
+        titleArabic: requestData.titleArabic,
+        specialtyArabic: requestData.specialtyArabic,
+        description: requestData.description,
+        descriptionArabic: requestData.descriptionArabic,
+        isApproved: true,
+      };
       dentist = await DentistModel.create(dentist);
       console.log(dentist);
     }

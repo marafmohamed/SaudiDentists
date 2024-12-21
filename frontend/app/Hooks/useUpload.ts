@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebaseConfig"; // Import the existing storage instance
+import { UploadTaskSnapshot } from "@firebase/storage";
 
 const useUploadFile = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -89,7 +90,7 @@ const useUploadFile = () => {
 
       uploadTask.on(
         "state_changed",
-        (snapshot: any) => {
+        (snapshot: UploadTaskSnapshot) => {
           // Progress function
           const progress =
             (snapshot.bytesTransferred / snapshot.totalBytes) * 100;

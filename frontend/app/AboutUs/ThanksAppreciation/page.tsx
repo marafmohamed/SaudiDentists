@@ -44,7 +44,7 @@ export default function Page() {
         {/* Image Section */}
         <div className="w-full md:w-1/2 flex justify-center px-4">
           <img
-            src="/images/about_the_club.png" // Replace with the actual image path
+            src="/Images/about_the_club.png" // Replace with the actual image path
             alt={isEnglish ? "Dental Support Team" : "فريق الدعم للأسنان"}
             className="w-full max-w-md mx-auto"
           />

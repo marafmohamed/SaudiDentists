@@ -26,9 +26,7 @@ export default function Page() {
               isEnglish ? "text-left" : "text-right"
             }`}
           >
-            {isEnglish
-              ? "Goals of the project"
-              : "أهداف المشروع"}
+            {isEnglish ? "Goals of the project" : "أهداف المشروع"}
           </h3>
           <ol
             className={`text-lg md:text-xl mb-4 md:w-[90%] leading-relaxed flex flex-col gap-4  text-custom-grayWrite ${
@@ -37,19 +35,64 @@ export default function Page() {
           >
             {isEnglish ? (
               <>
-                <li>1. Establishment of a database for all colleagues in the field of prosthodontics throughout the Kingdom, whose classification has been approved by the Saudi Commission for Health Specialties.</li>
-                <li>2. Sharing some of these information with the community in need to guarantee their full awareness toward the qualified licensed specialists and consultants in prosthodontics in Saudi Arabia.</li>
-                <li>3. Facilitating the recruitment of our colleagues to participate in the teaching process of Saudi prosthodontic board residents in the different training centers all over the kingdom of Saudi Arabia.</li>
-                <li>4. Facilitating patients referral between us who are in need of qualified Prosthodontists by knowing our geographic distribution within the different cities of Saudi Arabia.</li>
-                <li>5. Enrich the database of the newly established Saudi Prosthodontic Society.</li>
+                <li>1. Establishing a Database</li>
+                <p>
+                  Creating a comprehensive database for all colleagues in the
+                  field of prosthodontics across the Kingdom who have been
+                  officially certified by the Saudi Commission for Health
+                  Specialties.
+                </p>
+                <li>2. Raising Awareness</li>
+                <p>
+                  Educating and informing the community about the group of
+                  specialists and consultants in the field of prosthodontics
+                  working in various regions across the Kingdom of Saudi Arabia.
+                </p>
+                <li>3. Facilitating Access to Distinguished Professionals</li>
+                <p>
+                  Simplifying access to outstanding colleagues and involving
+                  them in the educational supervision process within the Saudi
+                  Board Program for Prosthodontics across various training
+                  centers in different regions.
+                </p>
+                <li>4. Streamlining Referrals</li>
+                <p>
+                  Facilitating the referral process for individuals in need of
+                  highly skilled and experienced prosthodontic professionals in
+                  different regions of the Kingdom.
+                </p>
+                <li>5. Enhancing the Primary Database</li>
+                <p>
+                  Enriching the primary database of the Saudi Society of
+                  Prosthodontics.
+                </p>
               </>
             ) : (
               <>
-                <li>١. إنشاء قاعدة بيانات لجميع الزملاء في مجال الأسنان التعويضية في جميع أنحاء المملكة، والتي تم اعتماد تصنيفها من قبل الهيئة السعودية للتخصصات الصحية.</li>
-                <li>٢. مشاركة بعض هذه المعلومات مع المجتمع لضمان وعيهم الكامل بالمتخصصين والاستشاريين المرخصين المؤهلين في مجال الأسنان التعويضية في المملكة العربية السعودية.</li>
-                <li>٣. تسهيل استقطاب زملائنا للمشاركة في عملية التعليم لأطباء البورد السعودي في الأسنان التعويضية في مراكز التدريب المختلفة في جميع أنحاء المملكة.</li>
-                <li>٤. تسهيل إحالة المرضى بيننا ممن هم بحاجة إلى أطباء أسنان تعويضية مؤهلين من خلال معرفة توزيعنا الجغرافي في مدن المملكة المختلفة.</li>
-                <li>٥. إثراء قاعدة بيانات الجمعية السعودية للأسنان التعويضية المنشأة حديثًا.</li>
+                <li>
+                  ١- إﻧﺸﺎء ﻗﺎﻋﺪة ﺑﻴﺎﻧﺎت ﻟﺠﻤﻴﻊ اﻟﺰﻣﻼء واﻟﺰﻣﻴﻼت ﻓﻲ ﺗﺨﺼﺺ اﻹﺳﺘﻌﺎﺿﺔ
+                  اﻟﺴﻨﻴﺔ ﻓﻲ ﺟﻤﻴﻊ أﻧﺤﺎء اﻟﻤﻤﻠﻜﺔ واﻟﺬﻳﻦ ﺗﻢ إﻋﺘﻤﺎد ﺗﺼﻨﻴﻔﻬﻢ ﻣﻦ ﻗﺒﻞ
+                  اﻟﻬﻴﺌﺔ اﻟﺴﻌﻮدﻳﺔ ﻟﻠﺘﺨﺼﺼات اﻟﺼﺤﻴﺔ.
+                </li>
+                <li>
+                  ٢- ﺗﻮﻋﻴﺔ وﺗﻌﺮﻳﻒ اﻟﻤﺠﺘﻤﻊ ﺑﺸﺮﻳﺤﺔ اﻷﺧﺼﺎﺋﻴﻴﻦ واﻹﺳﺘﺸﺎرﻳﻦ ﻓﻲ
+                  اﻹﺳﺘﻌﺎﺿﺔ اﻟﺴﻨﻴﺔ واﻟﻌﺎﻣﻠﺔ ﻓﻲ ﻣﺨﺘﻠﻒ ﻣﻨﺎﻃﻖ وأﻧﺤﺎء اﻟﻤﻤﻠﻜﺔ اﻟﻌﺮﺑﻴﺔ
+                  اﻟﺴﻌﻮدﻳﺔ.
+                </li>
+                <li>
+                  ٣- ﺗﺴﻬﻴﻞ اﻟﺤﺼﻮل ﻋﻠﻰ اﻟﻜﻮادر اﻟﻤﻤﻴﺰة ﻣﻦ اﻟﺰﻣﻼء واﻟﺰﻣﻴﻼت
+                  وإﺷﺮاﻛﻬﻢ ﻓﻲ ﻋﻤﻠﻴﺔ اﻹﺷﺮاف اﻟﺘﻌﻠﻴﻤﻲ ﻟﺪى ﺑﺮﻧﺎﻣﺞ اﻟﺒﻮرد اﻟﺴﻌﻮدي
+                  ﻟﻺﺳﺘﻌﺎﺿﺔ اﻟﺴﻨﻴﺔ ﻓﻲ ﻣﺨﺘﻠﻒ اﻟﻤﺮاﻛﺰ اﻟﺘﺪرﻳﺒﻴﺔ واﻟﻤﻨﺘﺸﺮة ﻓﻲ ﻣﺨﺘﻠﻒ
+                  اﻟﻤﻨﺎﻃﻖ.
+                </li>
+                <li>
+                  ٤- ﺗﺴﻬﻴﻞ ﻋﻤﻠﻴﺔ اﻟﻘﻴﺎم ﺑﺈﺣﺎﻟﺔ ﻛﻞ ﻣﻦ ﻫﻢ ﻓﻲ ﺣﺎﺟﺔ أﻃﺒﺎء ذو ﻛﻔﺎءة
+                  ﻋﺎﻟﻴﺔ وﺧﺒﺮة ﻓﻲ ﻣﺠﺎل اﻟﺘﺨﺼﺺ ﻓﻲ ﻣﺨﺘﻠﻒ ﻣﻨﺎﻃﻖ اﻟﻤﻤﻠﻜﺔ.
+                </li>
+                <li>
+                  ٥- إﺛﺮاء ﻗﺎﻋﺪة اﻟﺒﻴﺎﻧﺎت اﻷوﻟﻴﺔ ﻟﻠﺠﻤﻌﻴﺔ اﻟﺴﻌﻮدﻳﺔ ﻟﻺﺳﺘﻌﺎﺿﺔ
+                  اﻟﺴﻨﻴﺔ.
+                </li>
               </>
             )}
           </ol>
@@ -59,19 +102,19 @@ export default function Page() {
         <div className="w-full md:w-1/2 flex flex-col gap-4 px-4">
           <div className="w-full flex justify-center">
             <img
-              src="/images/vision1.png"
+              src="/Images/vision1.png"
               alt={isEnglish ? "Dental Demonstration" : "عرض الأسنان"}
               className="w-full mx-auto"
             />
           </div>
           <div className="w-full flex  ">
             <img
-              src="/images/vision2.png"
+              src="/Images/vision2.png"
               alt={isEnglish ? "Dental Patient Care" : "رعاية المرضى"}
               className=" w-[48%] mr-auto"
             />
             <img
-              src="/images/vision3.png"
+              src="/Images/vision3.png"
               alt={isEnglish ? "Dental Tools" : "أدوات الأسنان"}
               className=" w-[48%] ml-auto"
             />

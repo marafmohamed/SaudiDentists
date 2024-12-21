@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const { CreateToken } = require("../utils/Utils");
+const { sendMail } = require("../Services/EmailService");
+const otpGenerator = require("otp-generator");
+const validator = require("validator");
 const { Schema } = mongoose;
 
 const specialtyEnum = [
@@ -42,6 +45,7 @@ const DentistSchema = new Schema(
     instagramUrl: { type: String }, // Optional
     linkedinUrl: { type: String }, // Optional
     snapchatUrl: { type: String }, // Optional
+    tiktokUrl: { type: String }, // Optional
     location: {
       area: { type: String, required: true }, // Optional
       city: { type: String, required: true }, // Optional
@@ -73,6 +77,8 @@ const DentistSchema = new Schema(
 
     // Additional field to track request status
     isApproved: { type: Boolean, default: false },
+    otpReset: { type: String },
+    otpResetExpiresAt: { type: Date },
   },
   { timestamps: true }
 );
@@ -96,5 +102,96 @@ DentistSchema.statics.login = async function (email, password) {
 
   return { dentist, token };
 };
+DentistSchema.statics.ForgotPassword = async function (email) {
+  const dentist = await this.findOne({ email });
 
+  if (!dentist) {
+    throw new Error("No user found with this email");
+  }
+
+  // Generate OTP for password reset
+  const otpReset = otpGenerator.generate(6, {
+    upperCaseAlphabets: false,
+    specialChars: false,
+  });
+  const otpResetExpiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes
+
+  dentist.otpReset = otpReset;
+  dentist.otpResetExpiresAt = otpResetExpiresAt;
+  await dentist.save();
+  const mailContent = `<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إعادة تعيين كلمة المرور</title>
+</head>
+<body style="font-family: Arial, sans-serif; text-align: right;">
+  <h2>طلب إعادة تعيين كلمة المرور</h2>
+  <p>مرحباً،</p>
+  <p>لقد طلبت إعادة تعيين كلمة المرور. رمز التحقق الخاص بك هو:</p>
+  <h3 style="background-color: #f0f0f0; padding: 10px; display: inline-block; border-radius: 5px;">${otpReset}</h3>
+  <p>يرجى إدخال هذا الرمز خلال 5 دقائق لإكمال عملية إعادة تعيين كلمة المرور.</p>
+  <p>إذا لم تقم بطلب إعادة تعيين كلمة المرور، يرجى تجاهل هذه الرسالة.</p>
+  <p>مع تحياتنا،<br>فريق الدعم</p>
+</body>
+</html>`;
+  // Send OTP email
+  sendMail(email, "اعادة تعيين كلمة المرور", mailContent);
+
+  return dentist;
+};
+DentistSchema.statics.ResetPassword = async function ({
+  email,
+  otpReset,
+  newPassword,
+}) {
+  const dentist = await this.findOne({ email });
+
+  if (
+    !dentist ||
+    dentist.otpReset !== otpReset ||
+    Date.now() > dentist.otpResetExpiresAt
+  ) {
+    throw new Error("Invalid or expired OTP");
+  }
+
+  // Validate new password strength
+  if (
+    !validator.isStrongPassword(newPassword, {
+      minLength: 8,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 0,
+    })
+  ) {
+    throw new Error("New password is not strong enough");
+  }
+
+  // Hash new password and clear OTP
+  dentist.password = await bcrypt.hash(newPassword, 10);
+  dentist.otpReset = undefined;
+  dentist.otpResetExpiresAt = undefined;
+  const mailContent = `<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تأكيد إعادة تعيين كلمة المرور</title>
+</head>
+<body style="font-family: Arial, sans-serif; text-align: right;">
+  <h2>تم إعادة تعيين كلمة المرور بنجاح</h2>
+  <p>مرحباً،</p>
+  <p>لقد تم إعادة تعيين كلمة المرور الخاصة بك بنجاح. يمكنك الآن تسجيل الدخول باستخدام كلمة المرور الجديدة.</p>
+  <p>إذا لم تقم بطلب إعادة تعيين كلمة المرور، يرجى التواصل مع فريق الدعم فوراً.</p>
+  <p>مع تحياتنا،<br>فريق الدعم</p>
+</body>
+</html>
+`;
+  sendMail(email, "اعادة تعيين كلمة المرور بنجاح", mailContent);
+  await dentist.save();
+
+  return dentist;
+};
 module.exports = mongoose.model("Dentist", DentistSchema);

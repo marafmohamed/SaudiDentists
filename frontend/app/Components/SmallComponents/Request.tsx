@@ -17,7 +17,7 @@ const Request: React.FC<RequestProp> = ({ data, setDemands }) => {
   const handleAccept = async () => {
     try {
       setLauding(true);
-      const cookie = Cookies.get("token");
+      const cookie = Cookies.get("admin");
       if (!cookie) {
         console.log("no cookie");
         return;
@@ -48,7 +48,7 @@ const Request: React.FC<RequestProp> = ({ data, setDemands }) => {
   const handleRefuse = async () => {
     try {
       setLauding1(true);
-      const cookie = Cookies.get("token");
+      const cookie = Cookies.get("admin");
       if (!cookie) {
         console.log("no cookie");
         return;

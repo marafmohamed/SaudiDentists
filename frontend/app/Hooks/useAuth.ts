@@ -1,4 +1,3 @@
-import React from 'react'
 import { useApp } from '../Context';
 import cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
@@ -47,16 +46,52 @@ export default function useAuth() {
             //create the cookie
             cookie.set('admin', data.token);
             dispatch({ type: "LOGIN_AD", payload: data.token });
-            router.push('/AdminPanel/Requests');
+            return data;
         } else {
             // Add logic for failed login
             console.log('Login Failed', data);
             return data;
         }
     }
+    const ResetPassword = async (email: string) => {
+
+        const response = await fetch(`${baseUrl}/api/auth/forgotPassword`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email }),
+        });
+        const json = await response.json();
+        if (!response.ok) {
+
+        }
+        if (response.ok) {
+        }
+        return json;
+    };
+    const VerifieCode = async (email: string, VerificationCode: string, password: string) => {
+        const response = await fetch(`${baseUrl}/api/auth/resetPassword`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email,
+                otpReset: VerificationCode,
+                newPassword: password,
+            }),
+        });
+        const json = await response.json();
+        if (!response.ok) {
+            console.log(json);
+        }
+        if (response.ok) {
+            console.log(json);
+        }
+        return json;
+    };
     return {
         login,
         logout,
-        loginAdmin
+        loginAdmin,
+        ResetPassword,
+        VerifieCode
     }
 }

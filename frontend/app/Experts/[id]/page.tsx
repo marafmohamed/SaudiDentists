@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect } from "react";
 import { useApp } from "../../Context";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { FormData } from "../../Components/RegistrationForm";
 import ProfilePage from "@/app/Components/DentistProfile";
 import "../styles.css";
@@ -10,7 +10,6 @@ export default function Page() {
   // get the query data
   const [dentist, setDentists] = React.useState<FormData | null>(null);
   const [loading, setLoading] = React.useState(true);
-  const router = useRouter();
   const { baseUrl } = useApp();
   const { id } = useParams();
   useEffect(() => {

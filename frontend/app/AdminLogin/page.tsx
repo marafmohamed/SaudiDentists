@@ -2,8 +2,9 @@
 import { useState } from "react";
 import { useApp } from "@/app/Context";
 import useAuth from "../Hooks/useAuth";
-
+import { useRouter } from "next/navigation";
 export default function AdminLogin() {
+  const router = useRouter();
   const { lang } = useApp();
   const isEnglish = lang === "en";
   const { loginAdmin } = useAuth();
@@ -25,14 +26,22 @@ export default function AdminLogin() {
     if (formData.email && formData.password) {
       try {
         const data = await loginAdmin(formData.email, formData.password);
-        console.log(data);
+        if (data.token) {
+          router.push("/AdminPanel/Requests");
+        }
         if (data.message) {
           if (data.message == "Email not found") {
-            isEnglish ? setError(data.message) : setError("الحساب غير موجود");
+            if (isEnglish) {
+              setError(data.message);
+            } else {
+              setError("الحساب غير موجود");
+            }
           } else {
-            isEnglish
-              ? setError(data.message)
-              : setError("كلمة المرور غير صحيحة");
+            if (isEnglish) {
+              setError(data.message);
+            } else {
+              setError("كلمة المرور غير صحيحة");
+            }
           }
           return;
         }

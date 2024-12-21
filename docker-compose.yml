@@ -1,0 +1,51 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: marafmohamedislam/saudi-dentists-backend:1.0.0  # Changed this line
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/app
+    restart: always
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: marafmohamedislam/saudi-dentists-frontend:1.0.0  # Changed this line
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./frontend/.env.local
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    restart: always
+    networks:
+      - app-network
+
+  nginx:
+      build:
+        context: ./nginx
+        dockerfile: Dockerfile
+      image: marafmohamedislam/saudi-dentists-nginx:1.0.0
+      ports:
+        - "80:80"
+      depends_on:
+        - frontend
+        - backend
+      networks:
+        - app-network
+        
+networks:
+  app-network:
+    driver: bridge

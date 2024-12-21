@@ -1,7 +1,13 @@
 import React from "react";
 import { motion } from "framer-motion"; // Import Framer Motion
 import Image from "next/image";
-import { FaSnapchat, FaInstagram, FaTiktok } from "react-icons/fa";
+import {
+  FaSnapchat,
+  FaInstagram,
+  FaTiktok,
+  FaLinkedin,
+  FaTwitter,
+} from "react-icons/fa";
 import { useApp } from "@/app/Context"; // Path to useApp hook
 import { FormData } from "./RegistrationForm";
 import Link from "next/link";
@@ -10,7 +16,9 @@ interface ProfilePageProps {
   data: FormData;
 }
 
-const ProfilePage: React.FC<ProfilePageProps> = ({ data }: ProfilePageProps) => {
+const ProfilePage: React.FC<ProfilePageProps> = ({
+  data,
+}: ProfilePageProps) => {
   const { lang } = useApp(); // Get the current language
   const [showNotifyCopied, setShowNotifyCopied] = React.useState(false);
 
@@ -154,6 +162,26 @@ const ProfilePage: React.FC<ProfilePageProps> = ({ data }: ProfilePageProps) => 
                 className="text-custom-bluePrimary text-2xl hover:text-blue-600"
               >
                 <FaTiktok />
+              </a>
+            )}
+            {data.linkedinUrl && (
+              <a
+                href={data.linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-custom-bluePrimary text-2xl hover:text-blue-600"
+              >
+                <FaLinkedin />
+              </a>
+            )}
+            {data.twitterUrl && (
+              <a
+                href={data.twitterUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-custom-bluePrimary text-2xl hover:text-blue-600"
+              >
+                <FaTwitter />
               </a>
             )}
           </div>

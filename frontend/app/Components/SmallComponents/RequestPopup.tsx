@@ -15,6 +15,7 @@ export interface RequestData {
   instagramUrl?: string;
   linkedinUrl?: string;
   snapchatUrl?: string;
+  tiktokUrl?: string;
   location: {
     area: string;
     city: string;
@@ -45,6 +46,7 @@ interface PopupProps {
 }
 
 const Popup: React.FC<PopupProps> = ({ data, onClose }) => {
+  console.log(data);
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose(); // Close the popup when clicking outside
@@ -154,6 +156,18 @@ const Popup: React.FC<PopupProps> = ({ data, onClose }) => {
             Social Media
           </h3>
           <ul className="list-none pl-0">
+            {data.tiktokUrl && (
+              <li className="mb-2">
+                <a
+                  href={data.tiktokUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-custom-bluePrimary hover:underline"
+                >
+                  Tiktok
+                </a>
+              </li>
+            )}
             {data.twitterUrl && (
               <li className="mb-2">
                 <a

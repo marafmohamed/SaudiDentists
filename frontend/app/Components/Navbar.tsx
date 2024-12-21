@@ -130,7 +130,7 @@ export default function Navbar() {
                     Cookies.remove("admin");
                     dispatch({ type: "LOGOUT_AD" });
                     router.push("/Adminlogin");
-                    setToken("");
+                    setAdminToken("");
                   }}
                   className={` cursor-pointer flex p-2 px-4 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
                     language === "en" ? "" : "flex-row-reverse"
@@ -317,7 +317,7 @@ export default function Navbar() {
                       Cookies.remove("admin");
                       dispatch({ type: "LOGOUT_AD" });
                       router.push("/Adminlogin");
-                      setToken("");
+                      setAdminToken("");
                     }}
                     className={` cursor-pointer flex p-2 px-4 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
                       language === "en" ? "" : "flex-row-reverse"

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, ChangeEvent, FormEvent } from "react";
+import React, { useState, ChangeEvent } from "react";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import CustomInput from "./SmallComponents/CustomInput";
@@ -57,7 +57,7 @@ export interface FormData {
   specialtyArabic: string;
   description: string;
   descriptionArabic: string;
-  [key: string]: any;
+  [key: string]: string | number | boolean | File | string[] | Location | LocationArabic | null;
 }
 
 const categories: string[] = ["Category1", "Category2", "Category3"];
@@ -172,7 +172,7 @@ export default function RegistrationForm({
       setFormData((prev) => ({
         ...prev,
         [parent]: {
-          ...(prev[parent as keyof FormData] as Record<string, any>),
+          ...(prev[parent as keyof FormData] as Location | LocationArabic),
           [child]: value,
         },
       }));
@@ -181,9 +181,9 @@ export default function RegistrationForm({
       setFormData((prev) => ({
         ...prev,
         [parent]: {
-          ...(prev[parent as keyof FormData] as Record<string, any>),
+          ...(prev[parent as keyof FormData] as Location | LocationArabic),
           [child]: value,
-        },
+        } as Location | LocationArabic,
       }));
     } else if (name === "profilePicture" || name === "curriculumVitaeUrl") {
       setFormData((prev) => ({
@@ -222,7 +222,7 @@ export default function RegistrationForm({
   };
 
   const validateStep1 = () => {
-    let errors = [];
+    const errors = [];
     if (
       formData.username.trim() === "" ||
       formData.firstName.trim() === "" ||
@@ -353,17 +353,17 @@ export default function RegistrationForm({
           )}
         </div>
         <div className="flex flex-col justify-start items-start w-full gap-2">
-          <label>Private Phone (Will not be displayed on the website)</label>
-          <PhoneInput
+            <label>Private Phone (Will not be displayed on the website)</label>
+            <PhoneInput
             international
             value={formData.privatePhone}
-            onChange={(value) =>
-              handleChange({ target: { name: "privatePhone", value } } as any)
+            onChange={(value: string | undefined) =>
+              handleChange({ target: { name: "privatePhone", value } } as ChangeEvent<HTMLInputElement>)
             }
             className="w-full"
             inputComponent={CustomInput}
             placeholder="Private Phone"
-          />
+            />
           {errors.length > 0 && (
             <p className="text-red-500">
               {errors.find((e) => e.name === "privatePhone")?.message}
@@ -429,8 +429,8 @@ export default function RegistrationForm({
             value={formData.reservationsPhone}
             onChange={(value) =>
               handleChange({
-                target: { name: "reservationsPhone", value },
-              } as any)
+                target: { name: "reservationsPhone", value } as unknown as EventTarget & HTMLInputElement,
+              } as ChangeEvent<HTMLInputElement>)
             }
             className="w-full"
             inputComponent={CustomInput}
@@ -626,7 +626,7 @@ export default function RegistrationForm({
         <div className="flex flex-col justify-start items-start w-full gap-2">
           <label>
             A concise description of your affiliation, to be featured on the
-            club's website.
+            club&#39;s website.
           </label>
           <textarea
             name="description"
@@ -689,7 +689,7 @@ export default function RegistrationForm({
     </div>
   );
   const validateForm = (): { name: string; message: string }[] => {
-    let errors: { name: string; message: string }[] = [];
+    const errors: { name: string; message: string }[] = [];
     // Add validation logic here
     return errors;
   };

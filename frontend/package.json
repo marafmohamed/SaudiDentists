@@ -17,6 +17,7 @@
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
     "react-phone-number-input": "^3.4.10",
+    "react-toastify": "^11.0.2",
     "swiper": "^11.1.15"
   },
   "devDependencies": {

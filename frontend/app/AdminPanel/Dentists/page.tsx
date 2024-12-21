@@ -163,7 +163,7 @@ export default function Page() {
       )}
       {!loading &&
         Dentists.length > 0 &&
-        Dentists.map((request, index) => (
+        Dentists.map((request) => (
           <Dentist
             key={request._id}
             data={request}

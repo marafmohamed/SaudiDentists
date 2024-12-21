@@ -163,7 +163,7 @@ export default function Page() {
       )}
       {!loading &&
         requests.length > 0 &&
-        requests.map((request, index) => (
+        requests.map((request) => (
           <Request
             key={request._id}
             data={request}

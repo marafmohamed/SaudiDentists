@@ -81,7 +81,7 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
               </div>
               <div className="w-full hidden sm:block md:w-1/2 p-4 relative border-collapse">
                 <img
-                  src="/images/about_the_club.png"
+                  src="/Images/about_the_club.png"
                   alt={
                     isEnglish
                       ? "Saudi Dentists Directory"
@@ -146,7 +146,7 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
               </div>
               <div className="w-full hidden md:block md:w-1/2 p-4 relative">
                 <img
-                  src="/images/about_the_club.png"
+                  src="/Images/about_the_club.png"
                   alt={isEnglish ? "Dental Experts" : "خبراء طب الأسنان"}
                   className="w-full h-auto object-cover"
                 />

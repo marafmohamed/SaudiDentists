@@ -2,7 +2,6 @@ import { useState, useRef } from "react";
 import { useApp } from "@/app/Context";
 import { motion } from "framer-motion";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { useRouter } from "next/navigation";
 interface FilterProps {
   specialization: string;
   region: string;
@@ -29,7 +28,6 @@ const Filter = ({
     city: false,
   });
   const { lang } = useApp();
-  const router = useRouter();
   const dropdownRefs = useRef<{
     specialization: HTMLDivElement | null;
     region: HTMLDivElement | null;

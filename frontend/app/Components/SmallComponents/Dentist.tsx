@@ -11,7 +11,6 @@ interface RequestProp {
 const Dentist: React.FC<RequestProp> = ({ data, setDemands }) => {
   const { baseUrl } = useApp();
   const [lauding, setLauding] = useState(false);
-  const [lauding1, setLauding1] = useState(false);
   const [showPopUp, setShowPopUp] = useState(false);
 
   const handleAccept = async () => {

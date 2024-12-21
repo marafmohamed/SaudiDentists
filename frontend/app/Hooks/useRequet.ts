@@ -4,15 +4,15 @@ import useUploadFile from "./useUpload"
 export default function useRequet() {
     const { baseUrl } = useApp()
     const { uploadFile } = useUploadFile()
-    const verifyURLs = (formData: Record<string, any>) => {
+    const verifyURLs = (formData: FormData) => {
         // Regex for validating URLs
         const urlRegex = /^(https?:\/\/)?([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}(\/.*)?$/;
 
         // Iterate through formData keys to check for URLs
         const invalidUrls = Object.keys(formData).filter((key) => {
-            const value = formData[key] || ""; // Get the value of the field
+            const value = formData[key]; // Get the value of the field
             // Skip empty values, but validate non-empty values containing "url"
-            return key.toLowerCase().includes("url") && value !== "" && !urlRegex.test(value);
+            return key.toLowerCase().includes("url") && typeof value === "string" && value !== "" && !urlRegex.test(value);
         });
 
         // Return invalid URLs or true if all are valid

@@ -36,7 +36,9 @@ export default function Page() {
             {/* Social Links */}
             <div
               className={`flex items-center  py-4 gap-4  ${
-                isEnglish ? "text-left justify-start flex-wrap" : "text-right justify-end flex-wrap-reverse"
+                isEnglish
+                  ? "text-left justify-start flex-wrap"
+                  : "text-right justify-end flex-wrap-reverse"
               }`}
             >
               <div className="flex items-center gap-1  ">
@@ -52,7 +54,7 @@ export default function Page() {
                   <AiOutlineGlobal className="text-white" />
                 </div>
                 <span className="text-custom-bluePrimary font-medium">
-                  dr.nawaf_labban
+                  NawafLabban{" "}
                 </span>
               </div>
               <div className="flex items-center gap-1 ">
@@ -60,12 +62,84 @@ export default function Page() {
                   <TiSocialInstagram className="text-white" />
                 </div>
                 <span className="text-custom-bluePrimary font-medium">
-                  dr.nawaf_labban
+                  NawafLabban
                 </span>
               </div>
             </div>
 
             {/* Founder Details */}
+            <p
+              className={`text-lg md:text-xl mb-2 text-custom-grayWrite ${
+                isEnglish ? "text-left" : "text-right"
+              }`}
+            >
+              {isEnglish
+                ? "Bachelor in Dental Surgery Degree from King Saud University"
+                : "شهادة البكالوريوس من جامعة الملك سعود."}
+            </p>
+            <p
+              className={`text-lg md:text-xl mb-2 text-custom-grayWrite ${
+                isEnglish ? "text-left" : "text-right"
+              }`}
+            >
+              {isEnglish
+                ? "Clinical Certificate in Prosthodontics, Postgraduate certificate in Dental Materials, and Master and PhD degrees from Indiana University, United States of America."
+                : "شهادة التخصص في تركيبات الأسنان والزراعة، شهادة دبلوم في تخصص مواد الأسنان، شهادة ماجستير ودكتوراة في طب الأسنان من جامعة انديانا بالولايات المتحدة الأمريكية."}
+            </p>
+            <p
+              className={`text-lg md:text-xl mb-2 text-custom-grayWrite ${
+                isEnglish ? "text-left" : "text-right"
+              }`}
+            >
+              {isEnglish
+                ? "Prosthodontic Consultant"
+                : "استشاري تركيبات أسنان وزراعة."}
+            </p>
+            <p
+              className={`text-lg md:text-xl mb-2 text-custom-grayWrite ${
+                isEnglish ? "text-left" : "text-right"
+              }`}
+            >
+              {isEnglish
+                ? "Professor at King Saud University"
+                : "بروفيسور بجامعة الملك سعود."}
+            </p>
+            <p
+              className={`text-lg md:text-xl mb-2 text-custom-grayWrite ${
+                isEnglish ? "text-left" : "text-right"
+              }`}
+            >
+              {isEnglish
+                ? "Board Member, Prosthodontic Scientific Council."
+                : "عضو مجلس إدارة المجلس العلمي للبورد السعودي لتركيبات الأسنان."}
+            </p>
+            <p
+              className={`text-lg md:text-xl mb-2 text-custom-grayWrite ${
+                isEnglish ? "text-left" : "text-right"
+              }`}
+            >
+              {isEnglish
+                ? "Former Chairman, Department of Prosthetic Dental Sciences, King Saud University, College of Dentistry"
+                : "رئيس قسم سابق، قسم الإستعاضة السنية لدى كلية طب الأسنان بجامعة الملك سعود."}
+            </p>
+            <p
+              className={`text-lg md:text-xl mb-2 text-custom-grayWrite ${
+                isEnglish ? "text-left" : "text-right"
+              }`}
+            >
+              {isEnglish
+                ? "Former Treasurer, Saudi Prosthodontic Society"
+                : "أمين مال سابق، مجلس إدارة الجمعية السعودية لتركيبات الأسنان."}
+            </p>
+            <p
+              className={`text-lg md:text-xl mb-2 text-custom-grayWrite ${
+                isEnglish ? "text-left" : "text-right"
+              }`}
+            >
+              {isEnglish
+                ? "Adjunct Professor, Indiana University, USA"
+                : "بروفيسور متعاون لدى جامعة إنديانا بالولايات المتحدة الأمريكية."}
+            </p>
             <p
               className={`text-lg md:text-xl mb-2 text-custom-grayWrite ${
                 isEnglish ? "text-left" : "text-right"
@@ -117,7 +191,7 @@ export default function Page() {
         {/* Founder Image */}
         <div className="w-full md:w-1/2 flex justify-center px-4">
           <img
-            src="/images/founder.png"
+            src="/Images/founder.png"
             alt={isEnglish ? "Founder" : "المؤسس"}
             className="w-full max-w-md mx-auto"
           />

@@ -11,9 +11,9 @@ const {
 const { CheckAdminToken, CheckToken } = require("../requireAuth/requireAuth");
 router.get("/", CheckToken, getDentist);
 router.get("/getDoctor", getFilteredDentists);
+router.get("/getPaginatedDentists", CheckAdminToken, getPaginatedDentists);
 router.get("/:dentistId", getDentistWithId);
 router.post("/login", Login);
-router.get("/getPaginatedDentists", getPaginatedDentists);
 router.post("/DeleteAccount", CheckAdminToken, deleteAccount);
 
 module.exports = router;

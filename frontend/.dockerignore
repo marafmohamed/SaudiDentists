@@ -1,0 +1,21 @@
+# Ignore node_modules
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Ignore local environment files
+
+
+# # Ignore build and cache directories
+.next
+out
+coverage
+
+# Ignore Docker-related files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Ignore version control files
+.git
+.gitignore
