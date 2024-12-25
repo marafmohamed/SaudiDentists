@@ -6,11 +6,12 @@ import Cookies from "js-cookie";
 import { RequestData } from "../../Components/SmallComponents/RequestPopup";
 import "../styles.css";
 export default function Page() {
-  const { baseUrl } = useApp();
+  const { baseUrl , lang } = useApp();
   const [requests, setRequests] = useState<RequestData[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [isEnglish, setIsEnglish] = useState(lang === "en");
   useEffect(() => {
     const getRequest = async () => {
       setLoading(true);
@@ -61,15 +62,14 @@ export default function Page() {
       console.log(cc.error);
       return;
     }
-    const courses = cc.data;
-    setTotalPages(cc.totalPages);
-    setCurrentPage(cc.currentPage);
+   
     if (cc.error) {
-      console.log(courses.error);
+      console.log(cc.error);
       return;
     }
-
-    setRequests(courses);
+    setTotalPages(cc.totalPages);
+    setCurrentPage(page);
+    setRequests(cc.requests);
   };
 
   const renderPageNumbers = () => {
@@ -157,8 +157,7 @@ export default function Page() {
       )}
       {!loading && requests.length === 0 && (
         <div className="w-full h-[500px] text-bold text-xl flex items-center justify-center ">
-          {"no Requests for now "}
-          {/* {"لا توجد طلبات في الان الحالي"} */}
+          {isEnglish ? "No Requests" : "لا توجد طلبات"}
         </div>
       )}
       {!loading &&

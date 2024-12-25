@@ -47,7 +47,7 @@ export default function Page() {
   }, []);
   const handlePageClick = async (page: number) => {
     const response = await fetch(
-      `${baseUrl}/api/requests/getPaginatedRequests?page=${page}&limit=${15}`,
+      `${baseUrl}/api/dentist/getPaginatedDentists?page=${page}&limit=${15}`,
       {
         method: "GET",
         headers: {
@@ -61,15 +61,14 @@ export default function Page() {
       console.log(cc.error);
       return;
     }
-    const courses = cc.data;
-    setTotalPages(cc.totalPages);
-    setCurrentPage(cc.currentPage);
+    console.log(cc);
     if (cc.error) {
-      console.log(courses.error);
+      console.log(cc.error);
       return;
     }
-
-    setDentists(courses);
+    setTotalPages(cc.totalPages);
+    setCurrentPage(page);
+    setDentists(cc.dentists);
   };
 
   const renderPageNumbers = () => {

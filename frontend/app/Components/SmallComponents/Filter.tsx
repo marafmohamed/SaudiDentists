@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useApp } from "@/app/Context";
 import { motion } from "framer-motion";
 import { MdKeyboardArrowDown } from "react-icons/md";
@@ -110,6 +110,56 @@ const Filter = ({
   const toggleDropdown = (key: "specialization" | "region" | "city") => {
     setIsOpen((prev) => ({ ...prev, [key]: !prev[key] }));
   };
+  useEffect(() => {
+    setSelectedFilters((prev) => {
+      const updatedFilters = { ...prev };
+  
+      // Update specialization
+      if (prev.specialization) {
+        const indexEn = specialties.findIndex((spec) => spec === prev.specialization);
+        const indexAr = specialtiesArabic.findIndex((spec) => spec === prev.specialization);
+  
+        if (lang === "en" && indexEn !== -1) {
+          updatedFilters.specialization = specialties[indexEn];
+        } else if (lang === "ar" && indexAr !== -1) {
+          updatedFilters.specialization = specialtiesArabic[indexAr];
+        } else {
+          // If the selected value is not found, reset it
+          updatedFilters.specialization = "";
+        }
+      }
+  
+      // Update region
+      if (prev.region) {
+        const regionIndex = regions.findIndex((region) => region === prev.region);
+        if (regionIndex !== -1) {
+          updatedFilters.region = regions[regionIndex];
+        } else {
+          // If the region is not found, reset it
+          updatedFilters.region = "";
+        }
+      }
+  
+      // Update city
+      if (prev.city && prev.region) {
+        const regionKey = regionMapping[prev.region] as keyof typeof cities;
+        const regionCities = cities[regionKey] || [];
+        const cityIndex = regionCities.findIndex((city) => city === prev.city);
+  
+        if (cityIndex !== -1) {
+          updatedFilters.city = regionCities[cityIndex];
+        } else {
+          // If the city is not found, reset it
+          updatedFilters.city = "";
+        }
+      }
+  
+      return updatedFilters;
+    });
+  }, [lang]);
+  
+
+  
 
   const handleSelection = (
     key: "specialization" | "region" | "city",
@@ -124,7 +174,7 @@ const Filter = ({
   };
 
   return (
-    <div className="space-y-4 md:space-y-0 md:flex md:items-center md:gap-4 py-12 px-10 bg-white">
+    <div className="space-y-4 md:space-y-0 md:flex md:items-center md:gap-4 py-12 px-10 bg-white transition-all w-full">
       {/* Specialization Dropdown */}
       <div
         className="relative"
@@ -134,7 +184,7 @@ const Filter = ({
       >
         <button
           onClick={() => toggleDropdown("specialization")}
-          className={`flex py-2 md:px-8 w-full md:w-auto lg:px-24 font-bold text-custom-grayDark justify-between bg-custom-filterGray rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm items-center ${
+          className={`flex py-2 md:px-8 w-full px-4 md:w-auto lg:px-24 font-bold text-custom-grayDark justify-between bg-custom-filterGray rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm items-center ${
             lang === "en" ? "" : "flex-row-reverse"
           }`}
         >
@@ -177,7 +227,9 @@ const Filter = ({
       >
         <button
           onClick={() => toggleDropdown("region")}
-          className="flex py-2 md:px-8 w-full md:w-auto lg:px-24 font-bold text-custom-grayDark justify-between bg-custom-filterGray rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm items-center"
+          className={`flex py-2 md:px-8 w-full px-4 md:w-auto lg:px-24 font-bold text-custom-grayDark justify-between bg-custom-filterGray rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm items-center ${
+            lang === "en" ? "" : "flex-row-reverse"
+          }`}
         >
           {selectedFilters.region ||
             (lang === "en" ? "Choose Region" : "اختر المنطقة")}
@@ -218,7 +270,9 @@ const Filter = ({
       >
         <button
           onClick={() => toggleDropdown("city")}
-          className="flex py-2 md:px-8 w-full md:w-auto lg:px-24 font-bold text-custom-grayDark justify-between bg-custom-filterGray rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm items-center"
+          className={`flex py-2 md:px-8 w-full px-4 md:w-auto lg:px-24 font-bold text-custom-grayDark justify-between bg-custom-filterGray rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm items-center ${
+            lang === "en" ? "" : "flex-row-reverse"
+          }`}
           disabled={!selectedFilters.region}
         >
           {selectedFilters.city ||

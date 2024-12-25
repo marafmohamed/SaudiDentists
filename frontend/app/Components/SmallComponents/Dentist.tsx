@@ -9,14 +9,14 @@ interface RequestProp {
 }
 
 const Dentist: React.FC<RequestProp> = ({ data, setDemands }) => {
-  const { baseUrl } = useApp();
+  const { baseUrl, lang } = useApp();
   const [lauding, setLauding] = useState(false);
   const [showPopUp, setShowPopUp] = useState(false);
-
+  const [isEnglish, setIsEnglish] = useState(lang === "en");
   const handleAccept = async () => {
     try {
       setLauding(true);
-      const cookie = Cookies.get("token");
+      const cookie = Cookies.get("admin");
       if (!cookie) {
         console.log("no cookie");
         return;
@@ -50,12 +50,12 @@ const Dentist: React.FC<RequestProp> = ({ data, setDemands }) => {
   return (
     <>
       {showPopUp && <Popup onClose={() => setShowPopUp(false)} data={data} />}
-      <div className="bg-custom-grayLight rounded-lg w-full flex flex-wrap items-center justify-between px-5 py-3 border-b my-8">
+      <div className="bg-custom-grayLight rounded-lg w-full flex flex-wrap items-center justify-between px-5 py-3 border-b my-8 z-10">
         <div className="flex items-center gap-4">
           <img src={data.profilePicture} alt="Profile" className="w-12 h-12" />
           <div className="flex flex-col gap-1">
             <h1 className={`font-semibold text-[0.875rem] text-custom-dark`}>
-              {data.firstName} {data.lastName}
+              {isEnglish ? `${data.firstName} ${data.lastName}` : `${data.lastName} ${data.firstName}`}
             </h1>
             <p className={`font-medium text-[0.875rem] text-custom-grayDark`}>
               {data.email}
@@ -67,11 +67,12 @@ const Dentist: React.FC<RequestProp> = ({ data, setDemands }) => {
             className="text-custom-bluePrimary hover:underline cursor-pointer"
             onClick={toggleDetails}
           >
-            see details
+            {isEnglish ? "see details" : "عرض التفاصيل"}
           </p>
           <Popconfirm title="Are you sure?" onConfirm={handleAccept}>
             <div className="bg-custom-grayWrite py-2 px-4 text-white rounded-lg font-semibold flex justify-center z-0 items-center gap-2">
-              {lauding && <span className="loader w-10" />} Delete Dentist
+              {lauding && <span className="loader w-4" />}{" "}
+              {isEnglish ? "Delete Dentist" : "احذف الطبيب"}
             </div>
           </Popconfirm>
         </div>

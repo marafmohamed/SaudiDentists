@@ -55,7 +55,7 @@ const Popup: React.FC<PopupProps> = ({ data, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 overflow-y-autp"
+      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 overflow-y-auto"
       onClick={handleOverlayClick}
     >
       <div className="bg-white rounded-lg shadow-lg w-11/12 max-w-3xl overflow-y-auto max-h-screen relative">

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, Suspense } from "react";
+import React, { useEffect, Suspense, useState } from "react";
 import Filter from "../Components/SmallComponents/Filter";
 import { useSearchParams } from "next/navigation";
 import { useApp } from "../Context";
@@ -8,14 +8,19 @@ import { useRouter } from "next/navigation";
 import { FormData } from "../Components/RegistrationForm";
 import { motion } from "framer-motion";
 import "./styles.css";
+import { s } from "framer-motion/client";
 
 const PageContent = () => {
   const { lang } = useApp();
   const searchParams = useSearchParams();
-  const specialization = searchParams.get("specialization") || "";
-  const region = searchParams.get("region") || "";
-  const city = searchParams.get("city") || "";
-  const doctorName = searchParams.get("doctorName") || "";
+  const [specialization, setSpecialization] = useState(
+    searchParams.get("specialization") || ""
+  );
+  const [region, setRegion] = useState(searchParams.get("region") || "");
+  const [city, setCity] = useState(searchParams.get("city") || "");
+  const [doctorName, setDoctorName] = useState(
+    searchParams.get("doctorName") || ""
+  );
   const [dentists, setDentists] = React.useState<FormData[]>([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(0);
@@ -71,9 +76,9 @@ const PageContent = () => {
       console.log(cc.error);
       return;
     }
-    setDentists(cc.data);
+    setDentists(cc.dentists);
     setTotalPages(cc.totalPages);
-    setCurrentPage(cc.currentPage);
+    setCurrentPage(page);
   };
 
   const renderPageNumbers = () => {
@@ -154,6 +159,10 @@ const PageContent = () => {
         doctorName={doctorName}
         onSearch={async (specialization, region, city, doctorName) => {
           try {
+            setSpecialization(specialization);
+            setRegion(region);
+            setCity(city);
+            setDoctorName(doctorName);
             setLoading(true);
             const response = await fetch(
               `${baseUrl}/api/dentist/getDoctor?specialization=${specialization}&region=${region}&city=${city}&doctorName=${doctorName}&page=${1}&limit=${15}`,

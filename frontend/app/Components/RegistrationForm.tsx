@@ -57,7 +57,15 @@ export interface FormData {
   specialtyArabic: string;
   description: string;
   descriptionArabic: string;
-  [key: string]: string | number | boolean | File | string[] | Location | LocationArabic | null;
+  [key: string]:
+    | string
+    | number
+    | boolean
+    | File
+    | string[]
+    | Location
+    | LocationArabic
+    | null;
 }
 
 const categories: string[] = ["Category1", "Category2", "Category3"];
@@ -353,17 +361,19 @@ export default function RegistrationForm({
           )}
         </div>
         <div className="flex flex-col justify-start items-start w-full gap-2">
-            <label>Private Phone (Will not be displayed on the website)</label>
-            <PhoneInput
+          <label>Private Phone (Will not be displayed on the website)</label>
+          <PhoneInput
             international
             value={formData.privatePhone}
             onChange={(value: string | undefined) =>
-              handleChange({ target: { name: "privatePhone", value } } as ChangeEvent<HTMLInputElement>)
+              handleChange({
+                target: { name: "privatePhone", value },
+              } as ChangeEvent<HTMLInputElement>)
             }
             className="w-full"
             inputComponent={CustomInput}
             placeholder="Private Phone"
-            />
+          />
           {errors.length > 0 && (
             <p className="text-red-500">
               {errors.find((e) => e.name === "privatePhone")?.message}
@@ -429,7 +439,10 @@ export default function RegistrationForm({
             value={formData.reservationsPhone}
             onChange={(value) =>
               handleChange({
-                target: { name: "reservationsPhone", value } as unknown as EventTarget & HTMLInputElement,
+                target: {
+                  name: "reservationsPhone",
+                  value,
+                } as unknown as EventTarget & HTMLInputElement,
               } as ChangeEvent<HTMLInputElement>)
             }
             className="w-full"
@@ -524,7 +537,7 @@ export default function RegistrationForm({
             className="border border-custom-grayLight bg-white p-2 w-full rounded-lg"
           />
           {formData.profilePicture && (
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-500 mt-1 w-80 truncate overflow-hidden text-ellipsis whitespace-nowrap">
               Selected file:{" "}
               {formData.profilePicture instanceof File
                 ? formData.profilePicture.name
@@ -558,7 +571,9 @@ export default function RegistrationForm({
                 key={index}
                 className="w-full flex justify-between items-center"
               >
-                <p className="w-[80%]">{url}</p>
+                <p className="w-[80%] truncate overflow-hidden text-ellipsis whitespace-nowrap">
+                  {url}
+                </p>
                 <button
                   onClick={() => {
                     setFormData((prev) => ({
@@ -605,7 +620,7 @@ export default function RegistrationForm({
             className="border border-custom-grayLight bg-white p-2 w-full rounded-lg"
           />
           {formData.curriculumVitaeUrl && (
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm text-gray-500 mt-1 w-80 truncate overflow-hidden text-ellipsis whitespace-nowrap">
               Selected file:{" "}
               {formData.curriculumVitaeUrl instanceof File
                 ? formData.curriculumVitaeUrl.name
@@ -677,10 +692,10 @@ export default function RegistrationForm({
             className="border border-custom-grayLight bg-white p-2 w-full rounded-lg "
           />
         </div>
-        <div className="col-span-1 md:col-span-2 text-center mt-4">
+        <div className="col-span-1 w-full md:col-span-2 text-center mt-4">
           <button
             type="submit"
-            className="bg-custom-bluePrimary text-white px-4 py-2 w-80 text-lg font-bold drop-shadow-md shadow-md rounded-lg"
+            className="bg-custom-bluePrimary text-white px-4 py-2 md:w-80 w-full text-lg font-bold drop-shadow-md shadow-md rounded-lg"
           >
             Next
           </button>
@@ -705,6 +720,28 @@ export default function RegistrationForm({
         }}
         className="grid  grid-cols-1 md:grid-cols-2 gap-4 mt-4 text-right"
       >
+        <div className=" flex flex-col  md:hidden justify-start items-end w-full gap-2">
+          <label>الاسم الاول</label>
+          <input
+            name="firstNameArabic"
+            placeholder="الاسم الاول"
+            value={formData.firstNameArabic}
+            onChange={handleChange}
+            className="border text-right border-custom-grayLight bg-white p-2 w-full rounded-lg "
+            required
+          />
+        </div>
+        <div className="flex md:hidden flex-col justify-start items-end w-full gap-2">
+          <label>اسم العائلة</label>
+          <input
+            name="lastNameArabic"
+            placeholder="اسم العائلة"
+            value={formData.lastNameArabic}
+            onChange={handleChange}
+            className="border text-right border-custom-grayLight bg-white p-2 w-full rounded-lg "
+            required
+          />
+        </div>
         <div className="flex flex-col justify-start items-end w-full gap-2">
           <label>قطاع العمل الحكومي</label>
           <input
@@ -716,7 +753,7 @@ export default function RegistrationForm({
             required
           />
         </div>
-        <div className="flex flex-col justify-start items-end w-full gap-2">
+        <div className=" flex-col hidden md:flex justify-start items-end w-full gap-2">
           <label>الاسم الاول</label>
           <input
             name="firstNameArabic"
@@ -738,7 +775,7 @@ export default function RegistrationForm({
             required
           />
         </div>
-        <div className="flex flex-col justify-start items-end w-full gap-2">
+        <div className="hidden md:flex flex-col justify-start items-end w-full gap-2">
           <label>اسم العائلة</label>
           <input
             name="lastNameArabic"

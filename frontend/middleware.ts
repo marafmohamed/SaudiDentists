@@ -3,8 +3,8 @@ import { NextResponse, NextRequest } from 'next/server';
 // Helper function to validate tokens via backend API
 async function validateToken(token: string, role: string) {
     try {
-        // const baseUrl = "http://backend:8080";
-        const baseUrl = "http://localhost:8080";
+        const baseUrl = process.env.NEXT_PUBLIC_BACK_URL;
+        // const baseUrl = "http://localhost:8080";
         const endpoint = role === 'admin' ? `${baseUrl}/api/auth/verifyTokenAdmin` : `${baseUrl}/api/auth/verifyTokenDentist`;
         const response = await fetch(endpoint, {
             method: 'POST',

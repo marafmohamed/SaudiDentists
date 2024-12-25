@@ -7,6 +7,12 @@ import Footer from "./Components/Footer";
 export const metadata: Metadata = {
   title: "saudi dentists",
   description: "your way to know all the dentists in saudi arabia",
+  icons:{
+    icon:{
+      href:"/favicon.ico",
+      url:"/favicon.ico",
+    }
+  }
 };
 
 export default function RootLayout({

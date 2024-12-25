@@ -28,18 +28,28 @@ export default function Navbar() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const closeDropdown = (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+
+    // Ignore clicks on links or inside the dropdown
     if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(e.target as Node) &&
-      dropdownButtonRef.current &&
-      !dropdownButtonRef.current.contains(e.target as Node)
+      target.closest("a[href]") ||
+      (dropdownRef.current && dropdownRef.current.contains(target)) ||
+      (dropdownButtonRef.current && dropdownButtonRef.current.contains(target))
     ) {
-      setIsOpen(false);
+      return;
     }
+
+    // Close the dropdown
+    setIsOpen(false);
   };
 
   const closeMenuOnClickOutside = (e: MouseEvent) => {
-    if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
+    const target = e.target as HTMLElement;
+    if (
+      menuRef.current &&
+      !menuRef.current.contains(e.target as Node) &&
+      !target.closest("a[href]")
+    ) {
       setIsMenuOpen(false);
     }
   };
@@ -281,6 +291,9 @@ export default function Navbar() {
               <div className="flex flex-col space-y-4">
                 <Link
                   href="/"
+                  onClick={() => {
+                    setIsMenuOpen(false);
+                  }}
                   className={`flex p-2 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
                     language === "en" ? "" : "flex-row-reverse"
                   }`}
@@ -291,6 +304,9 @@ export default function Navbar() {
                 {!token && !adminToken && (
                   <Link
                     href="/Login"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                    }}
                     className={`flex p-2 px-4 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
                       language === "en" ? "" : "flex-row-reverse"
                     }`}
@@ -356,8 +372,9 @@ export default function Navbar() {
                         href="/AboutUs/Founder"
                         onClick={() => {
                           setIsOpen(false);
+                          setIsMenuOpen(false);
                         }}
-                        className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover"
+                        className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover "
                       >
                         {language === "en" ? "Founder" : "المؤسس"}
                       </Link>
@@ -365,6 +382,7 @@ export default function Navbar() {
                         href="/AboutUs/OurGoals"
                         onClick={() => {
                           setIsOpen(false);
+                          setIsMenuOpen(false);
                         }}
                         className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                       >
@@ -374,6 +392,7 @@ export default function Navbar() {
                         href="/AboutUs/ThanksAppreciation"
                         onClick={() => {
                           setIsOpen(false);
+                          setIsMenuOpen(false);
                         }}
                         className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                       >
@@ -385,6 +404,7 @@ export default function Navbar() {
                         href="/Register"
                         onClick={() => {
                           setIsOpen(false);
+                          setIsMenuOpen(false);
                         }}
                         className="px-4 py-2 text-sm flex items-center justify-center font-bold hover:bg-custom-blueLightHover border-t border-t-[#AAAAAA]"
                       >

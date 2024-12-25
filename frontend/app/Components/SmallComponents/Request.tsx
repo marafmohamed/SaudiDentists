@@ -9,11 +9,11 @@ interface RequestProp {
 }
 
 const Request: React.FC<RequestProp> = ({ data, setDemands }) => {
-  const { baseUrl } = useApp();
+  const { baseUrl, lang } = useApp();
   const [lauding, setLauding] = useState(false);
   const [lauding1, setLauding1] = useState(false);
   const [showPopUp, setShowPopUp] = useState(false);
-
+  const [isEnglish, setIsEnglish] = useState(lang === "en");
   const handleAccept = async () => {
     try {
       setLauding(true);
@@ -81,12 +81,14 @@ const Request: React.FC<RequestProp> = ({ data, setDemands }) => {
   return (
     <>
       {showPopUp && <Popup onClose={() => setShowPopUp(false)} data={data} />}
-      <div className="bg-custom-grayLight rounded-lg w-full flex flex-wrap items-center justify-between px-5 py-3 border-b my-8">
+      <div className="bg-custom-grayLight rounded-lg w-full flex flex-wrap items-center justify-between px-5 py-3 z-10 border-b my-8">
         <div className="flex items-center gap-4">
           <img src={data.profilePicture} alt="Profile" className="w-12 h-12" />
           <div className="flex flex-col gap-1">
             <h1 className={`font-semibold text-[0.875rem] text-custom-dark`}>
-              {data.firstName} {data.lastName}
+              {isEnglish
+                ? `${data.firstName} ${data.lastName}`
+                : `${data.lastNameArabic} ${data.firstNameArabic}`}
             </h1>
             <p className={`font-medium text-[0.875rem] text-custom-grayDark`}>
               {data.email}
