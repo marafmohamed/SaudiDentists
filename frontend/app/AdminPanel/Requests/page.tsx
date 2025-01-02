@@ -6,12 +6,15 @@ import Cookies from "js-cookie";
 import { RequestData } from "../../Components/SmallComponents/RequestPopup";
 import "../styles.css";
 export default function Page() {
-  const { baseUrl , lang } = useApp();
+  const { baseUrl, lang } = useApp();
   const [requests, setRequests] = useState<RequestData[]>([]);
   const [totalPages, setTotalPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [isEnglish, setIsEnglish] = useState(lang === "en");
+  useEffect(() => {
+    setIsEnglish(lang === "en");
+  }, [lang]);
   useEffect(() => {
     const getRequest = async () => {
       setLoading(true);
@@ -62,7 +65,7 @@ export default function Page() {
       console.log(cc.error);
       return;
     }
-   
+
     if (cc.error) {
       console.log(cc.error);
       return;
@@ -160,17 +163,18 @@ export default function Page() {
           {isEnglish ? "No Requests" : "لا توجد طلبات"}
         </div>
       )}
-      {!loading &&
-        requests.length > 0 &&
-        requests.map((request) => (
-          <Request
-            key={request._id}
-            data={request}
-            setDemands={() =>
-              setRequests(requests.filter((r) => r._id !== request._id))
-            }
-          ></Request>
-        ))}
+        {!loading &&
+          requests.length > 0 &&
+          requests.map((request) => (
+            <Request
+              key={request._id}
+              data={request}
+              setDemands={() =>
+                setRequests(requests.filter((r) => r._id !== request._id))
+              }
+            ></Request>
+          ))}
+
       <div className="flex items-center justify-center mt-auto">
         {/* Previous button */}
         <button

@@ -2,6 +2,8 @@ import { useState, useRef, useEffect } from "react";
 import { useApp } from "@/app/Context";
 import { motion } from "framer-motion";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 interface FilterProps {
   specialization: string;
   region: string;
@@ -13,6 +15,7 @@ interface FilterProps {
     city: string,
     doctorName: string
   ) => void;
+  main: boolean;
 }
 
 const Filter = ({
@@ -21,6 +24,7 @@ const Filter = ({
   city,
   doctorName,
   onSearch,
+  main,
 }: FilterProps) => {
   const [isOpen, setIsOpen] = useState({
     specialization: false,
@@ -37,69 +41,168 @@ const Filter = ({
   const specialties = [
     "Prosthodontics",
     "Dental Technology",
-    "Endodontics",
-    "Periodontics",
-    "Oral and Maxillofacial Surgery",
-    "Pedodontics",
-    "Orthodontics",
-    "Restorative Dentistry",
+    // "Endodontics",
+    // "Periodontics",
+    // "Oral and Maxillofacial Surgery",
+    // "Pedodontics",
+    // "Orthodontics",
+    // "Restorative Dentistry",
   ];
 
   const specialtiesArabic = [
     "طب الأسنان التعويضي",
     "تقنية الأسنان",
-    "علاج جذور الأسنان",
-    "طب دواعم الأسنان",
-    "جراحة الفم والوجه والفكين",
-    "طب أسنان الأطفال",
-    "تقويم الأسنان",
-    "طب الأسنان الترميمي",
+    // "علاج جذور الأسنان",
+    // "طب دواعم الأسنان",
+    // "جراحة الفم والوجه والفكين",
+    // "طب أسنان الأطفال",
+    // "تقويم الأسنان",
+    // "طب الأسنان الترميمي",
   ];
 
   const regions =
     lang === "en"
-      ? ["Central", "Western", "Eastern", "Southern", "Northern"]
+      ? [
+          "Riyadh",
+          "Mecca",
+          "Medina",
+          "Eastern",
+          "Asir",
+          "Tabuk",
+          "Hail",
+          "Northern Borders",
+          "Jazan",
+          "Najran",
+          "Al-Baha",
+          "Al-Jouf",
+        ]
       : [
-          "المنطقة الوسطى",
-          "المنطقة الغربية",
-          "المنطقة الشرقية",
-          "المنطقة الجنوبية",
-          "المنطقة الشمالية",
+          "الرياض",
+          "مكة",
+          "المدينة المنورة",
+          "الشرقية",
+          "عسير",
+          "تبوك",
+          "حائل",
+          "الحدود الشمالية",
+          "جازان",
+          "نجران",
+          "الباحة",
+          "الجوف",
         ];
 
-  const regionMapping: { [key: string]: string } = {
-    Central: "Central",
-    "المنطقة الوسطى": "Central",
-    Western: "Western",
-    "المنطقة الغربية": "Western",
-    Eastern: "Eastern",
-    "المنطقة الشرقية": "Eastern",
-    Southern: "Southern",
-    "المنطقة الجنوبية": "Southern",
-    Northern: "Northern",
-    "المنطقة الشمالية": "Northern",
+  const cities: { [key: string]: string[] } = {
+    Riyadh: [
+      "Riyadh",
+      "Al-Kharj",
+      "Al-Majmaah",
+      "Al-Zulfi",
+      "Wadi Al-Dawasir",
+      "Dawadmi",
+      "Shaqra",
+      "Al-Quwayiyah",
+      "Afif",
+      "Thadiq",
+      "Rumah",
+      "Al-Hariq",
+    ],
+    الرياض: [
+      "الرياض",
+      "الخرج",
+      "المجمعة",
+      "الزلفي",
+      "وادي الدواسر",
+      "الدوادمي",
+      "شقراء",
+      "القويعية",
+      "عفيف",
+      "ثادق",
+      "رماح",
+      "الحريق",
+    ],
+    Mecca: [
+      "Makkah",
+      "Jeddah",
+      "Taif",
+      "Rabigh",
+      "Al-Lith",
+      "Khulais",
+      "Al-Jumum",
+      "Al-Kamil",
+      "Ranyah",
+      "Turabah",
+    ],
+    مكة: [
+      "مكة",
+      "جدة",
+      "الطائف",
+      "رابغ",
+      "الليث",
+      "خليص",
+      "الجموم",
+      "الكامل",
+      "رنية",
+      "تربة",
+    ],
+    Medina: ["Madinah", "Yanbu", "Al-Ula", "Badr", "Khaibar", "Al-Hanakiyah"],
+    المدينة: ["المدينة المنورة", "ينبع", "العلا", "بدر", "خيبر", "الحناكية"],
+    Eastern: [
+      "Dammam",
+      "Khobar",
+      "Dhahran",
+      "Al-Ahsa (Hofuf)",
+      "Jubail",
+      "Qatif",
+      "Khafji",
+      "Abqaiq",
+      "Al-Nairyah",
+      "Hafr Al-Batin",
+    ],
+    الشرقية: [
+      "الدمام",
+      "الخبر",
+      "الظهران",
+      "الأحساء (الهفوف)",
+      "الجبيل",
+      "القطيف",
+      "الخفجي",
+      "بقيق",
+      "النعيرية",
+      "حفر الباطن",
+    ],
+    Asir: [
+      "Abha",
+      "Khamis Mushait",
+      "Al-Namas",
+      "Muhayil",
+      "Bisha",
+      "Rijal Alma",
+      "Tanomah",
+    ],
+    عسير: [
+      "أبها",
+      "خميس مشيط",
+      "النماص",
+      "محايل",
+      "بيشة",
+      "رجال ألمع",
+      "تنومة",
+    ],
+    Tabuk: ["Tabuk", "Umluj", "Al-Wajh", "Duba", "Haql", "Tayma"],
+    تبوك: ["تبوك", "أملج", "الوجه", "ضباء", "حقل", "تيماء"],
+    Hail: ["Hail", "Al-Ghazalah", "Baqa", "Al-Shinan"],
+    حائل: ["حائل", "الغزالة", "بقعاء", "الشنان"],
+    "Northern Borders": ["Arar", "Rafha", "Turaif"],
+    الحدود: ["عرعر", "رفحاء", "طريف"],
+    Jazan: ["Jazan", "Sabya", "Abu Arish", "Samtah", "Al-Darb", "Farasan"],
+    جازان: ["جازان", "صبيا", "أبو عريش", "صامطة", "الدرب", "فرسان"],
+    Najran: ["Najran", "Sharurah", "Habuna"],
+    نجران: ["نجران", "شرورة", "حبونا"],
+    "Al-Baha": ["Al-Baha", "Baljurashi", "Al-Mandaq", "Al-Aqiq"],
+    الباحة: ["الباحة", "بلجرشي", "المندق", "العقيق"],
+    "Al-Jouf": ["Sakakah", "Al-Qurayyat", "Dumat Al-Jandal"],
+    الجوف: ["سكاكا", "القريات", "دومة الجندل"],
   };
-
-  const cities = {
-    Central:
-      lang === "en"
-        ? ["Riyadh", "Al-Kharj", "Al-Qassim"]
-        : ["الرياض", "الخرج", "القصيم"],
-    Western:
-      lang === "en"
-        ? ["Mecca", "Jeddah", "Taif", "Yanbu", "Medina"]
-        : ["مكة", "جدة", "الطائف", "ينبع", "المدينة"],
-    Eastern:
-      lang === "en"
-        ? ["Dammam", "Khobar", "Jubail", "Al-Ahsa", "Qatif", "Dhahran"]
-        : ["الدمام", "الخبر", "الجبيل", "الأحساء", "القطيف", "الظهران"],
-    Southern:
-      lang === "en"
-        ? ["Abha", "Khamis Mushait", "Jazan", "Najran"]
-        : ["أبها", "خميس مشيط", "جيزان", "نجران"],
-    Northern: lang === "en" ? ["Tabuk"] : ["تبوك"],
-  };
-
   const [selectedFilters, setSelectedFilters] = useState({
     specialization: specialization || "",
     region: region || "",
@@ -108,59 +211,65 @@ const Filter = ({
   });
 
   const toggleDropdown = (key: "specialization" | "region" | "city") => {
-    setIsOpen((prev) => ({ ...prev, [key]: !prev[key] }));
+    setIsOpen({
+      specialization: false,
+      region: false,
+      city: false,
+      [key]: !isOpen[key],
+    });
   };
+
   useEffect(() => {
     setSelectedFilters((prev) => {
       const updatedFilters = { ...prev };
-  
-      // Update specialization
+
       if (prev.specialization) {
-        const indexEn = specialties.findIndex((spec) => spec === prev.specialization);
-        const indexAr = specialtiesArabic.findIndex((spec) => spec === prev.specialization);
-  
+        const indexEn = specialties.findIndex(
+          (spec) => spec === prev.specialization
+        );
+        const indexAr = specialtiesArabic.findIndex(
+          (spec) => spec === prev.specialization
+        );
+
         if (lang === "en" && indexEn !== -1) {
           updatedFilters.specialization = specialties[indexEn];
         } else if (lang === "ar" && indexAr !== -1) {
           updatedFilters.specialization = specialtiesArabic[indexAr];
         } else {
-          // If the selected value is not found, reset it
           updatedFilters.specialization = "";
         }
       }
-  
-      // Update region
+
       if (prev.region) {
-        const regionIndex = regions.findIndex((region) => region === prev.region);
+        const regionIndex = regions.findIndex(
+          (region) => region === prev.region
+        );
         if (regionIndex !== -1) {
           updatedFilters.region = regions[regionIndex];
         } else {
-          // If the region is not found, reset it
           updatedFilters.region = "";
         }
       }
-  
-      // Update city
-      if (prev.city && prev.region) {
-        const regionKey = regionMapping[prev.region] as keyof typeof cities;
-        const regionCities = cities[regionKey] || [];
-        const cityIndex = regionCities.findIndex((city) => city === prev.city);
-  
-        if (cityIndex !== -1) {
-          updatedFilters.city = regionCities[cityIndex];
-        } else {
-          // If the city is not found, reset it
-          updatedFilters.city = "";
-        }
-      }
-  
+      updatedFilters.city = "";
       return updatedFilters;
     });
   }, [lang]);
-  
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        !dropdownRefs.current.specialization?.contains(event.target as Node) &&
+        !dropdownRefs.current.region?.contains(event.target as Node) &&
+        !dropdownRefs.current.city?.contains(event.target as Node)
+      ) {
+        setIsOpen({ specialization: false, region: false, city: false });
+      }
+    };
 
-  
-
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   const handleSelection = (
     key: "specialization" | "region" | "city",
     value: string
@@ -175,7 +284,7 @@ const Filter = ({
 
   return (
     <div className="space-y-4 md:space-y-0 md:flex md:items-center md:gap-4 py-12 px-10 bg-white transition-all w-full">
-      {/* Specialization Dropdown */}
+      <ToastContainer />
       <div
         className="relative"
         ref={(el) => {
@@ -218,7 +327,6 @@ const Filter = ({
         )}
       </div>
 
-      {/* Region Dropdown */}
       <div
         className="relative"
         ref={(el) => {
@@ -246,7 +354,7 @@ const Filter = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-0 w-full bg-white text-gray-700 shadow-lg mt-1 rounded-lg border border-[#AAAAAA] z-10"
+            className="absolute left-0 w-full max-h-52 overflow-y-auto bg-white text-gray-700 shadow-lg mt-1 rounded-lg border border-[#AAAAAA] z-10"
           >
             {regions.map((region) => (
               <div
@@ -261,7 +369,6 @@ const Filter = ({
         )}
       </div>
 
-      {/* City Dropdown */}
       <div
         className="relative"
         ref={(el) => {
@@ -269,11 +376,20 @@ const Filter = ({
         }}
       >
         <button
-          onClick={() => toggleDropdown("city")}
+          onClick={() => {
+            if (!selectedFilters.region) {
+              toast.warn(
+                lang === "en"
+                  ? "Please choose a region first."
+                  : "يرجى اختيار المنطقة أولاً."
+              );
+            } else {
+              toggleDropdown("city");
+            }
+          }}
           className={`flex py-2 md:px-8 w-full px-4 md:w-auto lg:px-24 font-bold text-custom-grayDark justify-between bg-custom-filterGray rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm items-center ${
             lang === "en" ? "" : "flex-row-reverse"
           }`}
-          disabled={!selectedFilters.region}
         >
           {selectedFilters.city ||
             (lang === "en" ? "Choose City" : "اختر المدينة")}
@@ -290,11 +406,9 @@ const Filter = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-0 w-full bg-white text-gray-700 shadow-lg mt-1 rounded-lg border border-[#AAAAAA] z-10"
+            className="absolute left-0 w-full max-h-52 overflow-y-auto bg-white text-gray-700 shadow-lg mt-1 rounded-lg border border-[#AAAAAA] z-10"
           >
-            {cities[
-              regionMapping[selectedFilters.region] as keyof typeof cities
-            ]?.map((city) => (
+            {cities[selectedFilters.region]?.map((city) => (
               <div
                 key={city}
                 onClick={() => handleSelection("city", city)}
@@ -307,7 +421,6 @@ const Filter = ({
         )}
       </div>
 
-      {/* Doctor Name Input */}
       <div className="flex-grow">
         <input
           type="text"
@@ -325,17 +438,8 @@ const Filter = ({
         />
       </div>
 
-      {/* Search Button */}
       <button
         onClick={async () => {
-          if (selectedFilters.city === "" || selectedFilters.region === "") {
-            alert(
-              lang == "en"
-                ? "Please choose a city before proceeding"
-                : "الرجاء اختيار مدينة قبل المتابعة"
-            );
-            return;
-          }
           await onSearch(
             selectedFilters.specialization,
             selectedFilters.region,
@@ -345,7 +449,7 @@ const Filter = ({
         }}
         className="px-6 py-2 w-full md:w-48 bg-custom-bluePrimary text-white font-bold rounded-lg hover:bg-custom-blueDark transition-all"
       >
-        {lang === "en" ? "Search" : "بحث"}
+        {lang === "en" ? (main ? "Search" : "Filter") : (main ? "بحث" : "تصفية")}
       </button>
     </div>
   );

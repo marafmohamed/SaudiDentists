@@ -27,7 +27,9 @@ export default function Home() {
                 doctorName,
               }).toString()
           );
+
         }}
+        main={true}
       />
     </div>
   );

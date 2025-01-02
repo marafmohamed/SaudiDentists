@@ -18,7 +18,10 @@ const getPaginatedDentists = async (req, res) => {
 
   try {
     const skip = (parseInt(page) - 1) * parseInt(limit); // Correctly calculate skip value
-    const dentists = await Dentist.find({}).skip(skip).limit(parseInt(limit)); // Ensure limit is an integer
+    const dentists = await Dentist.find({})
+      .skip(skip)
+      .limit(parseInt(limit))
+      .select("-password"); // Ensure limit is an integer
     const totalDentists = await Dentist.countDocuments();
     const totalPages = Math.ceil(totalDentists / parseInt(limit)); // Ensure total pages calculation is correct
 
@@ -45,85 +48,63 @@ const getDentist = async (req, res) => {
   res.status(200).json(dentist);
 };
 const getFilteredDentists = async (req, res) => {
-  const { specialization, city, doctorName, region, page, limit } = req.query;
+  const { specialization, city, doctorName, region, page = 1, limit = 10 } = req.query;
+
   try {
     const skip = (page - 1) * limit;
-    if (!specialization && !city && !doctorName && !region) {
-      const dentists = await Dentist.find({}).skip(skip).limit(parseInt(limit));
-      const totalDentists = await Dentist.countDocuments();
-      const totalPages = Math.ceil(totalDentists / limit);
-      return res.status(200).json({ dentists, totalPages });
+
+    // Build dynamic filter object
+    const filter = {};
+
+    // Add specialization filter (English or Arabic)
+    if (specialization) {
+      filter.$or = [
+        { specialty: specialization },
+        { specialtyArabic: specialization },
+      ];
     }
-    const dentists = await Dentist.find({
-      $and: [
-        // Match specialty in English or Arabic
-        {
-          $or: [
-            { specialty: specialization },
-            { specialtyArabic: specialization },
-          ],
-        },
-        // Match city in English or Arabic
-        {
-          $or: [
-            { "location.city": city },
-            { "locationArabic.cityArabic": city },
-          ],
-        },
-        // Include doctorName condition only if provided
-        ...(doctorName
-          ? [
-              {
-                $or: [
-                  { firstName: new RegExp(doctorName, "i") },
-                  { lastName: new RegExp(doctorName, "i") },
-                  { firstNameArabic: new RegExp(doctorName, "i") },
-                  { lastNameArabic: new RegExp(doctorName, "i") },
-                ],
-              },
-            ]
-          : []),
-      ],
-    })
+
+    // Add city filter (English or Arabic)
+    if (city) {
+      filter.$or = filter.$or || [];
+      filter.$or.push(
+        { "location.city": city },
+        { "locationArabic.cityArabic": city }
+      );
+    }
+
+    // Add doctor name filter (English or Arabic)
+    if (doctorName) {
+      const nameRegex = new RegExp(doctorName, "i");
+      filter.$or = filter.$or || [];
+      filter.$or.push(
+        { firstName: nameRegex },
+        { lastName: nameRegex },
+        { firstNameArabic: nameRegex },
+        { lastNameArabic: nameRegex }
+      );
+    }
+
+    // Add region filter if provided
+    if (region) {
+      filter["location.region"] = region;
+    }
+
+    // Query the database with the constructed filter
+    const dentists = await Dentist.find(filter)
       .skip(skip)
-      .limit(parseInt(limit));
-    const totalDentists = await Dentist.countDocuments({
-      $and: [
-        // Match specialty in English or Arabic
-        {
-          $or: [
-            { specialty: specialization },
-            { specialtyArabic: specialization },
-          ],
-        },
-        // Match city in English or Arabic
-        {
-          $or: [
-            { "location.city": city },
-            { "locationArabic.cityArabic": city },
-          ],
-        },
-        // Include doctorName condition only if provided
-        ...(doctorName
-          ? [
-              {
-                $or: [
-                  { firstName: new RegExp(doctorName, "i") },
-                  { lastName: new RegExp(doctorName, "i") },
-                  { firstNameArabic: new RegExp(doctorName, "i") },
-                  { lastNameArabic: new RegExp(doctorName, "i") },
-                ],
-              },
-            ]
-          : []),
-      ],
-    });
+      .limit(parseInt(limit))
+      .select("-password");
+
+    const totalDentists = await Dentist.countDocuments(filter);
     const totalPages = Math.ceil(totalDentists / limit);
+
     res.status(200).json({ dentists, totalPages });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
+
 const getDentistWithId = async (req, res) => {
   const { dentistId } = req.params;
   try {

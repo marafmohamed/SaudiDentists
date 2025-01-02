@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebaseConfig"; // Import the existing storage instance
 import { UploadTaskSnapshot } from "@firebase/storage";
+import { useApp } from "../Context";
 
 const useUploadFile = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -10,7 +11,7 @@ const useUploadFile = () => {
   const [uploadPdfProgress, setUploadPdfProgress] = useState(0);
   const [uploadError, setUploadError] = useState<string | null>(null);
   const [downloadURL, setDownloadURL] = useState<string | null>(null);
-
+  const { lang } = useApp();
   const uploadFile = (file: File, fileType: string) => {
     return new Promise((resolve, reject) => {
       let validTypes = [];
@@ -30,7 +31,7 @@ const useUploadFile = () => {
             "image/bmp",
           ];
 
-          maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+          maxSizeInBytes = 10 * 1024 * 1024; // 5MB
           storagePath = `images/${uniqueFileName}`;
           break;
         case "video":
@@ -71,16 +72,34 @@ const useUploadFile = () => {
       // Check if the file type is valid
       if (!validTypes.includes(file.type)) {
         setUploadError("يرجى اختيار ملف صالح.");
-        reject("نوع الملف غير صالح");
+        if (fileType === "image") {
+          reject(
+            lang === "en"
+              ? "The image must be in one of the following formats: JPG, PNG, GIF, WEBP, SVG, or BMP."
+              : "يجب أن تكون الصورة بصيغة: JPG, PNG, GIF, WEBP, SVG، أو BMP."
+          );
+        }
+        if (fileType === "pdf") {
+          reject(
+            lang === "en"
+              ? "The CV file must be in PDF format only."
+              : "يجب أن يكون ملف السيرة الذاتية بصيغة PDF فقط."
+          );
+        }
         return;
       }
 
       // Check if the file size is within the allowed limit
       if (file.size > maxSizeInBytes) {
-        setUploadError(
-          `يجب ألا يتجاوز حجم الملف ${maxSizeInBytes / (1024 * 1024)}MB.`
+        console.log(file.size);
+        setUploadError(lang === "en"
+          ? `The file size must not exceed ${maxSizeInBytes / (1024 * 1024)}MB.`
+          : `يجب ألا يتجاوز حجم الملف ${maxSizeInBytes / (1024 * 1024)}MB.`
         );
-        reject("حجم الملف يتجاوز الحد المسموح");
+        reject(lang === "en"
+          ? `The file size must not exceed ${maxSizeInBytes / (1024 * 1024)}MB.`
+          : `يجب ألا يتجاوز حجم الملف ${maxSizeInBytes / (1024 * 1024)}MB.`
+        );
         return;
       }
 

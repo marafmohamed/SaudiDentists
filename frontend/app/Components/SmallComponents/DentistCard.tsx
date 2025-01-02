@@ -7,6 +7,7 @@ interface CardProps {
   nameArabic: string;
   cityArabic: string;
   profilePicture: string;
+  gender: "male" | "female";
   onViewProfile: () => void;
 }
 
@@ -16,6 +17,7 @@ const Card: React.FC<CardProps> = ({
   nameArabic,
   cityArabic,
   profilePicture,
+  gender,
   onViewProfile,
 }) => {
   // Get the current language from the useApp hook
@@ -31,7 +33,13 @@ const Card: React.FC<CardProps> = ({
       <div className="absolute -top-10">
         <div className="w-24 h-24 rounded-full overflow-hidden">
           <img
-            src={profilePicture}
+            src={
+              profilePicture
+                ? profilePicture
+                : gender === "male"
+                ? "/Images/Default-ProfileMale.jpg"
+                : "/Images/Default-ProfileFemale.jpg"
+            }
             alt={displayedName}
             className="w-full h-full object-cover"
           />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Popconfirm from "./PopConfirm";
 import { useApp } from "@/app/Context";
@@ -14,6 +14,9 @@ const Request: React.FC<RequestProp> = ({ data, setDemands }) => {
   const [lauding1, setLauding1] = useState(false);
   const [showPopUp, setShowPopUp] = useState(false);
   const [isEnglish, setIsEnglish] = useState(lang === "en");
+  useEffect(() => {
+    setIsEnglish(lang === "en");
+  }, [lang]);
   const handleAccept = async () => {
     try {
       setLauding(true);
@@ -69,6 +72,7 @@ const Request: React.FC<RequestProp> = ({ data, setDemands }) => {
         return json;
       }
       setLauding1(false);
+      setDemands();
     } catch (error) {
       console.log(error);
       setLauding1(false);
@@ -81,9 +85,19 @@ const Request: React.FC<RequestProp> = ({ data, setDemands }) => {
   return (
     <>
       {showPopUp && <Popup onClose={() => setShowPopUp(false)} data={data} />}
-      <div className="bg-custom-grayLight rounded-lg w-full flex flex-wrap items-center justify-between px-5 py-3 z-10 border-b my-8">
+      <div className="bg-custom-grayLight rounded-lg w-full flex flex-wrap items-center justify-between px-5 py-3 z-0 border-b my-8">
         <div className="flex items-center gap-4">
-          <img src={data.profilePicture} alt="Profile" className="w-12 h-12" />
+          <img
+            src={
+              data.profilePicture
+                ? data.profilePicture
+                : data.gender === "male"
+                ? "/Images/Default-ProfileMale.jpg"
+                : "/Images/Default-ProfileFemale.jpg"
+            }
+            alt="Profile"
+            className="w-12 h-12"
+          />
           <div className="flex flex-col gap-1">
             <h1 className={`font-semibold text-[0.875rem] text-custom-dark`}>
               {isEnglish
@@ -103,13 +117,13 @@ const Request: React.FC<RequestProp> = ({ data, setDemands }) => {
             see details
           </p>
           <Popconfirm title="Are you sure?" onConfirm={handleRefuse}>
-            <div className=" rounded-lg font-semibold py-2 px-4 border-2 border-custom-grayDark flex justify-center items-center z-0 gap-2 text-custom-grayDark">
-              {lauding1 && <span className="loader" />} Refuse{" "}
+            <div className=" rounded-lg font-semibold py-2 px-4 border-2 border-custom-grayDark flex justify-center items-center  gap-2 text-custom-grayDark">
+              {lauding1 && <span className="loader-button" />} Refuse{" "}
             </div>
           </Popconfirm>
           <Popconfirm title="Are you sure?" onConfirm={handleAccept}>
-            <div className="bg-custom-greenPrimary py-2 px-4 text-white rounded-lg font-semibold flex justify-center z-0 items-center gap-2">
-              {lauding && <span className="loader" />} Accept
+            <div className="bg-custom-greenPrimary py-2 px-4 text-white rounded-lg font-semibold flex justify-center items-center gap-2">
+              {lauding && <span className="loader-button" />} Accept
             </div>
           </Popconfirm>
         </div>

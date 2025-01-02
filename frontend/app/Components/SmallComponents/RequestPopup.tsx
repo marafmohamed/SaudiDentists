@@ -16,6 +16,7 @@ export interface RequestData {
   linkedinUrl?: string;
   snapchatUrl?: string;
   tiktokUrl?: string;
+  gender: "male" | "female";
   location: {
     area: string;
     city: string;
@@ -69,7 +70,13 @@ const Popup: React.FC<PopupProps> = ({ data, onClose }) => {
         {/* Profile Picture */}
         <div className="flex justify-between my-4 px-8">
           <img
-            src={data.profilePicture}
+            src={
+              data.profilePicture
+                ? data.profilePicture
+                : data.gender === "male"
+                ? "/Images/Default-ProfileMale.jpg"
+                : "/Images/Default-ProfileFemale.jpg"
+            }
             alt="Profile Picture"
             className="rounded-full w-32 h-32"
           />

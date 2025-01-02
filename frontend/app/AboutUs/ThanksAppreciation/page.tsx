@@ -21,23 +21,14 @@ export default function Page() {
           <h2 className="text-2xl md:text-2xl w-full flex items-center justify-center bg-custom-bluePrimary/30 font-bold mb-6 ">
             {isEnglish ? "Thanks And Appreciation" : "الشكر والتقدير"}
           </h2>
-          <h3
-            className={`text-lg w-full md:text-xl  font-medium mb-4  ${
-              isEnglish ? "text-left" : "text-right"
-            }`}
-          >
-            {isEnglish
-              ? "We Care About Your Dental Health"
-              : "نحن نهتم بصحة أسنانك"}
-          </h3>
           <p
             className={`text-lg md:text-xl mb-2 md:w-[90%] leading-relaxed  text-custom-grayWrite ${
               isEnglish ? "text-left " : "text-right ml-auto "
             }`}
           >
             {isEnglish
-              ? "The International Dental Support Club, composed of dentists who share the same values and qualifications from all over the world, is formed to provide our patients with immediate dental care when they are out of the country or away from their homeland. Providing the patient's prompt and reliable care becomes a top priority in these situations, which can be extremely difficult for both the patient and the recommending dentist. Recognizing this need, this support team was established."
-              : "يتكون نادي الدعم الدولي للأسنان من أطباء أسنان يشتركون في نفس القيم والمؤهلات من جميع أنحاء العالم، وتم تشكيله لتقديم الرعاية الفورية لمرضانا عندما يكونون خارج بلدانهم أو بعيدين عن أوطانهم. إن توفير الرعاية السريعة والموثوقة للمريض يصبح أولوية قصوى في هذه الحالات، والتي قد تكون صعبة للغاية على كل من المريض والطبيب الموصي. واعترافًا بهذه الحاجة، تم تأسيس فريق الدعم هذا."}
+              ? "Special thanks to my dear brother and mentor, Professor Dr. Mansour Asiri, and all the former and current members of the Board of Directors of the Saudi Prosthodontics Society for encouraging work on this idea. I would also like to extend special thanks to my dear brother Dr. Adnan Ashki for all the support he provided during the work on this project. Thanks are also extended to Dr. Lamia Al-Humaidhi, Dr. Najla Al-Khuzayem, and Dr. Abdullah Al-Urayni for their contribution to technical support as well."
+              : "شكر خاص لسعادة أخي وأستاذي الأستاذ الدكتور/ منصور عسيري وجميع أعضاء مجلس إدارة الجمعية السعودية للاستعاضة السنية السابق والحالي على تشجيع العمل على هذه الفكرة و أيضاً  أخص بالشكر سعادة أخي الدكتور/ عدنان عشقي على جميع ما قدمه من دعم خلال العمل على هذا المشروع والشكر موصول للدكتورة/ لمياء الحميضي والدكتورة/ نجلاء الخزيم والدكتور/ عبدالله العريني على المشاركة في الدعم الفني أيضاً."}{" "}
           </p>
         </div>
 

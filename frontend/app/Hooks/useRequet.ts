@@ -27,22 +27,23 @@ export default function useRequet() {
 
 
     const CreateRequest = async (formData: FormData) => {
-        if (formData.profilePicture instanceof File) {
+        if (formData.profilePicture instanceof File && formData.profilePicture !== null) {
             // upload the profile picture and store the url in the form data
             const uploadedFile = await uploadFile(formData.profilePicture, "image");
+            console.log(uploadedFile)
             if (typeof uploadedFile === "string") {
                 formData.profilePicture = uploadedFile;
             } else {
-                throw new Error("Uploaded file is not of type 'string'");
+                throw new Error("Error uploading profile picture");
             }
         }
-        if (formData.curriculumVitaeUrl instanceof File) {
+        if (formData.curriculumVitaeUrl instanceof File && formData.curriculumVitaeUrl !== null) {
             // upload the CV and store the url in the form data
             const uploadedFile = await uploadFile(formData.curriculumVitaeUrl, "pdf");
             if (typeof uploadedFile === "string") {
                 formData.curriculumVitaeUrl = uploadedFile;
             } else {
-                throw new Error("Uploaded file is not of type 'string'");
+                throw new Error("Error uploading CV");
             }
         }
         if (verifyURLs(formData)) {

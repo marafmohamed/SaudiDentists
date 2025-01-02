@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { FormData } from "../Components/RegistrationForm";
 import { motion } from "framer-motion";
 import "./styles.css";
-import { s } from "framer-motion/client";
 
 const PageContent = () => {
   const { lang } = useApp();
@@ -148,8 +147,8 @@ const PageContent = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center py-4">
-      <h1 className="mx-auto my-8 text-2xl md:text-6xl text-custom-bluePrimary/50 font-bold">
+    <div className="w-full flex flex-col items-center pt-0 pb-4 md:py-4">
+      <h1 className="mx-auto hidden md:block my-8 text-2xl md:text-6xl text-custom-bluePrimary/50 font-bold">
         {lang === "en" ? "Meet our experts" : "تعرف على خبرائنا"}
       </h1>
       <Filter
@@ -186,6 +185,7 @@ const PageContent = () => {
             console.log(error);
           }
         }}
+        main={false}
       />
       {loading && (
         <div className="loading-container">
@@ -224,6 +224,7 @@ const PageContent = () => {
                     ? URL.createObjectURL(dentist.profilePicture)
                     : ""
                 }
+                gender={dentist.gender}
                 onViewProfile={() => router.push("/Experts/" + dentist._id)}
               />
             </motion.div>

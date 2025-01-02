@@ -24,6 +24,7 @@ const createDentistRequest = async (req, res) => {
     category,
     title,
     specialty,
+    gender,
     usernameArabic,
     firstNameArabic,
     lastNameArabic,
@@ -81,6 +82,7 @@ const createDentistRequest = async (req, res) => {
       category,
       title,
       specialty,
+      gender,
       usernameArabic,
       firstNameArabic,
       lastNameArabic,
@@ -160,7 +162,10 @@ const getPaginatedRequests = async (req, res) => {
   const { page = 1, limit = 15 } = req.query; // Default to page 1, limit 10
   try {
     const skip = (page - 1) * limit;
-    const requests = await Request.find().skip(skip).limit(parseInt(limit));
+    const requests = await Request.find()
+      .skip(skip)
+      .limit(parseInt(limit))
+      .select("-password");
     const totalStudents = await Request.countDocuments();
     const totalPages = Math.ceil(totalStudents / limit);
     return res.status(200).json({ requests, totalPages });

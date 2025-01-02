@@ -160,17 +160,17 @@ export default function Page() {
           {/* {"لا توجد طلبات في الان الحالي"} */}
         </div>
       )}
-      {!loading &&
-        Dentists.length > 0 &&
-        Dentists.map((request) => (
-          <Dentist
-            key={request._id}
-            data={request}
-            setDemands={() =>
-              setDentists(Dentists.filter((r) => r._id !== request._id))
-            }
-          ></Dentist>
-        ))}
+        {!loading &&
+          Dentists.length > 0 &&
+          Dentists.map((request) => (
+            <Dentist
+              key={request._id}
+              data={request}
+              setDemands={() =>
+                setDentists(Dentists.filter((r) => r._id !== request._id))
+              }
+            ></Dentist>
+          ))}
       <div className="flex items-center justify-center mt-auto">
         {/* Previous button */}
         <button

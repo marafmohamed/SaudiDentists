@@ -68,10 +68,12 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
             src={
               typeof data.profilePicture === "string"
                 ? data.profilePicture
-                : "/default-profile.png"
+                : data.gender === "male"
+                ? "/images/Default-ProfileMale.jpg"
+                : "/images/Default-ProfileFemale.jpg"
             }
             alt={`${data.firstName}'s profile picture`}
-            className="rounded-lg object-cover w-full h-full"
+            className="rounded-lg object-cover w-full max-h-[500px]"
           />
         </div>
 

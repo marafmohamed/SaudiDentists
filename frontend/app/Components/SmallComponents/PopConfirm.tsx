@@ -25,13 +25,13 @@ const Popconfirm: FC<PopconfirmProps> = ({ title, onConfirm, children }) => {
   };
 
   return (
-    <div className="inline-block z-40">
+    <div className="inline-block ">
       <div onClick={() => setIsVisible(true)} className="inline-block cursor-pointer">
         {children}
       </div>
       {isVisible && (
         <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-25"
+          className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-25"
           onClick={handleOverlayClick}
         >
           <div className="bg-white p-8 rounded-lg shadow-md">

@@ -38,8 +38,9 @@ const DentistSchema = new Schema(
     password: { type: String, required: true },
     privatePhone: { type: String, required: true },
     reservationsPhone: { type: String, required: true }, // Optional
-    governmentalSector: { type: String, required: true }, // Optional
-    privateSector: { type: String, required: true }, // Optional
+    governmentalSector: { type: String }, // Optional
+    privateSector: { type: String }, // Optional
+    gender: { type: String, required: true },
     curriculumVitaeUrl: { type: String, required: true }, // Optional
     twitterUrl: { type: String }, // Optional
     instagramUrl: { type: String }, // Optional
@@ -50,8 +51,8 @@ const DentistSchema = new Schema(
       area: { type: String, required: true }, // Optional
       city: { type: String, required: true }, // Optional
     },
-    profilePicture: { type: String, required: true },
-    locationUrl: { type: [String], required: true },
+    profilePicture: { type: String},
+    locationUrl: { type: [String]},
     category: { type: String, required: true },
     title: { type: String, required: true },
     specialty: { type: String, required: true, enum: specialtyEnum },
@@ -59,8 +60,8 @@ const DentistSchema = new Schema(
     // Arabic form fields
     firstNameArabic: { type: String, required: true },
     lastNameArabic: { type: String, required: true },
-    governmentalSectorArabic: { type: String, required: true }, // Optional
-    privateSectorArabic: { type: String, required: true }, // Optional
+    governmentalSectorArabic: { type: String }, // Optional
+    privateSectorArabic: { type: String }, // Optional
     locationArabic: {
       areaArabic: { type: String, required: true }, // Optional
       cityArabic: { type: String, required: true }, // Optional
@@ -74,7 +75,6 @@ const DentistSchema = new Schema(
     },
     description: { type: String, required: true },
     descriptionArabic: { type: String, required: true },
-
     // Additional field to track request status
     isApproved: { type: Boolean, default: false },
     otpReset: { type: String },

@@ -35,8 +35,9 @@ const RequestSchema = new Schema(
     password: { type: String, required: true },
     privatePhone: { type: String, required: true },
     reservationsPhone: { type: String, required: true }, // Optional
-    governmentalSector: { type: String, required: true }, // Optional
-    privateSector: { type: String, required: true }, // Optional
+    governmentalSector: { type: String }, // Optional
+    privateSector: { type: String }, // Optional
+    gender: { type: String, required: true },
     curriculumVitaeUrl: { type: String, required: true }, // Optional
     twitterUrl: { type: String }, // Optional
     instagramUrl: { type: String }, // Optional
@@ -47,8 +48,8 @@ const RequestSchema = new Schema(
       area: { type: String, required: true }, // Optional
       city: { type: String, required: true }, // Optional
     },
-    profilePicture: { type: String, required: true },
-    locationUrl: { type: [String], required: true },
+    profilePicture: { type: String},
+    locationUrl: { type: [String]},
     category: { type: String, required: true },
     title: { type: String, required: true },
     specialty: { type: String, required: true, enum: specialtyEnum },
@@ -56,8 +57,8 @@ const RequestSchema = new Schema(
     // Arabic form fields
     firstNameArabic: { type: String, required: true },
     lastNameArabic: { type: String, required: true },
-    governmentalSectorArabic: { type: String, required: true }, // Optional
-    privateSectorArabic: { type: String, required: true }, // Optional
+    governmentalSectorArabic: { type: String }, // Optional
+    privateSectorArabic: { type: String }, // Optional
     locationArabic: {
       areaArabic: { type: String, required: true }, // Optional
       cityArabic: { type: String, required: true }, // Optional
@@ -84,7 +85,6 @@ RequestSchema.statics.acceptRequest = async function (requestData) {
     // Check if dentist exists by email and phone
     const existingDentist = await DentistModel.findOne({
       email: requestData.email,
-      privatePhone: requestData.privatePhone,
     });
     console.log(existingDentist);
     let dentist;
@@ -115,6 +115,7 @@ RequestSchema.statics.acceptRequest = async function (requestData) {
         category: requestData.category,
         title: requestData.title,
         specialty: requestData.specialty,
+        gender: requestData.gender,
         firstNameArabic: requestData.firstNameArabic,
         lastNameArabic: requestData.lastNameArabic,
         governmentalSectorArabic: requestData.governmentalSectorArabic,
@@ -131,7 +132,7 @@ RequestSchema.statics.acceptRequest = async function (requestData) {
         isApproved: true,
       };
       dentist = await DentistModel.findOneAndUpdate(
-        { email: requestData.email, privatePhone: requestData.privatePhone },
+        { email: requestData.email },
         {
           ...dentist,
           isApproved: true,
@@ -166,6 +167,7 @@ RequestSchema.statics.acceptRequest = async function (requestData) {
         category: requestData.category,
         title: requestData.title,
         specialty: requestData.specialty,
+        gender: requestData.gender,
         firstNameArabic: requestData.firstNameArabic,
         lastNameArabic: requestData.lastNameArabic,
         governmentalSectorArabic: requestData.governmentalSectorArabic,

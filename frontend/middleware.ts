@@ -32,6 +32,10 @@ export async function middleware(req: NextRequest) {
             url.pathname = '/Adminlogin'; // Redirect to Adminlogin
             return NextResponse.redirect(new URL('/Adminlogin', req.url));
         }
+        if (pathname === '/AdminPanel') {
+            url.pathname = '/AdminPanel/Requests'; // Redirect to AdminPanel/Requests
+            return NextResponse.redirect(new URL('/AdminPanel/Requests', req.url));
+        }
     }
 
     // User UpdateProfile validation

@@ -45,7 +45,7 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
           {/* Slide 1 */}
           <SwiperSlide>
             <div
-              className={`flex flex-col  items-center justify-between w-full h-full bg-white ${
+              className={`flex flex-col  items-center justify-between w-full h-full md:bg-white overflow-hidden ${
                 !isEnglish ? "md:flex-row-reverse" : "md:flex-row"
               }`}
             >
@@ -79,6 +79,12 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
                   {isEnglish ? "Meet Our Experts" : "قابل خبراءنا"}
                 </Link>
               </div>
+              <div className="absolute md:hidden right-0 flex justify-end items-center h-full -z-10 w-full bg-white ">
+                <img
+                  src="/Images/slider1.png"
+                  className="h-full absolute -right-12  opacity-80 "
+                ></img>
+              </div>
               <div className="w-full hidden sm:block md:w-1/2 p-4 relative border-collapse">
                 <img
                   src="/Images/about_the_club.png"
@@ -110,15 +116,15 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
           {/* Slide 2 */}
           <SwiperSlide>
             <div
-              className={`flex flex-col  items-center justify-between w-full h-full bg-white ${
+              className={`flex flex-col  items-center justify-between w-full h-full md:bg-white overflow-hidden ${
                 !isEnglish ? "md:flex-row-reverse" : "md:flex-row"
               }`}
             >
               <div className="w-full md:w-1/2 p-8">
-                <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+                <h2 className="text-2xl md:text-4xl font-bold text-gray-900">
                   {isEnglish ? (
                     <>
-                      Discover Top <br />
+                      Discover the Saudi <br />
                       <span className="text-custom-bluePrimary">
                         Dental Experts
                       </span>
@@ -137,12 +143,18 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
                     ? "Providing the best dental care across Saudi Arabia."
                     : "تقديم أفضل رعاية لطب الأسنان في جميع أنحاء المملكة العربية السعودية."}
                 </p>
-                <a
-                  href="#services"
+                <Link
+                  href="/Experts"
                   className="text-blue-600 font-semibold hover:underline mt-4 inline-block"
                 >
-                  {isEnglish ? "Explore Services" : "استكشاف الخدمات"}
-                </a>
+                  {isEnglish ? "Meet Our Experts" : "قابل خبراءنا"}
+                </Link>
+              </div>
+              <div className="absolute md:hidden right-0 flex justify-end items-center h-full -z-10 w-full bg-white ">
+                <img
+                  src="/Images/slider1.png"
+                  className="h-full absolute -right-12  opacity-80 "
+                ></img>
               </div>
               <div className="w-full hidden md:block md:w-1/2 p-4 relative">
                 <img

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useApp } from "@/app/Context";
 import useAuth from "../Hooks/useAuth";
 import Link from "next/link";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 
 export default function Login() {
   const { lang } = useApp();
@@ -14,6 +15,7 @@ export default function Login() {
   });
 
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -96,9 +98,9 @@ export default function Login() {
           </div>
 
           {/* Password Field */}
-          <div>
+          <div className="relative">
             <label
-              className={`block text-custom-grayWrite  font-medium mb-2 ${
+              className={`block text-custom-grayWrite font-medium mb-2 ${
                 isEnglish ? "" : "text-right"
               }`}
               htmlFor="password"
@@ -106,7 +108,7 @@ export default function Login() {
               {isEnglish ? "Password" : "كلمة المرور"}
             </label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               id="password"
               name="password"
               value={formData.password}
@@ -116,6 +118,16 @@ export default function Login() {
                 isEnglish ? "Enter your password" : "أدخل كلمة المرور"
               }
             />
+            <div
+              className="absolute top-11 right-0 pr-3 flex items-center cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? (
+                <BsEyeSlash className="h-5 w-5 text-gray-500" />
+              ) : (
+                <BsEye className="h-5 w-5 text-gray-500" />
+              )}
+            </div>
           </div>
 
           {/* Submit Button */}

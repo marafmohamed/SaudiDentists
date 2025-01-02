@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import Popconfirm from "./PopConfirm";
 import { useApp } from "@/app/Context";
@@ -47,15 +47,30 @@ const Dentist: React.FC<RequestProp> = ({ data, setDemands }) => {
   const toggleDetails = () => {
     setShowPopUp(true);
   };
+  useEffect(() => {
+    setIsEnglish(lang === "en");
+  }, [lang]);
   return (
     <>
       {showPopUp && <Popup onClose={() => setShowPopUp(false)} data={data} />}
-      <div className="bg-custom-grayLight rounded-lg w-full flex flex-wrap items-center justify-between px-5 py-3 border-b my-8 z-10">
+      <div className="bg-custom-grayLight rounded-lg w-full flex flex-wrap items-center justify-between px-5 py-3 border-b my-8 ">
         <div className="flex items-center gap-4">
-          <img src={data.profilePicture} alt="Profile" className="w-12 h-12" />
+          <img
+            src={
+              data.profilePicture
+                ? data.profilePicture
+                : data.gender === "male"
+                ? "/Images/Default-ProfileMale.jpg"
+                : "/Images/Default-ProfileFemale.jpg"
+            }
+            alt="Profile"
+            className="w-12 h-12"
+          />
           <div className="flex flex-col gap-1">
             <h1 className={`font-semibold text-[0.875rem] text-custom-dark`}>
-              {isEnglish ? `${data.firstName} ${data.lastName}` : `${data.lastName} ${data.firstName}`}
+              {isEnglish
+                ? `${data.firstName} ${data.lastName}`
+                : `${data.lastName} ${data.firstName}`}
             </h1>
             <p className={`font-medium text-[0.875rem] text-custom-grayDark`}>
               {data.email}
@@ -70,8 +85,8 @@ const Dentist: React.FC<RequestProp> = ({ data, setDemands }) => {
             {isEnglish ? "see details" : "عرض التفاصيل"}
           </p>
           <Popconfirm title="Are you sure?" onConfirm={handleAccept}>
-            <div className="bg-custom-grayWrite py-2 px-4 text-white rounded-lg font-semibold flex justify-center z-0 items-center gap-2">
-              {lauding && <span className="loader w-4" />}{" "}
+            <div className="bg-custom-grayWrite py-2 px-4 text-white rounded-lg font-semibold flex justify-center items-center gap-2">
+              {lauding && <span className="loader-button" />}{" "}
               {isEnglish ? "Delete Dentist" : "احذف الطبيب"}
             </div>
           </Popconfirm>
