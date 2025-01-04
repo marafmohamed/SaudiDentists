@@ -2,13 +2,13 @@
 import React, { useEffect } from "react";
 import { useApp } from "../../Context";
 import { useParams } from "next/navigation";
-import { FormData } from "../../Components/RegistrationForm";
 import ProfilePage from "@/app/Components/DentistProfile";
 import "../styles.css";
+import { RequestData } from "@/app/Components/SmallComponents/RequestPopup";
 export default function Page() {
   const { lang } = useApp();
   // get the query data
-  const [dentist, setDentists] = React.useState<FormData | null>(null);
+  const [dentist, setDentists] = React.useState<RequestData | null>(null);
   const [loading, setLoading] = React.useState(true);
   const { baseUrl } = useApp();
   const { id } = useParams();

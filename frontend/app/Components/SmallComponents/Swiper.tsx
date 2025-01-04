@@ -53,7 +53,7 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900">
                   {isEnglish ? (
                     <>
-                      Welcome to <br />
+                      Welcome to the <br />
                       <span className="text-custom-bluePrimary">
                         Saudi Dentists Directory
                       </span>
@@ -76,7 +76,7 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
                   href="/Experts"
                   className="text-blue-600 font-semibold hover:underline mt-4 inline-block"
                 >
-                  {isEnglish ? "Meet Our Experts" : "قابل خبراءنا"}
+                  {isEnglish ? "Meet Our Experts" : "قابل خبراؤنا"}
                 </Link>
               </div>
               <div className="absolute md:hidden right-0 flex justify-end items-center h-full -z-10 w-full bg-white ">
@@ -147,7 +147,7 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
                   href="/Experts"
                   className="text-blue-600 font-semibold hover:underline mt-4 inline-block"
                 >
-                  {isEnglish ? "Meet Our Experts" : "قابل خبراءنا"}
+                  {isEnglish ? "Meet Our Experts" : "قابل خبراؤنا"}
                 </Link>
               </div>
               <div className="absolute md:hidden right-0 flex justify-end items-center h-full -z-10 w-full bg-white ">

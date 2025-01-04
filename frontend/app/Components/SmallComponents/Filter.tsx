@@ -41,23 +41,23 @@ const Filter = ({
   const specialties = [
     "Prosthodontics",
     "Dental Technology",
-    // "Endodontics",
-    // "Periodontics",
-    // "Oral and Maxillofacial Surgery",
-    // "Pedodontics",
-    // "Orthodontics",
-    // "Restorative Dentistry",
+    "Endodontics",
+    "Periodontics",
+    "Oral and Maxillofacial Surgery",
+    "Pedodontics",
+    "Orthodontics",
+    "Restorative Dentistry",
   ];
 
   const specialtiesArabic = [
     "طب الأسنان التعويضي",
     "تقنية الأسنان",
-    // "علاج جذور الأسنان",
-    // "طب دواعم الأسنان",
-    // "جراحة الفم والوجه والفكين",
-    // "طب أسنان الأطفال",
-    // "تقويم الأسنان",
-    // "طب الأسنان الترميمي",
+    "علاج جذور الأسنان",
+    "طب دواعم الأسنان",
+    "جراحة الفم والوجه والفكين",
+    "طب أسنان الأطفال",
+    "تقويم الأسنان",
+    "طب الأسنان الترميمي",
   ];
 
   const regions =
@@ -90,119 +90,158 @@ const Filter = ({
           "الباحة",
           "الجوف",
         ];
-
-  const cities: { [key: string]: string[] } = {
-    Riyadh: [
-      "Riyadh",
-      "Al-Kharj",
-      "Al-Majmaah",
-      "Al-Zulfi",
-      "Wadi Al-Dawasir",
-      "Dawadmi",
-      "Shaqra",
-      "Al-Quwayiyah",
-      "Afif",
-      "Thadiq",
-      "Rumah",
-      "Al-Hariq",
-    ],
-    الرياض: [
-      "الرياض",
-      "الخرج",
-      "المجمعة",
-      "الزلفي",
-      "وادي الدواسر",
-      "الدوادمي",
-      "شقراء",
-      "القويعية",
-      "عفيف",
-      "ثادق",
-      "رماح",
-      "الحريق",
-    ],
-    Mecca: [
-      "Makkah",
-      "Jeddah",
-      "Taif",
-      "Rabigh",
-      "Al-Lith",
-      "Khulais",
-      "Al-Jumum",
-      "Al-Kamil",
-      "Ranyah",
-      "Turabah",
-    ],
-    مكة: [
-      "مكة",
-      "جدة",
-      "الطائف",
-      "رابغ",
-      "الليث",
-      "خليص",
-      "الجموم",
-      "الكامل",
-      "رنية",
-      "تربة",
-    ],
-    Medina: ["Madinah", "Yanbu", "Al-Ula", "Badr", "Khaibar", "Al-Hanakiyah"],
-    المدينة: ["المدينة المنورة", "ينبع", "العلا", "بدر", "خيبر", "الحناكية"],
-    Eastern: [
-      "Dammam",
-      "Khobar",
-      "Dhahran",
-      "Al-Ahsa (Hofuf)",
-      "Jubail",
-      "Qatif",
-      "Khafji",
-      "Abqaiq",
-      "Al-Nairyah",
-      "Hafr Al-Batin",
-    ],
-    الشرقية: [
-      "الدمام",
-      "الخبر",
-      "الظهران",
-      "الأحساء (الهفوف)",
-      "الجبيل",
-      "القطيف",
-      "الخفجي",
-      "بقيق",
-      "النعيرية",
-      "حفر الباطن",
-    ],
-    Asir: [
-      "Abha",
-      "Khamis Mushait",
-      "Al-Namas",
-      "Muhayil",
-      "Bisha",
-      "Rijal Alma",
-      "Tanomah",
-    ],
-    عسير: [
-      "أبها",
-      "خميس مشيط",
-      "النماص",
-      "محايل",
-      "بيشة",
-      "رجال ألمع",
-      "تنومة",
-    ],
-    Tabuk: ["Tabuk", "Umluj", "Al-Wajh", "Duba", "Haql", "Tayma"],
-    تبوك: ["تبوك", "أملج", "الوجه", "ضباء", "حقل", "تيماء"],
-    Hail: ["Hail", "Al-Ghazalah", "Baqa", "Al-Shinan"],
-    حائل: ["حائل", "الغزالة", "بقعاء", "الشنان"],
-    "Northern Borders": ["Arar", "Rafha", "Turaif"],
-    الحدود: ["عرعر", "رفحاء", "طريف"],
-    Jazan: ["Jazan", "Sabya", "Abu Arish", "Samtah", "Al-Darb", "Farasan"],
-    جازان: ["جازان", "صبيا", "أبو عريش", "صامطة", "الدرب", "فرسان"],
-    Najran: ["Najran", "Sharurah", "Habuna"],
-    نجران: ["نجران", "شرورة", "حبونا"],
-    "Al-Baha": ["Al-Baha", "Baljurashi", "Al-Mandaq", "Al-Aqiq"],
-    الباحة: ["الباحة", "بلجرشي", "المندق", "العقيق"],
-    "Al-Jouf": ["Sakakah", "Al-Qurayyat", "Dumat Al-Jandal"],
-    الجوف: ["سكاكا", "القريات", "دومة الجندل"],
-  };
+  const cities =
+    lang === "en"
+      ? [
+          "Abha",
+          "Abqaiq",
+          "Afif",
+          "Al-Ahsa (Hofuf)",
+          "Al-Aqiq",
+          "Al-Baha",
+          "Al-Darb",
+          "Al-Ghazalah",
+          "Al-Hanakiyah",
+          "Al-Hariq",
+          "Al-Jouf",
+          "Al-Jumum",
+          "Al-Kamil",
+          "Al-Kharj",
+          "Al-Lith",
+          "Al-Majmaah",
+          "Al-Mandaq",
+          "Al-Namas",
+          "Al-Nairyah",
+          "Al-Quwayiyah",
+          "Al-Qurayyat",
+          "Al-Shinan",
+          "Al-Ula",
+          "Al-Wajh",
+          "Arar",
+          "Badr",
+          "Baljurashi",
+          "Baqa",
+          "Bisha",
+          "Dammam",
+          "Dawadmi",
+          "Dhahran",
+          "Duba",
+          "Dumat Al-Jandal",
+          "Farasan",
+          "Hafr Al-Batin",
+          "Haql",
+          "Hail",
+          "Jazan",
+          "Jeddah",
+          "Jubail",
+          "Khafji",
+          "Khaibar",
+          "Khobar",
+          "Khulais",
+          "Khamis Mushait",
+          "Madinah",
+          "Makkah",
+          "Muhayil",
+          "Najran",
+          "Qatif",
+          "Rabigh",
+          "Rafha",
+          "Ranyah",
+          "Rijal Alma",
+          "Riyadh",
+          "Rumah",
+          "Sabya",
+          "Sakakah",
+          "Samtah",
+          "Shaqra",
+          "Sharurah",
+          "Tabuk",
+          "Taif",
+          "Tanomah",
+          "Thadiq",
+          "Tayma",
+          "Turabah",
+          "Turaif",
+          "Umluj",
+          "Wadi Al-Dawasir",
+          "Yanbu",
+          "Zulfi",
+        ]
+      : [
+          "أبها",
+          "أبقيق",
+          "عفيف",
+          "الأحساء (الهفوف)",
+          "العقيق",
+          "الباحة",
+          "الدرب",
+          "الغزالة",
+          "الحناكية",
+          "الحريق",
+          "الجوف",
+          "الجموم",
+          "الكامل",
+          "الخرج",
+          "الليث",
+          "المجمعة",
+          "المندق",
+          "النماص",
+          "النعيرية",
+          "القويعية",
+          "القريات",
+          "الشنان",
+          "العلا",
+          "الوجه",
+          "عرعر",
+          "بدر",
+          "بلجرشي",
+          "بقا",
+          "بيشة",
+          "الدمام",
+          "الدوادمي",
+          "الظهران",
+          "ضباء",
+          "دومة الجندل",
+          "فرسان",
+          "حفر الباطن",
+          "حقل",
+          "حائل",
+          "جازان",
+          "جدة",
+          "الجبيل",
+          "الخفجي",
+          "خيبر",
+          "الخبر",
+          "خليص",
+          "خميس مشيط",
+          "المدينة المنورة",
+          "مكة",
+          "محايل",
+          "نجران",
+          "القطيف",
+          "رابغ",
+          "رفحاء",
+          "رنية",
+          "رجال ألمع",
+          "الرياض",
+          "رماح",
+          "صبيا",
+          "صامطة",
+          "شقراء",
+          "شرورة",
+          "سكاكا",
+          "تبوك",
+          "الطائف",
+          "تنومة",
+          "ثادق",
+          "تيماء",
+          "تربة",
+          "طريف",
+          "أملج",
+          "وادي الدواسر",
+          "ينبع",
+          "الزلفي",
+        ].sort((a, b) => a.localeCompare(b, "ar", { sensitivity: "base" }));
   const [selectedFilters, setSelectedFilters] = useState({
     specialization: specialization || "",
     region: region || "",
@@ -230,6 +269,15 @@ const Filter = ({
         const indexAr = specialtiesArabic.findIndex(
           (spec) => spec === prev.specialization
         );
+
+        if (indexEn > 1 || indexAr > 1) {
+          toast.info(
+            lang === "en"
+              ? "This specialization is not active yet."
+              : "هذا التخصص غير نشط بعد."
+          );
+          updatedFilters.specialization = "";
+        }
 
         if (lang === "en" && indexEn !== -1) {
           updatedFilters.specialization = specialties[indexEn];
@@ -274,6 +322,19 @@ const Filter = ({
     key: "specialization" | "region" | "city",
     value: string
   ) => {
+    if (key === "specialization") {
+      const indexEn = specialties.findIndex((spec) => spec === value);
+      const indexAr = specialtiesArabic.findIndex((spec) => spec === value);
+
+      if (indexEn > 1 || indexAr > 1) {
+      toast.info(
+        lang === "en"
+        ? "This specialization is not active yet."
+        : "هذا التخصص غير نشط بعد."
+      );
+      return;
+      }
+    }
     setSelectedFilters((prev) => ({ ...prev, [key]: value }));
     setIsOpen((prev) => ({ ...prev, [key]: false }));
 
@@ -283,7 +344,7 @@ const Filter = ({
   };
 
   return (
-    <div className="space-y-4 md:space-y-0 md:flex md:items-center md:gap-4 py-12 px-10 bg-white transition-all w-full">
+    <div className="space-y-4 md:space-y-0 md:flex md:items-center md:gap-4 py-12 px-10 justify-center bg-white transition-all w-full">
       <ToastContainer />
       <div
         className="relative"
@@ -293,7 +354,7 @@ const Filter = ({
       >
         <button
           onClick={() => toggleDropdown("specialization")}
-          className={`flex py-2 md:px-8 w-full px-4 md:w-auto lg:px-24 font-bold text-custom-grayDark justify-between bg-custom-filterGray rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm items-center ${
+          className={`flex py-2 md:px-8 w-full px-4 md:w-fit lg:px-24 font-bold text-custom-grayDark justify-between bg-custom-filterGray rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm items-center ${
             lang === "en" ? "" : "flex-row-reverse"
           }`}
         >
@@ -326,7 +387,7 @@ const Filter = ({
           </motion.div>
         )}
       </div>
-
+      {/* 
       <div
         className="relative"
         ref={(el) => {
@@ -367,7 +428,7 @@ const Filter = ({
             ))}
           </motion.div>
         )}
-      </div>
+      </div> */}
 
       <div
         className="relative"
@@ -377,17 +438,9 @@ const Filter = ({
       >
         <button
           onClick={() => {
-            if (!selectedFilters.region) {
-              toast.warn(
-                lang === "en"
-                  ? "Please choose a region first."
-                  : "يرجى اختيار المنطقة أولاً."
-              );
-            } else {
-              toggleDropdown("city");
-            }
+            toggleDropdown("city");
           }}
-          className={`flex py-2 md:px-8 w-full px-4 md:w-auto lg:px-24 font-bold text-custom-grayDark justify-between bg-custom-filterGray rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm items-center ${
+          className={`flex py-2 md:px-8 w-full  px-4 md:w-80 lg:px-24 font-bold text-custom-grayDark justify-between bg-custom-filterGray rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm items-center ${
             lang === "en" ? "" : "flex-row-reverse"
           }`}
         >
@@ -400,7 +453,7 @@ const Filter = ({
             <MdKeyboardArrowDown className="h-5 w-5 text-custom-bluePrimary font-bold" />
           </motion.div>
         </button>
-        {isOpen.city && selectedFilters.region && (
+        {isOpen.city && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -408,7 +461,7 @@ const Filter = ({
             transition={{ duration: 0.2 }}
             className="absolute left-0 w-full max-h-52 overflow-y-auto bg-white text-gray-700 shadow-lg mt-1 rounded-lg border border-[#AAAAAA] z-10"
           >
-            {cities[selectedFilters.region]?.map((city) => (
+            {cities.map((city) => (
               <div
                 key={city}
                 onClick={() => handleSelection("city", city)}
@@ -421,7 +474,7 @@ const Filter = ({
         )}
       </div>
 
-      <div className="flex-grow">
+      <div>
         <input
           type="text"
           value={selectedFilters.doctorName}
@@ -434,7 +487,7 @@ const Filter = ({
           placeholder={
             lang === "en" ? "Doctor Name (Optional)" : "اسم الطبيب (اختياري)"
           }
-          className="py-2 px-4 w-full bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm text-custom-grayDark"
+          className="py-2 px-4 w-full md:w-96 bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm text-custom-grayDark"
         />
       </div>
 
@@ -449,7 +502,7 @@ const Filter = ({
         }}
         className="px-6 py-2 w-full md:w-48 bg-custom-bluePrimary text-white font-bold rounded-lg hover:bg-custom-blueDark transition-all"
       >
-        {lang === "en" ? (main ? "Search" : "Filter") : (main ? "بحث" : "تصفية")}
+        {lang === "en" ? (main ? "Search" : "Filter") : main ? "بحث" : "تصفية"}
       </button>
     </div>
   );

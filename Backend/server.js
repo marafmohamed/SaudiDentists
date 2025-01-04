@@ -13,10 +13,10 @@ const AdminRoutes = require("./Routes/AdminRoutes");
 const DentistRoutes = require("./Routes/DentistRoutes");
 const RequestRoutes = require("./Routes/RequestRoutes");
 const AuthRoutes = require("./Routes/AuthRoutes");
-app.use("/admin", AdminRoutes);
-app.use("/dentist", DentistRoutes);
-app.use("/requests", RequestRoutes);
-app.use("/auth", AuthRoutes);
+app.use("/api/admin", AdminRoutes);
+app.use("/api/dentist", DentistRoutes);
+app.use("/api/requests", RequestRoutes);
+app.use("/api/auth", AuthRoutes);
 const mongoose = require("mongoose");
 
 mongoose

@@ -9,11 +9,11 @@ import {
   FaTwitter,
 } from "react-icons/fa";
 import { useApp } from "@/app/Context"; // Path to useApp hook
-import { FormData } from "./RegistrationForm";
+import { RequestData } from "./SmallComponents/RequestPopup";
 import Link from "next/link";
 
 interface ProfilePageProps {
-  data: FormData;
+  data: RequestData;
 }
 
 const ProfilePage: React.FC<ProfilePageProps> = ({
@@ -25,6 +25,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
   // Determine displayed text based on language
   const title = lang === "ar" ? data.titleArabic : data.title;
   const lastName = lang === "ar" ? data.lastNameArabic : data.lastName;
+  const firstName = lang === "ar" ? data.firstNameArabic : data.firstName;
   const area =
     lang === "ar" ? data.locationArabic.areaArabic : data.location.area;
   const city =
@@ -51,7 +52,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         <Link href="/Experts" className="hover:underline">
           {lang === "ar" ? "قابل خبراءنا" : "Meet Our Experts"}
         </Link>{" "}
-        / {title} {lastName}
+        / {title} {firstName}  {lastName}
       </div>
 
       <motion.div
@@ -66,11 +67,11 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         <div className="lg:w-1/3 flex justify-center mb-6 lg:mb-0">
           <img
             src={
-              typeof data.profilePicture === "string"
+              data.profilePicture
                 ? data.profilePicture
                 : data.gender === "male"
-                ? "/images/Default-ProfileMale.jpg"
-                : "/images/Default-ProfileFemale.jpg"
+                ? "/Images/Default-ProfileMale.jpg"
+                : "/Images/Default-ProfileFemale.jpg"
             }
             alt={`${data.firstName}'s profile picture`}
             className="rounded-lg object-cover w-full max-h-[500px]"
@@ -80,7 +81,7 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
         {/* Details */}
         <div className="lg:w-2/3 lg:pl-8">
           <h1 className="text-2xl font-bold text-custom-dark mb-2">
-            {title} {lastName}
+            {title} {firstName}  {lastName}
           </h1>
           <p className="text-custom-grayDark mb-4">
             <strong>{lang === "ar" ? "المدينة:" : "City:"}</strong> {area}{" "}
@@ -100,11 +101,13 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
             <motion.button
               onClick={() => {
                 // When clicked, the reservation phone is copied
-                navigator.clipboard.writeText(data.reservationsPhone);
-                setShowNotifyCopied(true);
-                setTimeout(() => {
-                  setShowNotifyCopied(false);
-                }, 1000);
+                if (data.reservationsPhone) {
+                  navigator.clipboard.writeText(data.reservationsPhone);
+                  setShowNotifyCopied(true);
+                  setTimeout(() => {
+                    setShowNotifyCopied(false);
+                  }, 1000);
+                }
               }}
               className="px-4 py-2 relative bg-custom-greenPrimary text-white rounded-md shadow-md hover:bg-green-600"
               whileHover={{ scale: 1.05 }}

@@ -1,5 +1,5 @@
 import React from "react";
-import { FiPhone, FiMail } from "react-icons/fi";
+import { FiMail } from "react-icons/fi";
 
 export default function Footer() {
   return (

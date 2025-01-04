@@ -73,7 +73,7 @@ export interface FormData {
 }
 
 const categories: string[] = ["Specialist", "Consultant"];
-const categoriesArabic: string[] = ["أخصائي", "خبير استشاري"];
+const categoriesArabic: string[] = ["أخصائي", "استشاري"];
 const specialties: string[] = [
   "Prosthodontics",
   "Dental Technology",
@@ -1092,7 +1092,7 @@ export default function RegistrationForm({
             >
               <option value="">اختر اللقب</option>
               <option value="دكتور">دكتور</option>
-              <option value="أستاذ">أستاذ</option>
+              <option value="بروفيسور">بروفيسور</option>
             </select>
           </div>
           <div className="flex flex-col justify-start items-end w-[30%] gap-2">

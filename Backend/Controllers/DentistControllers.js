@@ -66,28 +66,27 @@ const getFilteredDentists = async (req, res) => {
 
     // Add city filter (English or Arabic)
     if (city) {
-      filter.$or = filter.$or || [];
-      filter.$or.push(
-        { "location.city": city },
-        { "locationArabic.cityArabic": city }
-      );
+      filter.$and = filter.$and || [];
+      filter.$and.push({
+        $or: [
+          { "location.city": city },
+          { "locationArabic.cityArabic": city },
+        ],
+      });
     }
 
     // Add doctor name filter (English or Arabic)
     if (doctorName) {
       const nameRegex = new RegExp(doctorName, "i");
-      filter.$or = filter.$or || [];
-      filter.$or.push(
-        { firstName: nameRegex },
-        { lastName: nameRegex },
-        { firstNameArabic: nameRegex },
-        { lastNameArabic: nameRegex }
-      );
-    }
-
-    // Add region filter if provided
-    if (region) {
-      filter["location.region"] = region;
+      filter.$and = filter.$and || [];
+      filter.$and.push({
+        $or: [
+          { firstName: nameRegex },
+          { lastName: nameRegex },
+          { firstNameArabic: nameRegex },
+          { lastNameArabic: nameRegex },
+        ],
+      });
     }
 
     // Query the database with the constructed filter
@@ -104,6 +103,7 @@ const getFilteredDentists = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
 
 const getDentistWithId = async (req, res) => {
   const { dentistId } = req.params;

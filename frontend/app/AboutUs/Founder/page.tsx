@@ -1,7 +1,6 @@
 "use client";
 import { useApp } from "@/app/Context";
-import { FaMapMarkerAlt } from "react-icons/fa";
-import { AiOutlineGlobal } from "react-icons/ai";
+import { FaMapMarkerAlt, FaSnapchatGhost, FaTiktok } from "react-icons/fa";
 import { TiSocialInstagram } from "react-icons/ti";
 import TitleCompoenet from "@/app/Components/SmallComponents/PageName";
 export default function Page() {
@@ -25,13 +24,13 @@ export default function Page() {
             {isEnglish ? "FOUNDER" : "المؤسس"}
           </h2>
           <div>
-            <div className="flex flex-col md:flex-row justify-evenly items-center mb-4">
+            <div className="flex flex-col justify-evenly items-center mb-4">
               <h3
                 className={`text-xl md:text-xl font-medium ${
                   isEnglish ? "text-left" : "text-right"
                 }`}
               >
-                {isEnglish ? "Dr. Nawaf Labban" : "د. نواف لبان"}
+                {isEnglish ? "Prof. Nawaf Labban" : "بروفيسور. نواف لبان"}
               </h3>
 
               {/* Social Links */}
@@ -52,14 +51,26 @@ export default function Page() {
                 </div>
                 <a
                   target="_blanc"
-                  href="https://linktr.ee/nawaflabban?fbclid=PAZXh0bgNhZW0CMTEAAaaCpcrMxkJqV0xFeVAxUYMiFnd97qneAwy2wrm4wHeu5_35uF048sPSUvY_aem_1vcIP7nC2sT5UOf-IV_Dvw"
+                  href="https://www.snapchat.com/add/nawaflabban"
                   className="flex items-center gap-1"
                 >
                   <div className="bg-custom-bluePrimary p-2 rounded-full">
-                    <AiOutlineGlobal className="text-white" />
+                  <FaSnapchatGhost className="text-white" />
                   </div>
                   <span className="text-custom-bluePrimary font-medium">
-                    NawafLabban{" "}
+                  NawafLabban
+                  </span>
+                </a>
+                <a
+                  target="_blanc"
+                  href="https://www.tiktok.com/@nawaflabban"
+                  className="flex items-center gap-1"
+                >
+                  <div className="bg-custom-bluePrimary p-2 rounded-full">
+                  <FaTiktok className="text-white" />
+                  </div>
+                  <span className="text-custom-bluePrimary font-medium">
+                  NawafLabban
                   </span>
                 </a>
                 <a
