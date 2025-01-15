@@ -13,6 +13,7 @@ const AdminRoutes = require("./Routes/AdminRoutes");
 const DentistRoutes = require("./Routes/DentistRoutes");
 const RequestRoutes = require("./Routes/RequestRoutes");
 const AuthRoutes = require("./Routes/AuthRoutes");
+
 app.use("/api/admin", AdminRoutes);
 app.use("/api/dentist", DentistRoutes);
 app.use("/api/requests", RequestRoutes);

@@ -20,6 +20,7 @@ const PageContent = () => {
   const [doctorName, setDoctorName] = useState(
     searchParams.get("doctorName") || ""
   );
+  const [category, setCategory] = useState(searchParams.get("category") || "");
   const [dentists, setDentists] = React.useState<FormData[]>([]);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalPages, setTotalPages] = React.useState(0);
@@ -32,7 +33,7 @@ const PageContent = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `${baseUrl}/api/dentist/getDoctor?specialization=${specialization}&region=${region}&city=${city}&doctorName=${doctorName}&page=${1}&limit=${15}`,
+          `${baseUrl}/api/dentist/getDoctor?specialization=${specialization}&region=${region}&city=${city}&doctorName=${doctorName}&page=${1}&limit=${10}`,
           {
             method: "GET",
             headers: {
@@ -61,8 +62,9 @@ const PageContent = () => {
   }, []);
 
   const handlePageClick = async (page: number) => {
+    console.log(specialization, region, city, doctorName,category);
     const response = await fetch(
-      `${baseUrl}/api/dentist/getDoctor?specialization=${specialization}&region=${region}&city=${city}&doctorName=${doctorName}&page=${page}&limit=${15}`,
+      `${baseUrl}/api/dentist/getDoctor?specialization=${specialization}&region=${region}&city=${city}&category=${category}&doctorName=${doctorName}&page=${page}&limit=${10}`,
       {
         method: "GET",
         headers: {
@@ -75,6 +77,7 @@ const PageContent = () => {
       console.log(cc.error);
       return;
     }
+    console.log(cc);
     setDentists(cc.dentists);
     setTotalPages(cc.totalPages);
     setCurrentPage(page);
@@ -155,16 +158,24 @@ const PageContent = () => {
         specialization={specialization}
         region={region}
         city={city}
+        category={category}
         doctorName={doctorName}
-        onSearch={async (specialization, region, city, doctorName) => {
+        onSearch={async (
+          specialization,
+          region,
+          city,
+          category,
+          doctorName
+        ) => {
           try {
             setSpecialization(specialization);
             setRegion(region);
             setCity(city);
             setDoctorName(doctorName);
+            setCategory(category);          
             setLoading(true);
             const response = await fetch(
-              `${baseUrl}/api/dentist/getDoctor?specialization=${specialization}&region=${region}&city=${city}&doctorName=${doctorName}&page=${1}&limit=${15}`,
+              `${baseUrl}/api/dentist/getDoctor?specialization=${specialization}&region=${region}&city=${city}&category=${category}&doctorName=${doctorName}&page=${1}&limit=${10}`,
               {
                 method: "GET",
                 headers: {
@@ -179,6 +190,7 @@ const PageContent = () => {
             }
             setDentists(json.dentists);
             setTotalPages(json.totalPages);
+            setCurrentPage(1);
             setLoading(false);
           } catch (error) {
             setLoading(false);
@@ -211,10 +223,10 @@ const PageContent = () => {
                 nameArabic={
                   dentist.firstNameArabic + " " + dentist.lastNameArabic
                 }
-                city={dentist.location.area + ", " + dentist.location.city}
+                city={dentist.location.area + " " + dentist.location.city}
                 cityArabic={
                   dentist.locationArabic.areaArabic +
-                  ", " +
+                  " " +
                   dentist.locationArabic.cityArabic
                 }
                 profilePicture={

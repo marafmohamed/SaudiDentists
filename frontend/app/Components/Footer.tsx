@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="bg-custom-dark  text-white py-8 px-6 md:px-12 lg:px-20">
         <div className="flex flex-col gap-4 md:flex-row justify-between items-center">
           <div>
-            <img src="/Logos/Link.svg" alt="Logo" className="w-52 mt-3" />
+            <img src="/Logos/Link.png" alt="Logo" className="w-52 mt-3" />
           </div>
           <div>
             <img src="/Images/Logo high resolution1.png" alt="Logo" className="w-52 mt-3" />
@@ -25,7 +25,7 @@ export default function Footer() {
               className="flex items-center space-x-2"
             >
               <FiMail className="h-5 w-5 md:h-6 md:w-6 text-custom-greenPrimary" />
-              <span>info@international-dental.com</span>
+              <span>info@sddirectory.net</span>
             </a>
           </div>
         </div>

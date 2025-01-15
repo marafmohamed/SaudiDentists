@@ -16,6 +16,7 @@ export interface RequestData {
   linkedinUrl?: string;
   snapchatUrl?: string;
   tiktokUrl?: string;
+  youtubeUrl?: string;
   gender: "male" | "female";
   location: {
     area: string;
@@ -220,6 +221,18 @@ const Popup: React.FC<PopupProps> = ({ data, onClose }) => {
                   className="text-custom-bluePrimary hover:underline"
                 >
                   Snapchat
+                </a>
+              </li>
+            )}
+             {data.youtubeUrl && (
+              <li className="mb-2">
+                <a
+                  href={data.youtubeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-custom-bluePrimary hover:underline"
+                >
+                  Youtube
                 </a>
               </li>
             )}

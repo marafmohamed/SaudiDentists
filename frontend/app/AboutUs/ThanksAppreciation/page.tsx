@@ -13,13 +13,13 @@ export default function Page() {
         firstWord={"About Us"}
         secondWord={"Thanks And Appreciation"}
         firstWordAr={"من نحن"}
-        secondWordAr={"الشكر والتقدير"}
+        secondWordAr={"شكر و تقدير"}
       />
       <div className="mx-auto px-4 sm:px-6 lg:px-16 flex flex-col md:flex-row items-start justify-between">
         {/* Content Section */}
         <div className="w-full md:w-2/3 mb-8 md:mb-0 ">
           <h2 className="text-2xl md:text-2xl w-full flex items-center justify-center bg-custom-bluePrimary/30 font-bold mb-6 ">
-            {isEnglish ? "Thanks And Appreciation" : "الشكر والتقدير"}
+            {isEnglish ? "Thanks And Appreciation" : "شكر و تقدير"}
           </h2>
           <p
             className={`text-lg md:text-xl mb-2 md:w-[90%] leading-relaxed  text-custom-grayWrite ${

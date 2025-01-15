@@ -84,7 +84,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <div className="relative cursor-pointer h-24">
-              <img src="/Logos/Link.svg" alt="Logo" className="w-52 mt-3" />
+              <img src="/Logos/Link.png" alt="Logo" className="w-52 " />
             </div>
 
             {/* Links (Desktop) */}

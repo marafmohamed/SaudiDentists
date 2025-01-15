@@ -48,7 +48,7 @@ const getDentist = async (req, res) => {
   res.status(200).json(dentist);
 };
 const getFilteredDentists = async (req, res) => {
-  const { specialization, city, doctorName, region, page = 1, limit = 10 } = req.query;
+  const { specialization, city, doctorName , category, page = 1, limit = 10 } = req.query;
 
   try {
     const skip = (page - 1) * limit;
@@ -86,6 +86,16 @@ const getFilteredDentists = async (req, res) => {
           { firstNameArabic: nameRegex },
           { lastNameArabic: nameRegex },
         ],
+      });
+    }
+    // Add category filter
+    if (category) {
+      filter.$and = filter.$and || [];
+      filter.$and.push({
+      $or: [
+        { category: category },
+        { categoryArabic: category }
+      ]
       });
     }
 

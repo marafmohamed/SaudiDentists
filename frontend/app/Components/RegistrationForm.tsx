@@ -41,6 +41,7 @@ export interface FormData {
   linkedinUrl: string;
   snapchatUrl: string;
   tiktokUrl: string;
+  youtubeUrl: string;
   location: Location;
   profilePicture: File | string | null;
   locationUrl: string[];
@@ -95,139 +96,156 @@ const specialtiesArabic: string[] = [
   // "تقويم الأسنان",
   // "طب الأسنان الترميمي",
 ];
-const regions = [
-  "Riyadh",
-  "Mecca",
-  "Medina",
-  "Eastern",
-  "Asir",
-  "Tabuk",
-  "Hail",
-  "Northern Borders",
-  "Jazan",
-  "Najran",
+const cities = [
+  "Abha",
+  "Abqaiq",
+  "Afif",
+  "Al-Ahsa (Hofuf)",
+  "Al-Aqiq",
   "Al-Baha",
+  "Al-Darb",
+  "Al-Ghazalah",
+  "Al-Hanakiyah",
+  "Al-Hariq",
   "Al-Jouf",
+  "Al-Jumum",
+  "Al-Kamil",
+  "Al-Kharj",
+  "Al-Lith",
+  "Al-Majmaah",
+  "Al-Mandaq",
+  "Al-Namas",
+  "Al-Nairyah",
+  "Al-Quwayiyah",
+  "Al-Qurayyat",
+  "Al-Shinan",
+  "Al-Ula",
+  "Al-Wajh",
+  "Arar",
+  "Badr",
+  "Baljurashi",
+  "Baqa",
+  "Bisha",
+  "Dammam",
+  "Dawadmi",
+  "Dhahran",
+  "Duba",
+  "Dumat Al-Jandal",
+  "Farasan",
+  "Hafr Al-Batin",
+  "Haql",
+  "Hail",
+  "Jazan",
+  "Jeddah",
+  "Jubail",
+  "Khafji",
+  "Khaibar",
+  "Khobar",
+  "Khulais",
+  "Khamis Mushait",
+  "Madinah",
+  "Makkah",
+  "Muhayil",
+  "Najran",
+  "Qatif",
+  "Rabigh",
+  "Rafha",
+  "Ranyah",
+  "Rijal Alma",
+  "Riyadh",
+  "Rumah",
+  "Sabya",
+  "Sakakah",
+  "Samtah",
+  "Shaqra",
+  "Sharurah",
+  "Tabuk",
+  "Taif",
+  "Tanomah",
+  "Thadiq",
+  "Tayma",
+  "Turabah",
+  "Turaif",
+  "Umluj",
+  "Wadi Al-Dawasir",
+  "Yanbu",
+  "Zulfi",
 ];
-const arabicRegions = [
-  "الرياض",
-  "مكة",
-  "المدينة المنورة",
-  "الشرقية",
-  "عسير",
-  "تبوك",
-  "حائل",
-  "الحدود الشمالية",
-  "جازان",
-  "نجران",
+const citiesar = [
+  "أبها",
+  "أبقيق",
+  "عفيف",
+  "الأحساء (الهفوف)",
+  "العقيق",
   "الباحة",
+  "الدرب",
+  "الغزالة",
+  "الحناكية",
+  "الحريق",
   "الجوف",
-];
-
-const cities: { [key: string]: string[] } = {
-  Riyadh: [
-    "Riyadh",
-    "Al-Kharj",
-    "Al-Majmaah",
-    "Al-Zulfi",
-    "Wadi Al-Dawasir",
-    "Dawadmi",
-    "Shaqra",
-    "Al-Quwayiyah",
-    "Afif",
-    "Thadiq",
-    "Rumah",
-    "Al-Hariq",
-  ],
-  الرياض: [
-    "الرياض",
-    "الخرج",
-    "المجمعة",
-    "الزلفي",
-    "وادي الدواسر",
-    "الدوادمي",
-    "شقراء",
-    "القويعية",
-    "عفيف",
-    "ثادق",
-    "رماح",
-    "الحريق",
-  ],
-  Mecca: [
-    "Makkah",
-    "Jeddah",
-    "Taif",
-    "Rabigh",
-    "Al-Lith",
-    "Khulais",
-    "Al-Jumum",
-    "Al-Kamil",
-    "Ranyah",
-    "Turabah",
-  ],
-  مكة: [
-    "مكة",
-    "جدة",
-    "الطائف",
-    "رابغ",
-    "الليث",
-    "خليص",
-    "الجموم",
-    "الكامل",
-    "رنية",
-    "تربة",
-  ],
-  Medina: ["Madinah", "Yanbu", "Al-Ula", "Badr", "Khaibar", "Al-Hanakiyah"],
-  المدينة: ["المدينة المنورة", "ينبع", "العلا", "بدر", "خيبر", "الحناكية"],
-  Eastern: [
-    "Dammam",
-    "Khobar",
-    "Dhahran",
-    "Al-Ahsa (Hofuf)",
-    "Jubail",
-    "Qatif",
-    "Khafji",
-    "Abqaiq",
-    "Al-Nairyah",
-    "Hafr Al-Batin",
-  ],
-  الشرقية: [
-    "الدمام",
-    "الخبر",
-    "الظهران",
-    "الأحساء (الهفوف)",
-    "الجبيل",
-    "القطيف",
-    "الخفجي",
-    "بقيق",
-    "النعيرية",
-    "حفر الباطن",
-  ],
-  Asir: [
-    "Abha",
-    "Khamis Mushait",
-    "Al-Namas",
-    "Muhayil",
-    "Bisha",
-    "Rijal Alma",
-    "Tanomah",
-  ],
-  عسير: ["أبها", "خميس مشيط", "النماص", "محايل", "بيشة", "رجال ألمع", "تنومة"],
-  Tabuk: ["Tabuk", "Umluj", "Al-Wajh", "Duba", "Haql", "Tayma"],
-  تبوك: ["تبوك", "أملج", "الوجه", "ضباء", "حقل", "تيماء"],
-  Hail: ["Hail", "Al-Ghazalah", "Baqa", "Al-Shinan"],
-  حائل: ["حائل", "الغزالة", "بقعاء", "الشنان"],
-  "Northern Borders": ["Arar", "Rafha", "Turaif"],
-  الحدود: ["عرعر", "رفحاء", "طريف"],
-  Jazan: ["Jazan", "Sabya", "Abu Arish", "Samtah", "Al-Darb", "Farasan"],
-  جازان: ["جازان", "صبيا", "أبو عريش", "صامطة", "الدرب", "فرسان"],
-  Najran: ["Najran", "Sharurah", "Habuna"],
-  نجران: ["نجران", "شرورة", "حبونا"],
-  "Al-Baha": ["Al-Baha", "Baljurashi", "Al-Mandaq", "Al-Aqiq"],
-  الباحة: ["الباحة", "بلجرشي", "المندق", "العقيق"],
-  "Al-Jouf": ["Sakakah", "Al-Qurayyat", "Dumat Al-Jandal"],
-  الجوف: ["سكاكا", "القريات", "دومة الجندل"],
-};
+  "الجموم",
+  "الكامل",
+  "الخرج",
+  "الليث",
+  "المجمعة",
+  "المندق",
+  "النماص",
+  "النعيرية",
+  "القويعية",
+  "القريات",
+  "الشنان",
+  "العلا",
+  "الوجه",
+  "عرعر",
+  "بدر",
+  "بلجرشي",
+  "بقا",
+  "بيشة",
+  "الدمام",
+  "الدوادمي",
+  "الظهران",
+  "ضباء",
+  "دومة الجندل",
+  "فرسان",
+  "حفر الباطن",
+  "حقل",
+  "حائل",
+  "جازان",
+  "جدة",
+  "الجبيل",
+  "الخفجي",
+  "خيبر",
+  "الخبر",
+  "خليص",
+  "خميس مشيط",
+  "المدينة المنورة",
+  "مكة",
+  "محايل",
+  "نجران",
+  "القطيف",
+  "رابغ",
+  "رفحاء",
+  "رنية",
+  "رجال ألمع",
+  "الرياض",
+  "رماح",
+  "صبيا",
+  "صامطة",
+  "شقراء",
+  "شرورة",
+  "سكاكا",
+  "تبوك",
+  "الطائف",
+  "تنومة",
+  "ثادق",
+  "تيماء",
+  "تربة",
+  "طريف",
+  "أملج",
+  "وادي الدواسر",
+  "ينبع",
+  "الزلفي",
+].sort((a, b) => a.localeCompare(b, "ar", { sensitivity: "base" }));
 interface RegistrationFormProps {
   initialData?: FormData;
 }
@@ -252,6 +270,7 @@ export default function RegistrationForm({
     linkedinUrl: initialData?.linkedinUrl || "",
     snapchatUrl: initialData?.snapchatUrl || "",
     tiktokUrl: initialData?.tiktokUrl || "",
+    youtubeUrl: initialData?.youtubeUrl || "",
     location: initialData?.location || { area: "", city: "" },
     profilePicture: initialData?.profilePicture || null,
     locationUrl: initialData?.locationUrl || [],
@@ -362,7 +381,6 @@ export default function RegistrationForm({
       formData.privatePhone.trim() === "" ||
       formData.reservationsPhone.trim() === "" ||
       formData.curriculumVitaeUrl === null ||
-      formData.location.area.trim() === "" ||
       formData.location.city.trim() === "" ||
       formData.category.trim() === "" ||
       formData.title.trim() === "" ||
@@ -664,24 +682,7 @@ export default function RegistrationForm({
           )}
         </div>
         <div className="flex items-center justify-between  gap-4 max-w-full">
-          <div className="flex flex-col justify-start items-start w-1/2 gap-2">
-            <label>Area</label>
-            <select
-              name="location.area"
-              value={formData.location.area}
-              onChange={handleChange}
-              className="border border-custom-grayLight  overflow-y-auto max-h-52 bg-white p-2 w-full rounded-lg "
-              required
-            >
-              <option value="">Select Area</option>
-              {regions.map((region) => (
-                <option key={region} value={region}>
-                  {region}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-col justify-start items-start w-1/2 gap-2">
+          <div className="flex flex-col justify-start items-start w-full gap-2">
             <label>City</label>
             <select
               name="location.city"
@@ -692,7 +693,7 @@ export default function RegistrationForm({
             >
               <option value="">Select City</option>
               {/* based on the option of the region choose the cities to show if none when clicked an error message */}
-              {cities[formData.location.area]?.map((city) => (
+              {cities.map((city) => (
                 <option key={city} value={city}>
                   {city}
                 </option>
@@ -908,10 +909,10 @@ export default function RegistrationForm({
           />
         </div>
         <div className="flex flex-col justify-start items-start w-full gap-2">
-          <label>Twitter URL</label>
+          <label>X URL</label>
           <input
             name="twitterUrl"
-            placeholder="Twitter URL"
+            placeholder="X URL"
             value={formData.twitterUrl}
             onChange={handleChange}
             className="border border-custom-grayLight bg-white p-2 w-full rounded-lg "
@@ -967,6 +968,16 @@ export default function RegistrationForm({
             name="snapchatUrl"
             placeholder="Snapchat URL"
             value={formData.snapchatUrl}
+            onChange={handleChange}
+            className="border border-custom-grayLight bg-white p-2 w-full rounded-lg "
+          />
+        </div>
+        <div className="flex flex-col justify-start items-start w-full gap-2">
+          <label>Youtube URL</label>
+          <input
+            name="youtubeUrl"
+            placeholder="Youtube URL"
+            value={formData.youtubeUrl}
             onChange={handleChange}
             className="border border-custom-grayLight bg-white p-2 w-full rounded-lg "
           />
@@ -1114,24 +1125,7 @@ export default function RegistrationForm({
           </div>
         </div>
         <div className="flex flex-row-reverse items-center justify-between  gap-4 max-w-full">
-          <div className="flex flex-col justify-start items-end w-1/2 gap-2">
-            <label>المنطقة</label>
-            <select
-              name="locationArabic.areaArabic"
-              value={formData.locationArabic.areaArabic}
-              onChange={handleChange}
-              className="border text-right border-custom-grayLight bg-white p-2 w-full rounded-lg "
-              required
-            >
-              <option value="">اختر المنطقة</option>
-              {arabicRegions.map((region) => (
-                <option key={region} value={region}>
-                  {region}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="flex flex-col justify-start items-end w-1/2 gap-2">
+          <div className="flex flex-col justify-start items-end w-full gap-2">
             <label>المدينة</label>
             <select
               name="locationArabic.cityArabic"
@@ -1142,7 +1136,7 @@ export default function RegistrationForm({
             >
               <option value="">اختر المدينة</option>
               {/* based on the option of the region choose the cities to show if none when clicked an error message */}
-              {cities[formData.locationArabic.areaArabic]?.map((city) => (
+              {citiesar.map((city) => (
                 <option key={city} value={city}>
                   {city}
                 </option>

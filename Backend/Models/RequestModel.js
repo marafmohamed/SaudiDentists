@@ -44,12 +44,13 @@ const RequestSchema = new Schema(
     linkedinUrl: { type: String }, // Optional
     snapchatUrl: { type: String }, // Optional
     tiktokUrl: { type: String }, // Optional
+    youtubeUrl: { type: String }, // Optional
     location: {
-      area: { type: String, required: true }, // Optional
+      area: { type: String }, // Optional
       city: { type: String, required: true }, // Optional
     },
-    profilePicture: { type: String},
-    locationUrl: { type: [String]},
+    profilePicture: { type: String },
+    locationUrl: { type: [String] },
     category: { type: String, required: true },
     title: { type: String, required: true },
     specialty: { type: String, required: true, enum: specialtyEnum },
@@ -60,7 +61,7 @@ const RequestSchema = new Schema(
     governmentalSectorArabic: { type: String }, // Optional
     privateSectorArabic: { type: String }, // Optional
     locationArabic: {
-      areaArabic: { type: String, required: true }, // Optional
+      areaArabic: { type: String }, // Optional
       cityArabic: { type: String, required: true }, // Optional
     },
     categoryArabic: { type: String, required: true },
@@ -106,6 +107,7 @@ RequestSchema.statics.acceptRequest = async function (requestData) {
         linkedinUrl: requestData.linkedinUrl,
         snapchatUrl: requestData.snapchatUrl,
         tiktokUrl: requestData.tiktokUrl,
+        youtubeUrl: requestData.youtubeUrl,
         location: {
           area: requestData.location.area,
           city: requestData.location.city,
@@ -158,6 +160,7 @@ RequestSchema.statics.acceptRequest = async function (requestData) {
         linkedinUrl: requestData.linkedinUrl,
         snapchatUrl: requestData.snapchatUrl,
         tiktokUrl: requestData.tiktokUrl,
+        youtubeUrl: requestData.youtubeUrl,
         location: {
           area: requestData.location.area,
           city: requestData.location.city,

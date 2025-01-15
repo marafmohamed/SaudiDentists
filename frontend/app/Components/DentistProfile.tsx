@@ -6,11 +6,12 @@ import {
   FaInstagram,
   FaTiktok,
   FaLinkedin,
-  FaTwitter,
+  FaYoutube,
 } from "react-icons/fa";
 import { useApp } from "@/app/Context"; // Path to useApp hook
 import { RequestData } from "./SmallComponents/RequestPopup";
 import Link from "next/link";
+import { FaXTwitter } from "react-icons/fa6";
 
 interface ProfilePageProps {
   data: RequestData;
@@ -186,7 +187,17 @@ const ProfilePage: React.FC<ProfilePageProps> = ({
                 rel="noopener noreferrer"
                 className="text-custom-bluePrimary text-2xl hover:text-blue-600"
               >
-                <FaTwitter />
+                <FaXTwitter />
+              </a>
+            )}
+             {data.youtubeUrl && (
+              <a
+                href={data.twitterUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-custom-bluePrimary text-2xl hover:text-blue-600"
+              >
+                <FaYoutube />
               </a>
             )}
           </div>

@@ -4,6 +4,7 @@ import { useApp } from "@/app/Context";
 import useAuth from "../Hooks/useAuth";
 import Link from "next/link";
 import { BsEye, BsEyeSlash } from "react-icons/bs";
+import Image from "next/image";
 
 export default function Login() {
   const { lang } = useApp();
@@ -58,7 +59,7 @@ export default function Login() {
 
   return (
     <section className="min-h-screen bg-gray-100 flex flex-col items-center justify-center">
-      <img src="/Logos/Link.svg" className="w-80"></img>
+      <Image src="/Logos/Link.png" alt="Logo" width={320} height={80} className="w-80" />
       <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full">
         {/* Header */}
         {/* Error Message */}

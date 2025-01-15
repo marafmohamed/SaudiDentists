@@ -16,18 +16,19 @@ export default function Home() {
         specialization={""}
         region={""}
         city={""}
+        category={""}
         doctorName={""}
-        onSearch={(specialization, region, city, doctorName) => {
+        onSearch={(specialization, region, city, category, doctorName) => {
           router.push(
             "/Experts?" +
               new URLSearchParams({
                 specialization,
                 region,
                 city,
+                category,
                 doctorName,
               }).toString()
           );
-
         }}
         main={true}
       />

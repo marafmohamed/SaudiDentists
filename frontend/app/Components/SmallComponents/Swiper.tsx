@@ -76,7 +76,9 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
                   href="/Experts"
                   className="text-blue-600 font-semibold hover:underline mt-4 inline-block"
                 >
-                  {isEnglish ? "Meet Our Experts" : "قابل خبراؤنا"}
+                  {isEnglish
+                    ? "Meet our experts"
+                    : "تعرف على نخبة الاطباء"}
                 </Link>
               </div>
               <div className="absolute md:hidden right-0 flex justify-end items-center h-full -z-10 w-full bg-white ">
@@ -147,7 +149,9 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
                   href="/Experts"
                   className="text-blue-600 font-semibold hover:underline mt-4 inline-block"
                 >
-                  {isEnglish ? "Meet Our Experts" : "قابل خبراؤنا"}
+                  {isEnglish
+                    ? "Meet our experts"
+                    : "تعرف على نخبة الاطباء"}
                 </Link>
               </div>
               <div className="absolute md:hidden right-0 flex justify-end items-center h-full -z-10 w-full bg-white ">
