@@ -77,15 +77,18 @@ const getFilteredDentists = async (req, res) => {
 
     // Add doctor name filter (English or Arabic)
     if (doctorName) {
-      const nameRegex = new RegExp(doctorName, "i");
+      const nameParts = doctorName.split(" ");
+      const nameRegexes = nameParts.map(part => new RegExp(part, "i"));
       filter.$and = filter.$and || [];
       filter.$and.push({
-        $or: [
-          { firstName: nameRegex },
-          { lastName: nameRegex },
-          { firstNameArabic: nameRegex },
-          { lastNameArabic: nameRegex },
-        ],
+      $or: [
+        { firstName: { $in: nameRegexes } },
+        { lastName: { $in: nameRegexes } },
+        { firstNameArabic: { $in: nameRegexes } },
+        { lastNameArabic: { $in: nameRegexes } },
+        { $expr: { $regexMatch: { input: { $concat: ["$firstName", " ", "$lastName"] }, regex: new RegExp(doctorName, "i") } } },
+        { $expr: { $regexMatch: { input: { $concat: ["$firstNameArabic", " ", "$lastNameArabic"] }, regex: new RegExp(doctorName, "i") } } }
+      ],
       });
     }
     // Add category filter

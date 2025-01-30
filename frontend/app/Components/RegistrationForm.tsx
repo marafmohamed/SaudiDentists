@@ -116,6 +116,7 @@ const cities = [
   "Al-Mandaq",
   "Al-Namas",
   "Al-Nairyah",
+  "Al-Qassim",
   "Al-Quwayiyah",
   "Al-Qurayyat",
   "Al-Shinan",
@@ -191,6 +192,7 @@ const citiesar = [
   "المندق",
   "النماص",
   "النعيرية",
+  "القصيم",
   "القويعية",
   "القريات",
   "الشنان",
@@ -255,7 +257,7 @@ export default function RegistrationForm({
   const [formData, setFormData] = useState<FormData>({
     _id: initialData?._id || "",
     // English Fields
-    username: initialData?.username || "",
+    username: initialData?.username || "a",
     firstName: initialData?.firstName || "",
     lastName: initialData?.lastName || "",
     email: initialData?.email || "",
@@ -280,7 +282,7 @@ export default function RegistrationForm({
     gender: initialData?.gender || "male",
 
     // Arabic Fields
-    usernameArabic: initialData?.usernameArabic || "",
+    usernameArabic: initialData?.usernameArabic || "a",
     firstNameArabic: initialData?.firstNameArabic || "",
     lastNameArabic: initialData?.lastNameArabic || "",
     governmentalSectorArabic: initialData?.governmentalSectorArabic || "",
@@ -297,7 +299,7 @@ export default function RegistrationForm({
     descriptionArabic: initialData?.descriptionArabic || "",
   });
 
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ name: string; message: string }[]>([]);
   const [currentLocation, setCurrentLocation] = useState<string>("");
@@ -342,7 +344,6 @@ export default function RegistrationForm({
     }
   };
   const handleSubmit = async () => {
-    console.log(formData);
     const errors = validateForm();
     if (errors.length > 0) {
       return;
@@ -444,7 +445,7 @@ export default function RegistrationForm({
         }}
         className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4"
       >
-        <div className="flex flex-col justify-start items-start w-full gap-2">
+        {/* <div className="flex flex-col justify-start items-start w-full gap-2">
           <label>Username</label>
           <input
             name="username"
@@ -454,7 +455,7 @@ export default function RegistrationForm({
             className="border border-custom-grayLight bg-white p-2 w-full rounded-lg "
             required
           />
-        </div>
+        </div> */}
         <div className="flex flex-col md:hidden justify-start items-start w-full gap-2">
           <label>Email</label>
           <input
@@ -1164,9 +1165,14 @@ export default function RegistrationForm({
             }`}
             disabled={loading}
           >
-            {loading ? <span className="loader-button" /> : ""} Submit
+            Submit
           </button>
         </div>
+        {loading && (
+          <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-50  flex justify-center items-center">
+            <div className="loader-button"></div>
+          </div>
+        )}
       </form>
     </div>
   );
@@ -1180,6 +1186,7 @@ export default function RegistrationForm({
         <button
           onClick={handleBack}
           className="bg-custom-grayDark mt-4  text-white px-4 py-2 rounded hover:bg-gray-700"
+          disabled={loading}
         >
           Back
         </button>

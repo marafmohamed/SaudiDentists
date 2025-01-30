@@ -62,7 +62,7 @@ const PageContent = () => {
   }, []);
 
   const handlePageClick = async (page: number) => {
-    console.log(specialization, region, city, doctorName,category);
+    console.log(specialization, region, city, doctorName, category);
     const response = await fetch(
       `${baseUrl}/api/dentist/getDoctor?specialization=${specialization}&region=${region}&city=${city}&category=${category}&doctorName=${doctorName}&page=${page}&limit=${10}`,
       {
@@ -172,7 +172,7 @@ const PageContent = () => {
             setRegion(region);
             setCity(city);
             setDoctorName(doctorName);
-            setCategory(category);          
+            setCategory(category);
             setLoading(true);
             const response = await fetch(
               `${baseUrl}/api/dentist/getDoctor?specialization=${specialization}&region=${region}&city=${city}&category=${category}&doctorName=${doctorName}&page=${1}&limit=${10}`,
@@ -237,6 +237,8 @@ const PageContent = () => {
                     : ""
                 }
                 gender={dentist.gender}
+                title={dentist.title}
+                titleArabic={dentist.titleArabic}
                 onViewProfile={() => router.push("/Experts/" + dentist._id)}
               />
             </motion.div>

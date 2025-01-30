@@ -83,9 +83,9 @@ export default function Navbar() {
         <div className="md:px-8 px-6 lg:px-16">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="relative cursor-pointer h-24">
+            <Link href="/" className="relative cursor-pointer h-24">
               <img src="/Logos/Link.png" alt="Logo" className="w-52 " />
-            </div>
+            </Link>
 
             {/* Links (Desktop) */}
             <div className="hidden md:flex items-center space-x-6">
@@ -238,7 +238,18 @@ export default function Navbar() {
             </div>
 
             {/* Hamburger Icon (Mobile) */}
-            <div className="flex items-center md:hidden">
+            <div className="flex items-center gap-4 md:hidden">
+              <Link
+                href="/"
+                onClick={() => {
+                  setIsMenuOpen(false);
+                }}
+                className={`flex p-2 w-24 font-bold text-custom-grayDark justify-center bg-custom-grayLight rounded-lg border border-custom-grayLight hover:border-custom-dark transition-all text-sm gap-1 items-center ${
+                  language === "en" ? "" : "flex-row-reverse"
+                }`}
+              >
+                <BiSolidHome className="w-4 text-custom-greenPrimary" />
+              </Link>
               <button
                 onClick={toggleMenu}
                 className="text-custom-greenDark focus:outline-none"

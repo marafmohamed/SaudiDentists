@@ -50,7 +50,7 @@ export default function Page() {
                   isEnglish ? "text-left" : "text-right"
                 }`}
               >
-                {isEnglish ? "Prof. Nawaf Labban" : "بروفيسور. نواف بن يوسف لبّان"}
+                {isEnglish ? "Prof. Nawaf Labban" : "البروفيسور. نواف بن يوسف لبّان"}
               </h3>
 
               {/* Social Links */}

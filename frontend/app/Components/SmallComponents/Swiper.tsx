@@ -87,7 +87,7 @@ export default function HeroSlider({ isEnglish }: { isEnglish: boolean }) {
                   className="h-full absolute -right-12  opacity-80 "
                 ></img>
               </div>
-              <div className="w-full hidden sm:block md:w-1/2 p-4 relative border-collapse">
+              <div className="w-full hidden md:block md:w-1/2 p-4 relative border-collapse">
                 <img
                   src="/Images/about_the_club.png"
                   alt={

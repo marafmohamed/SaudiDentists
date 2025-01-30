@@ -85,7 +85,7 @@ const Request: React.FC<RequestProp> = ({ data, setDemands }) => {
   return (
     <>
       {showPopUp && <Popup onClose={() => setShowPopUp(false)} data={data} />}
-      <div className="bg-custom-grayLight rounded-lg w-full flex flex-wrap items-center justify-between px-5 py-3 z-0 border-b my-8">
+      <div className="bg-custom-grayLight rounded-lg w-full flex flex-wrap items-center justify-between px-5 py-3  border-b my-8">
         <div className="flex items-center gap-4">
           <img
             src={

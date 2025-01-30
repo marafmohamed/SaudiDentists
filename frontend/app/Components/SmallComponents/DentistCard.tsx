@@ -8,6 +8,8 @@ interface CardProps {
   cityArabic: string;
   profilePicture: string;
   gender: "male" | "female";
+  title: string;
+  titleArabic: string;
   onViewProfile: () => void;
 }
 
@@ -18,6 +20,8 @@ const Card: React.FC<CardProps> = ({
   cityArabic,
   profilePicture,
   gender,
+  title,
+  titleArabic,
   onViewProfile,
 }) => {
   // Get the current language from the useApp hook
@@ -26,7 +30,7 @@ const Card: React.FC<CardProps> = ({
   // Determine displayed text based on language
   const displayedName = lang === "ar" ? nameArabic : name;
   const displayedCity = lang === "ar" ? cityArabic : city;
-
+  const displayTitle = lang === "ar" ? titleArabic + " " : title + ".  ";
   return (
     <div className="relative bg-white rounded-lg shadow-lg p-6 flex flex-col items-center text-center w-80 pb-16 mx-auto">
       {/* Profile Picture */}
@@ -38,7 +42,7 @@ const Card: React.FC<CardProps> = ({
                 ? profilePicture
                 : gender === "male"
                 ? "/Images/Default-ProfileMale.jpg"
-                : "/Images/Default-ProfileFemale.jpg"
+                : "/Images/Default-ProfileFemale.png"
             }
             alt={displayedName}
             className="w-full h-full object-cover"
@@ -48,7 +52,10 @@ const Card: React.FC<CardProps> = ({
 
       {/* Content */}
       <div className="mt-12">
-        <h3 className="text-xl font-bold text-custom-dark">{displayedName}</h3>
+        <h3 className="text-xl font-bold text-custom-dark">
+          {displayTitle}
+          {displayedName}
+        </h3>
         <p className="text-sm text-custom-grayDark">{displayedCity}</p>
       </div>
 

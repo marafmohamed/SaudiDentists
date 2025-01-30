@@ -115,6 +115,7 @@ const Filter = ({
           "Al-Mandaq",
           "Al-Namas",
           "Al-Nairyah",
+          "Al-Qassim",
           "Al-Quwayiyah",
           "Al-Qurayyat",
           "Al-Shinan",
@@ -190,6 +191,7 @@ const Filter = ({
           "المندق",
           "النماص",
           "النعيرية",
+          "القصيم",
           "القويعية",
           "القريات",
           "الشنان",
@@ -346,7 +348,7 @@ const Filter = ({
   };
 
   return (
-    <div className="space-y-4 md:space-y-0 md:flex md:items-center md:gap-4 py-12 px-10 justify-center bg-white transition-all w-full">
+    <div className="space-y-4 md:space-y-0 md:flex-wrap lg:flex-nowrap md:flex md:items-center md:gap-4 py-12 px-10 justify-center bg-white transition-all w-full">
       <ToastContainer />
       <div
         className="relative"
@@ -361,7 +363,7 @@ const Filter = ({
           }`}
         >
           {selectedFilters.specialization ||
-            (lang === "en" ? "Choose Specialization" : "اختر التخصص")}
+            (lang === "en" ? "Choose Speciality" : "اختر التخصص")}
           <motion.div
             animate={{ rotate: isOpen.specialization ? 180 : 0 }}
             transition={{ duration: 0.2 }}
@@ -382,7 +384,7 @@ const Filter = ({
               onClick={() => handleSelection("specialization", "")}
               className="px-4 py-2 text-sm cursor-pointer hover:bg-custom-blueLightHover"
             >
-              {lang === "en" ? "All Specializations" : "جميع التخصصات"}
+              {lang === "en" ? "All Specialities" : "جميع التخصصات"}
             </div>
             {(lang === "en" ? specialties : specialtiesArabic).map((item) => (
               <div
